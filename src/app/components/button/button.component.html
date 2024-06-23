@@ -1,0 +1,11 @@
+<button
+  [disabled]="disableTerm"
+  class="flex justify-center disabled:bg-neutral-300 disabled:border-sda-neutral-300 disabled:text-white font-jakarta items-center shadow-sm"
+  [ngClass]="roundClass + sizeClass + colorClass + buttonAddClass"
+  (click)="onClick()"
+  [type]="type"
+>
+  <div class="flex" [ngClass]="addedClass">
+    <ng-content></ng-content>
+  </div>
+</button>

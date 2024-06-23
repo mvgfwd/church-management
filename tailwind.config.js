@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
       colors: {
@@ -15,7 +15,7 @@ module.exports = {
           700: "#011241",
           800: "#010D2D",
           900: "#000614",
-          950: "#00030A"
+          950: "#00030A",
         },
         "cm-brown": {
           50: "#FFE3D6",
@@ -28,7 +28,7 @@ module.exports = {
           700: "#4D1800",
           800: "#331000",
           900: "#190800",
-          950: "#0A0300"
+          950: "#0A0300",
         },
         "cm-green": {
           50: "#D6FFF3",
@@ -41,11 +41,10 @@ module.exports = {
           700: "#003828",
           800: "#00241A",
           900: "#00140F",
-          950: "#000A07"
-        }
-      }
+          950: "#000A07",
+        },
+      },
     },
   },
   plugins: [],
-}
-
+};

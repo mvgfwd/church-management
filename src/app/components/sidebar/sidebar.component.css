@@ -1,0 +1,12 @@
+.nav-menu-btn-active {
+  background-color: #021f6f;
+  border-radius: 12px;
+  color: white;
+}
+
+.nav-menu-btn-active-havechild {
+  background-color: white;
+  border-radius: 12px;
+  color: black;
+  outline: 1px solid #021f6f;
+}
