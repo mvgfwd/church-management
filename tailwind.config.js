@@ -2,6 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
+    fontFamily: {
+      circular: ["Circular", "sans-serif"],
+      nunito: ["Nunito", "sans-serif"],
+      jakarta: ["Jakarta", "sans-serif"]
+    },
     extend: {
       colors: {
         "cm-blue": {

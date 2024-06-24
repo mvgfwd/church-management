@@ -2,3 +2,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "Circular";
+    src: url(./assets/font/CircularStd-Book.ttf) format("ttf");
+}
+  
+@font-face {
+    font-family: "Nunito";
+    src: url(./assets/font/NunitoSans.ttf);
+}
+
+@font-face {
+    font-family: "Jakarta";
+    src: url(./assets/font/FontJakarta.ttf);
+}

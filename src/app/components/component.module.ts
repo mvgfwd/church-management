@@ -6,9 +6,10 @@ import { IconsModule } from '../icons/icons.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
-  declarations: [SidebarComponent, ButtonComponent],
+  declarations: [SidebarComponent, ButtonComponent, BreadcrumbComponent],
   imports: [
     CommonModule,
     IconsModule,
@@ -16,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     AppRoutingModule,
   ],
-  exports: [SidebarComponent, ButtonComponent],
+
+  exports: [SidebarComponent, ButtonComponent, BreadcrumbComponent],
 })
 export class ComponentModule {}
