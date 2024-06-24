@@ -1,11 +1,7 @@
 <div class="pt-8 px-6 h-[96vh] w-[282px] mr-4 bg-white rounded-xl shadow-xl">
   <!-- LOGO -->
   <div class="flex justify-center items-center mb-6">
-    <img
-      src=""
-      alt=""
-      class="w-[60px] h-[60px] mr-2"
-    />
+    <img src="" alt="" class="w-[60px] h-[60px] mr-2" />
     <div class="flex flex-col">
       <span>HKBP</span>
       <span class="text-xs">Church Management</span>
@@ -15,13 +11,17 @@
 
   <!-- MENU -->
   <div class="">
-    <div
-      *ngFor="let menu of menu"
-    >
-      <div class="flex items-center hover:bg-cm-blue-50 py-2.5 pl-4 my-0.5 cursor-pointer rounded-xl text-neutral-800"       
-        [routerLinkActive]="menu.childrenComponents ? 'nav-menu-btn-active-havechild' : 'nav-menu-btn-active'"
+    <div *ngFor="let menu of menu">
+      <div
+        class="flex items-center hover:bg-cm-blue-50 py-2.5 pl-4 my-0.5 cursor-pointer rounded-xl text-neutral-800"
+        [routerLinkActive]="
+          menu.childrenComponents
+            ? 'nav-menu-btn-active-havechild'
+            : 'nav-menu-btn-active'
+        "
         [routerLink]="menu.path"
-        (click)="navMenuClicked(menu.name)">
+        (click)="navMenuClicked(menu.name)"
+      >
         <i-feather
           [name]="menu.icon"
           class="mr-2"
@@ -32,11 +32,13 @@
 
       <!-- IF MENU HAS CHILDREN -->
       <div *ngIf="menu.childrenComponents && activeMenu === menu.name">
-        <div *ngFor="let childMenu of menu.childrenComponents">
-          <span>{{childMenu.name}}</span>
+        <div
+          *ngFor="let childMenu of menu.childrenComponents"
+          [routerLink]="childMenu.path"
+        >
+          <span>{{ childMenu.name }}</span>
         </div>
       </div>
-
     </div>
   </div>
 </div>

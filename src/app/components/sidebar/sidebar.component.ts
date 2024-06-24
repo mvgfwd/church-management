@@ -8,11 +8,10 @@ import { Subject, map, take, takeUntil } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent implements OnInit{
+export class SidebarComponent implements OnInit {
   menu: SidebarMenu[];
   activeMenu: string = '';
   unsubscribe$: Subject<void> = new Subject();
-
 
   constructor(private router: Router) {
     this.menu = [
@@ -22,18 +21,17 @@ export class SidebarComponent implements OnInit{
         path: 'board',
         icon: 'user-check',
         name: 'Anggota Majelis',
-        childrenComponents: [
-          { path: 'anak1', icon: 'layout', name: 'anak1' },
-          { path: 'anak2', icon: 'layout', name: 'anak2' },
-        ],
+        // JIKA MENU PUNYA ANAK
+        // childrenComponents: [
+        //   { path: 'board/anak1', icon: 'layout', name: 'anak1' },
+        //   { path: 'board/anak2', icon: 'layout', name: 'anak2' },
+        // ],
       },
       { path: 'congregation', icon: 'users', name: 'Anggota Jemaat' },
       { path: 'news', icon: 'globe', name: 'Berita' },
       { path: 'home', icon: 'layout', name: 'Jadwal Kegiatan' },
     ];
-
   }
-
 
   ngOnInit(): void {
     // // IF MENU HAS CHILD AND BROWSER REFRESHED THE CHILD WILL BE SHOWN.
@@ -48,14 +46,12 @@ export class SidebarComponent implements OnInit{
     // .subscribe();
   }
 
-
-  navMenuClicked(str: string){
+  navMenuClicked(str: string) {
     this.activeMenu = str;
   }
 
-  unSubs(){
+  unSubs() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
 }
