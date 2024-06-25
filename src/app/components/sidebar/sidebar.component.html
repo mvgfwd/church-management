@@ -1,19 +1,19 @@
-<div class="pt-8 px-6 h-[96vh] w-[282px] mr-4 bg-white rounded-xl shadow-xl">
+<div class="pt-8 px-6 h-full w-[282px] mr-4 bg-white rounded-xl shadow-xl">
   <!-- LOGO -->
   <div class="flex justify-center items-center mb-6">
     <img src="" alt="" class="w-[60px] h-[60px] mr-2" />
     <div class="flex flex-col">
-      <span>HKBP</span>
+      <span class="font-semibold">HKBP</span>
       <span class="text-xs">Church Management</span>
       <span class="text-xs">System</span>
     </div>
   </div>
 
   <!-- MENU -->
-  <div class="">
+  <div class="h-[77%] overflow-auto">
     <div *ngFor="let menu of menu">
       <div
-        class="flex items-center hover:bg-cm-blue-50 py-2.5 pl-4 my-0.5 cursor-pointer rounded-xl text-neutral-800"
+        class="flex items-center hover:bg-cm-blue-50 py-2.5 pl-4 my-0.5 cursor-pointer rounded-xl text-neutral-500"
         [routerLinkActive]="
           menu.childrenComponents
             ? 'nav-menu-btn-active-havechild'

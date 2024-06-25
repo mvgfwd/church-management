@@ -1,4 +1,4 @@
-export interface PeopleDTO {
+export interface CongregationDTO {
     name: string;
     age: number;
     birthDate: string;
@@ -6,12 +6,12 @@ export interface PeopleDTO {
     phoneNumber: string;
 }
 
-export interface PengurusDTO{
+export interface BoardDTO{
     name: string;
     age: number;
     birthDate: string;
-    role: string;
-    phoneNumber: string;
     address: string;
+    phoneNumber: string;
+    fungsi: string;
     status: 'PENDIDIKAN' | 'ACTIVE' | 'PENSIUN';
 }

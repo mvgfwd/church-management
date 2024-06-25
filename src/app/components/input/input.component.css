@@ -1,0 +1,51 @@
+input.ng-touched.ng-dirty.ng-invalid {
+    border: 1px solid #AD1F2B;
+}
+
+input.ng-valid {
+    border:attr(border-data);
+}
+
+.fadeIn {
+animation: fadeInAnimation ease 0.2s;
+animation-iteration-count: 1;
+animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+    }
+}
+
+.hovertext {
+    position: relative;
+}
+
+.hovertext:before {
+    content: attr(data-hover);
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    background-color: #1F569D;
+    color: #FFFFFF;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 5px;
+    transition: opacity 0.3s ease-in-out;
+
+    position: absolute;
+    z-index: 1;
+    left: -17px;
+    top:-33px;
+    /* font-family: "Plus Jakarta Sans", "sans-serif"; */
+    font-size:small;
+}
+
+.hovertext:hover:before {
+opacity: 1;
+visibility: visible;
+}

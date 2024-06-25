@@ -1,4 +1,76 @@
-<div class="h-[85vh] rounded-xl bg-white shadow-xl px-6 py-8">
-  <span class="font-bold mb-10">Anggota Jemaat</span>
-  <div>name</div>
+<div class=" rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
+
+<span class="font-bold mb-10">Anggota Jemaat</span>
+
+  <!-- TABLE -->
+  <div class="mt-6">
+    <!-- TABLE HEAD -->
+    <div class="grid grid-cols-12 h-9 rounded-t-xl text-lg text-neutral-600 bg-[#F1F5FB]">
+      <div class="col-start-1 col-end-4 flex items-center mx-1">
+        <span class="ml-2">Nama Lengkap</span>
+      </div>
+      <div class="col-start-4 col-end-5 flex items-center mx-1">
+        <span class="">Usia</span>
+      </div>
+      <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3">
+        <span class="">Tanggal Lahir</span>
+      </div>
+      <div class="col-start-7 col-end-10 flex items-center mx-1 ml-2">
+        <span class="">Alamat</span>
+      </div>
+      <div class="col-start-10 col-end-12 flex items-center mx-1 ml-5">
+        <span class="">Phone</span>
+      </div>
+      <div class="col-start-12 col-end-13 flex items-center justify-end mx-1 mr-4">
+        <span class="">Action</span>
+      </div>
+    </div>
+
+    <!-- TABLE BODY -->
+    <div *ngFor="let congregation of congregationList" class="grid grid-cols-12 rounded-t-xl text-sm text-neutral-800 border-b-2 py-1">
+      <div class="col-start-1 col-end-4 flex items-center mx-1 py-0.5">
+        <span class="ml-2">{{congregation.name}}</span>
+      </div>
+      <div class="col-start-4 col-end-5 flex items-center mx-1 py-0.5">
+        <span class="">{{congregation.age}} Tahun</span>
+      </div>
+      <div class="col-start-5 col-end-7 flex items-center mx-1 py-0.5 ml-3">
+        <span class="">{{congregation.birthDate}}</span>
+      </div>
+      <div class="col-start-7 col-end-10 flex items-center mx-1 py-0.5 ml-2">
+        <span class="">{{congregation.address}}</span>
+      </div>
+      <div class="col-start-10 col-end-12 flex items-center mx-1 py-0.5 ml-5">
+        <span class="">{{congregation.phoneNumber}}</span>
+      </div>
+      <div class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5">
+        <i-feather name="edit2" style="height: 16px; width: 16px;" class="text-cm-blue-300 hover:text-cm-blue-500 hover:scale-110 duration-100 cursor-pointer"></i-feather>
+        <i-feather name="x" style="height: 16px; width: 16px;" class="text-red-500 hover:text-red-700 hover:scale-110 duration-100 cursor-pointer"></i-feather>
+      </div>
+    </div>
+
+    <!-- INPUT -->
+    <div class="grid grid-cols-12 rounded-t-xl text-sm text-neutral-800 border-b-2 py-1">
+      <div class="col-start-1 col-end-4 flex items-center mx-1 py-0.5">
+        <input type="text" class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm" placeholder="Nama">
+      </div>
+      <div class="col-start-4 col-end-5 flex items-center mx-1 py-0.5">
+        <input type="number" class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm" placeholder="30">
+      </div>
+      <div class="col-start-5 col-end-7 flex items-center mx-1 py-0.5 ml-3 mr-2">
+        <input type="date" class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm" placeholder="Tanggal Lahir">
+      </div>
+      <div class="col-start-7 col-end-10 flex items-center mx-1 py-0.5 ml-2">
+        <input type="text" class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm" placeholder="Jl. Kebenaran No.1">
+      </div>
+      <div class="col-start-10 col-end-12 flex items-center mx-1 py-0.5 ml-5">
+        <input type="text" class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm" placeholder="0812345...">
+      </div>
+      <div class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5">
+        <i-feather name="plus" style="height: 16px; width: 16px;" class="text-green-500 hover:text-green-700 hover:scale-125 duration-200 cursor-pointer"></i-feather>
+      </div>
+    </div>
+
+  </div>
+
 </div>

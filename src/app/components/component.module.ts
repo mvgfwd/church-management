@@ -7,9 +7,10 @@ import { AppRoutingModule } from '../app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { InputComponent } from './input/input.component';
 
 @NgModule({
-  declarations: [SidebarComponent, ButtonComponent, BreadcrumbComponent],
+  declarations: [SidebarComponent, ButtonComponent, BreadcrumbComponent, InputComponent],
   imports: [
     CommonModule,
     IconsModule,
@@ -18,6 +19,6 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     AppRoutingModule,
   ],
 
-  exports: [SidebarComponent, ButtonComponent, BreadcrumbComponent],
+  exports: [SidebarComponent, ButtonComponent, BreadcrumbComponent, InputComponent],
 })
 export class ComponentModule {}

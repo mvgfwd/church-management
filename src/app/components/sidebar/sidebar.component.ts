@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(private router: Router) {
     this.menu = [
-      { path: 'home', icon: 'layout', name: 'Dashboard' },
+      { path: 'home', icon: 'clipboard', name: 'Dashboard' },
       { path: 'financial', icon: 'dollar-sign', name: 'Keuangan' },
       {
         path: 'board',
@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
       },
       { path: 'congregation', icon: 'users', name: 'Anggota Jemaat' },
       { path: 'news', icon: 'globe', name: 'Berita' },
-      { path: 'home', icon: 'layout', name: 'Jadwal Kegiatan' },
+      { path: 'home', icon: 'activity', name: 'Jadwal Kegiatan' },
     ];
   }
 

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Home, DollarSign, Users, UserCheck, Globe } from 'angular-feather/icons';
+import { Home, DollarSign, Users, UserCheck, Globe,  Edit2, X, Clipboard, Plus, Activity } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
 const icons = {
@@ -8,7 +7,12 @@ const icons = {
   DollarSign,
   Users,
   UserCheck,
-  Globe
+  Globe,
+  Edit2,
+  X,
+  Clipboard,
+  Plus,
+  Activity
 };
 
 @NgModule({

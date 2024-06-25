@@ -1,0 +1,66 @@
+<div class="form-control relative">
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex flex-row items-center">
+        <label
+          [for]="inputId"
+          class="font-jakarta font-sans flex items-center text-sm text-center mb-1"
+          >{{ label }} 
+            <span class="text-red-700" *ngIf="required">*</span>
+          <span class="ml-2 text-xs font-light" *ngIf="description"
+            >( Desc. : {{ description }} )</span
+          >
+        </label>
+      </div>
+      <div class="h-4" *ngIf="focus || control.pristine"></div>
+      <div *ngIf="validatorIcon" class="flex flex-row gap-[2px]">
+        <div
+          *ngIf="tooltip"
+          class="hovertext flex items-center"
+          [attr.data-hover]="tooltip"
+        >
+          <i-feather name="info" style="height:16px; width:16px" class="cursor-pointer flex text-right text-sda-pri-500"></i-feather>
+        </div>
+        <i-feather name="x-circle" *ngIf="control.invalid && control.dirty && control.touched" style="height:15px; width:15px" class="cursor-pointer flex text-right text-sda-red-500 mr-1"></i-feather>
+        <i-feather name="check-circle" *ngIf="control.valid && required" style="height:15px; width:15px" class="cursor-pointer flex text-right mr-1 text-sda-pri-500"></i-feather>
+      </div>
+    </div>
+    <div
+      *ngIf="isPassword"
+      class="absolute right-2 top-1/2 text-usm-neutral-500 focus:ring-usm-teal-700 focus:border-usm-tearing-usm-teal-700"
+    >
+    <i-feather 
+      [name]="inputTypePassword === 'text' ? 'shield-off' : 'shield'"
+      (click)="togglePasswordVisibility()"
+      style="height:16px; width:16px" 
+      class="cursor-pointer flex text-right text-sda-pri-500"
+      [ngClass]="
+      inputTypePassword === 'text' ? '  text-sda-red-400' : ' text-dsa-neutral-500'"
+    ></i-feather>
+      
+    </div>
+    <input
+      [value]="value"
+      oninput="inputType = 'text'?this.value: this.value"
+      [formControl]="control"
+      [type]="isPassword ? inputTypePassword : inputType"
+      [id]="inputId"
+      [class.invalid]="control.invalid && control.dirty && control.touched"
+      class="shadow-sm placeholder:text-sm text-sm bg-white border border-sda-neutral-300 outline-none focus:border-sda-pri-500 text-gray-900 sm:text-sm rounded-[12px] block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-sda-pri-500"
+      [ngClass]="size"
+      [readonly]="isDisabled"
+      [placeholder]="placeholder"
+      [style]="style"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      [attr.border-data]="borderData"
+    />
+    <ng-container *ngIf="control.invalid && control.dirty && control.touched">
+      <div
+        *ngFor="let err of control.errors | keyvalue"
+        class="text-xs absolute font-jakarta text-usm-error-700"
+      >
+        {{ errorMessage[err.key] }}
+      </div>
+    </ng-container>
+  </div>
+  
