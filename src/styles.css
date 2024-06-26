@@ -4,18 +4,18 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Circular";
-    src: url(./assets/font/CircularStd-Book.ttf) format("ttf");
-}
-  
-@font-face {
-    font-family: "Nunito";
-    src: url(./assets/font/NunitoSans.ttf);
+  font-family: "Circular";
+  src: url(./assets/font/CircularStd-Book.ttf) format("ttf");
 }
 
 @font-face {
-    font-family: "Jakarta";
-    src: url(./assets/font/FontJakarta.ttf);
+  font-family: "Nunito";
+  src: url(./assets/font/NunitoSans.ttf);
+}
+
+@font-face {
+  font-family: "Jakarta";
+  src: url(./assets/font/FontJakarta.ttf);
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -26,6 +26,101 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* SWEETALERT */
+.swal2-deny {
+  background-color: #f3f4f6;
+  border-radius: 1.5px;
+  font-size: 1em;
+  border: 2px solid #9e9e9e;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-left: 4px;
+  font-family: sans-serif;
+  color: #5e5e5e;
+  border-radius: 6px;
+}
+
+.swal2-confirm {
+  background-color: #006298;
+  border-radius: 0.25em;
+  font-size: 1em;
+  border: 1.5px solid #1f569d;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 4px;
+  color: #fcfcfd;
+  font-family: sans-serif;
+  border-radius: 6px;
+}
+
+.swal2-confirm:hover {
+  background-color: #003c5c;
+  border: 1.5px solid #003c5c;
+}
+
+.swal2-deny:hover {
+  background-color: #ebebeb;
+}
+
+.swal2-title {
+  font-family: Plus Jakarta Sans, sans-serif;
+  padding: 0.8em 0.7 0;
+}
+
+.swal2-html-container {
+  font-family: Plus Jakarta Sans, sans-serif;
+}
+
+.swal2-icon {
+  font-size: 1em;
+  margin: 0.5em;
+}
+
+.swal2-popup {
+  padding: 0 0 0 0 1.25em;
+  border-radius: 12px;
+}
+
+.toggle button {
+  background-color: #ffffff;
+  color: #1f569d;
+  transition: 300ms;
+}
+
+.toggle button:hover {
+  background-color: #505050;
+  color: white;
+  transition: 300ms;
+}
+
+.toggle button.selected {
+  background-color: #184177;
+  color: white;
+  transition: 300ms;
+}
+
+.swal2-cancel {
+  background-color: #51566c;
+  border-radius: 0.25em;
+  font-size: 1em;
+  border: 2px solid #7f859f;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-left: 4px;
+  font-family: sans-serif;
+  color: #fcfcfd;
+}
+
+.swal2-cancel:hover {
+  background-color: #7f859f;
 }

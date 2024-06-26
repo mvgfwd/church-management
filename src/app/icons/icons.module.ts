@@ -1,5 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Home, DollarSign, Users, UserCheck, Globe,  Edit2, X, Clipboard, Plus, Activity } from 'angular-feather/icons';
+import {
+  Home,
+  DollarSign,
+  Users,
+  UserCheck,
+  Globe,
+  Edit2,
+  X,
+  Clipboard,
+  Plus,
+  Activity,
+  Check,
+  LogOut,
+  Trash2,
+} from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
 const icons = {
@@ -12,7 +26,10 @@ const icons = {
   X,
   Clipboard,
   Plus,
-  Activity
+  Activity,
+  Check,
+  LogOut,
+  Trash2,
 };
 
 @NgModule({
