@@ -49,7 +49,7 @@
         </div>
         <div class="col-start-4 col-end-5 flex items-center mx-1">
           <span *ngIf="idOnEdit !== congregation.id" class="py-1"
-            >{{ congregation.age }} Tahun</span
+            >{{ ageCalculate(congregation.birthDate) }} Tahun</span
           >
           <input
             *ngIf="idOnEdit === congregation.id"

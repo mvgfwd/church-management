@@ -180,4 +180,12 @@ export class CongregationComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ageCalculate(birthDate: string): number{
+    const convertAge = new Date(birthDate)
+    const timeDiff = Math.abs(Date.now() - convertAge.getTime());
+    const result = Math.floor((timeDiff / (1000*3600*24)) / 365);
+    return result;
+  }
+
 }

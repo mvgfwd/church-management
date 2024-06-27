@@ -13,6 +13,6 @@ export interface BoardDTO {
   birthDate: string;
   address: string;
   phoneNumber: string;
-  fungsi: string;
+  fungsi: 'PENDETA' | 'CALON_PENDETA' | 'SINTUA' | 'CALON_SINTUA' | 'DIAGONES' | 'CALON_DIAGONES' | 'BIBELVROUW' | 'GURU_HURIA' | 'STAFF';
   status: 'PENDIDIKAN' | 'ACTIVE' | 'PENSIUN';
 }
