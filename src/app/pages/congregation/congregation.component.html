@@ -1,11 +1,11 @@
 <div class="rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
-  <span class="font-bold mb-10">Anggota Jemaat</span>
+  <span class="font-bold mb-10 text-lg">Anggota Jemaat</span>
 
   <!-- TABLE -->
   <div class="mt-6">
     <!-- TABLE HEAD -->
     <div
-      class="grid grid-cols-12 h-9 rounded-t-xl text-lg text-neutral-600 bg-cm-brown-50"
+      class="grid grid-cols-12 h-9 rounded-t-xl text-sm font-semibold text-neutral-50 bg-cm-green-500"
     >
       <div class="col-start-1 col-end-4 flex items-center mx-1">
         <span class="ml-2">Nama Lengkap</span>
@@ -13,10 +13,10 @@
       <div class="col-start-4 col-end-5 flex items-center mx-1">
         <span class="">Usia</span>
       </div>
-      <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3">
+      <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3 mr-2">
         <span class="">Tanggal Lahir</span>
       </div>
-      <div class="col-start-7 col-end-10 flex items-center mx-1 ml-2">
+      <div class="col-start-7 col-end-10 flex items-center mx-1 ml-[-4px]">
         <span class="">Alamat</span>
       </div>
       <div class="col-start-10 col-end-12 flex items-center mx-1 ml-5">
@@ -30,112 +30,117 @@
     </div>
 
     <!-- TABLE BODY -->
-    <form [formGroup]="formEditCongregation" (ngSubmit)="onSubmitEdittedData()">
-      <div
-        *ngFor="let congregation of congregationList"
-        class="grid grid-cols-12 rounded-t-xl text-sm text-neutral-800 border-b-2 py-1"
+    <div *ngIf="congregationList | async as congreData">
+      <form
+        [formGroup]="formEditCongregation"
+        (ngSubmit)="onSubmitEdittedData()"
       >
-        <div class="col-start-1 col-end-4 flex items-center mx-1">
-          <span *ngIf="idOnEdit !== congregation.id" class="ml-2 py-1">{{
-            congregation.name
-          }}</span>
-          <input
-            *ngIf="idOnEdit === congregation.id"
-            formControlName="name"
-            type="text"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-            placeholder="Nama"
-          />
-        </div>
-        <div class="col-start-4 col-end-5 flex items-center mx-1">
-          <span *ngIf="idOnEdit !== congregation.id" class="py-1"
-            >{{ ageCalculate(congregation.birthDate) }} Tahun</span
-          >
-          <input
-            *ngIf="idOnEdit === congregation.id"
-            formControlName="age"
-            type="number"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-            placeholder="30"
-          />
-        </div>
-        <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3">
-          <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
-            congregation.birthDate | date : "longDate"
-          }}</span>
-          <input
-            *ngIf="idOnEdit === congregation.id"
-            formControlName="birthDate"
-            type="date"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-            placeholder="Nama"
-          />
-        </div>
-        <div class="col-start-7 col-end-10 flex items-center mx-1 ml-2">
-          <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
-            congregation.address
-          }}</span>
-          <input
-            *ngIf="idOnEdit === congregation.id"
-            formControlName="address"
-            type="text"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-            placeholder="Jl Damai No.1"
-          />
-        </div>
-        <div class="col-start-10 col-end-12 flex items-center mx-1 ml-5">
-          <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
-            congregation.phoneNumber
-          }}</span>
-          <input
-            *ngIf="idOnEdit === congregation.id"
-            formControlName="phoneNumber"
-            type="text"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-            placeholder="08123..."
-          />
-        </div>
         <div
-          class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
+          *ngFor="let congregation of congreData.data"
+          class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
         >
-          <i-feather
-            *ngIf="idOnEdit !== congregation.id"
-            (click)="onClickEditById(congregation)"
-            name="edit2"
-            style="height: 16px; width: 16px"
-            class="text-cm-blue-300 hover:text-cm-blue-500 hover:scale-110 duration-100 cursor-pointer"
-          ></i-feather>
-          <i-feather
-            *ngIf="idOnEdit === congregation.id"
-            (click)="idOnEdit = undefined"
-            name="x"
-            style="height: 16px; width: 16px"
-            class="text-yellow-500 hover:text-yellow-700 rotate-180 hover:scale-110 duration-100 cursor-pointer"
-          ></i-feather>
-          <button type="submit" *ngIf="idOnEdit === congregation.id">
+          <div class="col-start-1 col-end-4 flex items-center mx-1">
+            <span *ngIf="idOnEdit !== congregation.id" class="ml-2 py-1">{{
+              congregation.name
+            }}</span>
+            <input
+              *ngIf="idOnEdit === congregation.id"
+              formControlName="name"
+              type="text"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="Nama"
+            />
+          </div>
+          <div class="col-start-4 col-end-5 flex items-center mx-1">
+            <span *ngIf="idOnEdit !== congregation.id" class="py-1"
+              >{{ ageCalculate(congregation.birthDate) }} Tahun</span
+            >
+            <input
+              *ngIf="idOnEdit === congregation.id"
+              formControlName="age"
+              type="number"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="30"
+            />
+          </div>
+          <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3 mr-2">
+            <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
+              congregation.birthDate | date : "longDate"
+            }}</span>
+            <input
+              *ngIf="idOnEdit === congregation.id"
+              formControlName="birthDate"
+              type="date"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="Nama"
+            />
+          </div>
+          <div class="col-start-7 col-end-10 flex items-center mx-1 ml-[-4px]">
+            <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
+              congregation.address
+            }}</span>
+            <input
+              *ngIf="idOnEdit === congregation.id"
+              formControlName="address"
+              type="text"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="Jl Damai No.1"
+            />
+          </div>
+          <div class="col-start-10 col-end-12 flex items-center mx-1 ml-5">
+            <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
+              congregation.phoneNumber
+            }}</span>
+            <input
+              *ngIf="idOnEdit === congregation.id"
+              formControlName="phoneNumber"
+              type="text"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="08123..."
+            />
+          </div>
+          <div
+            class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
+          >
             <i-feather
-              name="check"
-              style="height: 18px; width: 18px"
-              class="text-green-500 hover:text-green-700 hover:scale-110 duration-100 cursor-pointer"
+              *ngIf="idOnEdit !== congregation.id"
+              (click)="onClickEditById(congregation)"
+              name="edit2"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-cm-blue-400 hover:scale-110 duration-100 cursor-pointer"
             ></i-feather>
-          </button>
-          <i-feather
-            *ngIf="idOnEdit !== congregation.id"
-            (click)="onClickDelete(congregation.id)"
-            name="trash2"
-            style="height: 16px; width: 16px"
-            class="text-red-500 hover:text-red-700 hover:scale-110 duration-100 cursor-pointer"
-          ></i-feather>
+            <i-feather
+              *ngIf="idOnEdit === congregation.id"
+              (click)="idOnEdit = undefined"
+              name="x"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-yellow-500 rotate-180 hover:scale-110 duration-100 cursor-pointer"
+            ></i-feather>
+            <button type="submit" *ngIf="idOnEdit === congregation.id">
+              <i-feather
+                name="check"
+                style="height: 18px; width: 18px"
+                class="text-neutral-600 hover:text-green-500 hover:scale-110 duration-100 cursor-pointer"
+              ></i-feather>
+            </button>
+            <i-feather
+              *ngIf="idOnEdit !== congregation.id"
+              (click)="onClickDelete(congregation.id)"
+              name="trash2"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-red-500 hover:scale-110 duration-100 cursor-pointer"
+            ></i-feather>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
 
     <!-- INPUT -->
     <form
       *ngIf="!idOnEdit"
       [formGroup]="formCongregation"
       (ngSubmit)="onSubmitPost()"
-      class="grid grid-cols-12 rounded-t-xl text-sm text-neutral-800 border-b-2 py-1"
+      class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
     >
       <div class="col-start-1 col-end-4 flex items-center mx-1 py-0.5">
         <input
@@ -145,17 +150,7 @@
           placeholder="Nama"
         />
       </div>
-      <div class="col-start-4 col-end-5 flex items-center mx-1 py-0.5">
-        <input
-          formControlName="age"
-          type="number"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="30"
-        />
-      </div>
-      <div
-        class="col-start-5 col-end-7 flex items-center mx-1 py-0.5 ml-3 mr-2"
-      >
+      <div class="col-start-4 col-end-7 flex items-center mx-1 py-0.5 mr-5">
         <input
           formControlName="birthDate"
           type="date"
@@ -163,7 +158,9 @@
           placeholder="Tanggal Lahir"
         />
       </div>
-      <div class="col-start-7 col-end-10 flex items-center mx-1 py-0.5 ml-2">
+      <div
+        class="col-start-7 col-end-10 flex items-center mx-1 py-0.5 ml-[-4px]"
+      >
         <input
           formControlName="address"
           type="text"
@@ -186,7 +183,7 @@
           <i-feather
             name="plus"
             style="height: 16px; width: 16px"
-            class="text-cm-blue-300 hover:text-cm-blue-500 hover:scale-125 duration-200 cursor-pointer"
+            class="text-neutral-600 hover:text-cm-green-500 hover:scale-125 duration-200 cursor-pointer"
           ></i-feather>
         </button>
       </div>

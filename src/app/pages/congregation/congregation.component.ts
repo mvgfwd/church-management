@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CongregationDTO } from 'src/app/core/dto/congregation.dto';
 import { CongregationService } from './congregation.service';
-import { map, take, tap } from 'rxjs';
+import { Observable, map, of, take, tap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormGroupOf } from 'src/app/components/input/form-utility';
 import Swal from 'sweetalert2';
 import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
+import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 
 @Component({
   selector: 'app-congregation',
@@ -13,7 +14,9 @@ import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
   styleUrls: ['./congregation.component.css'],
 })
 export class CongregationComponent implements OnInit {
-  congregationList: CongregationDTO[] = [];
+  congregationList:
+    | Observable<PaginationResultDTO<CongregationDTO>>
+    | undefined;
   formCongregation: FormGroup = new FormGroup<FormGroupOf<CongregationDTO>>({
     id: new FormControl<number>(0),
     name: new FormControl<string>('', Validators.required),
@@ -38,10 +41,6 @@ export class CongregationComponent implements OnInit {
 
   Toast = Swal.mixin({
     toast: true,
-    // position: 'top-end',
-    // showConfirmButton: false,
-    // timer: 2400,
-    // timerProgressBar: true,
     position: 'top-end',
     showConfirmButton: false,
     timer: 1500,
@@ -50,7 +49,7 @@ export class CongregationComponent implements OnInit {
   constructor(private congreService: CongregationService) {
     this.congreService
       .getCongregationListObs()
-      .pipe(map((cg) => (this.congregationList = cg)))
+      .pipe(map((cg) => (this.congregationList = of(cg))))
       .pipe(take(1))
       .subscribe();
   }
@@ -181,11 +180,10 @@ export class CongregationComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ageCalculate(birthDate: string): number{
-    const convertAge = new Date(birthDate)
+  ageCalculate(birthDate: string): number {
+    const convertAge = new Date(birthDate);
     const timeDiff = Math.abs(Date.now() - convertAge.getTime());
-    const result = Math.floor((timeDiff / (1000*3600*24)) / 365);
+    const result = Math.floor(timeDiff / (1000 * 3600 * 24) / 365);
     return result;
   }
-
 }

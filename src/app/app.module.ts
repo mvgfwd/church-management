@@ -11,7 +11,7 @@ import { NewsComponent } from './pages/news/news.component';
 import { CongregationService } from './pages/congregation/congregation.service';
 import { CongregationComponent } from './pages/congregation/congregation.component';
 import { BoardService } from './pages/board/board.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,8 +27,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ComponentModule,
     IconsModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
-  exports: [IconsModule, ReactiveFormsModule],
+  exports: [IconsModule],
   providers: [CongregationService, BoardService],
   bootstrap: [AppComponent],
 })

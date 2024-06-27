@@ -1,11 +1,11 @@
 <div class="rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
-  <span class="font-bold mb-10">Anggota Majelis</span>
+  <span class="font-bold mb-10 text-lg">Anggota Majelis</span>
 
   <!-- TABLE -->
   <div class="mt-6">
     <!-- TABLE HEAD -->
     <div
-      class="grid grid-cols-12 h-9 rounded-t-xl font-semibold text-neutral-600 bg-cm-brown-50"
+      class="grid grid-cols-12 h-9 rounded-t-xl text-sm font-semibold text-neutral-50 bg-cm-green-500"
     >
       <div class="col-start-1 col-end-3 flex items-center mx-1">
         <span class="ml-2">Nama Lengkap</span>
@@ -16,16 +16,16 @@
       <div class="col-start-4 col-end-6 flex items-center mx-1 ml-2">
         <span class="">Tanggal Lahir</span>
       </div>
-      <div class="col-start-6 col-end-7 flex items-center">
-        <span class="">Fungsi</span>
-      </div>
-      <div class="col-start-7 col-end-9 flex items-center mx-1">
+      <div class="col-start-6 col-end-9 flex items-center ml-[-10px] mr-2">
         <span class="">Alamat</span>
       </div>
-      <div class="col-start-9 col-end-11 flex items-center mx-1 ml-5">
+      <div class="col-start-9 col-end-10 flex items-center mx-1">
         <span class="">Phone</span>
       </div>
-      <div class="col-start-11 col-end-12 flex items-center mx-1">
+      <div class="col-start-10 col-end-11 flex items-center mx-1 ml-5">
+        <span class="">Fungsi</span>
+      </div>
+      <div class="col-start-11 col-end-12 flex items-center mx-1 ml-3">
         <span class="">Status</span>
       </div>
       <div
@@ -36,45 +36,133 @@
     </div>
 
     <!-- TABLE BODY -->
-    <div
-      *ngFor="let board of boardList"
-      class="grid grid-cols-12 rounded-t-xl text-xs text-neutral-800 border-b-2 py-1"
-    >
-      <div class="col-start-1 col-end-3 flex items-center mx-1 text-sm">
-        <span class="ml-2">{{ board.name }}</span>
-      </div>
-      <div class="col-start-3 col-end-4 flex items-center mx-1 ml-3">
-        <span class="">{{ board.age }} Tahun</span>
-      </div>
-      <div class="col-start-4 col-end-6 flex items-center mx-1 ml-2">
-        <span class="">{{ board.birthDate }}</span>
-      </div>
-      <div class="col-start-6 col-end-7 flex items-center">
-        <span class="font-semibold">{{ board.fungsi }}</span>
-      </div>
-      <div class="col-start-7 col-end-9 flex items-center mx-1">
-        <span class="">{{ board.address }}</span>
-      </div>
-      <div class="col-start-9 col-end-11 flex items-center mx-1 ml-5">
-        <span class="">{{ board.phoneNumber }}</span>
-      </div>
-      <div class="col-start-11 col-end-12 flex items-center mx-1">
-        <span class="">{{ board.status }}</span>
-      </div>
+    <div *ngIf="boardList$ | async as boardList">
       <div
-        class="col-start-12 col-end-13 flex items-center mx-1 justify-evenly"
+        *ngFor="let board of boardList.data"
+        class="grid grid-cols-12 text-xs text-neutral-800 border-b-2 border-x-2 py-2"
       >
-        <i-feather
-          name="edit2"
-          style="height: 16px; width: 16px"
-          class="text-cm-blue-300 hover:text-cm-blue-500 hover:scale-110 duration-100 cursor-pointer"
-        ></i-feather>
-        <i-feather
-          name="x"
-          style="height: 16px; width: 16px"
-          class="text-red-500 hover:text-red-700 hover:scale-110 duration-100 cursor-pointer"
-        ></i-feather>
+        <div class="col-start-1 col-end-3 flex items-center mx-1 text-sm">
+          <span class="ml-2">{{ board.name }}</span>
+        </div>
+        <div class="col-start-3 col-end-4 flex items-center mx-1 ml-3">
+          <span class="">{{ board.age }} Tahun</span>
+        </div>
+        <div class="col-start-4 col-end-6 flex items-center mx-1 ml-2">
+          <span class="">{{ board.birthDate }}</span>
+        </div>
+        <div class="col-start-6 col-end-9 flex items-center ml-[-10px] mr-2">
+          <span class="">{{ board.address }}</span>
+        </div>
+        <div class="col-start-9 col-end-10 flex items-center mx-1">
+          <span class="">{{ board.phoneNumber }}</span>
+        </div>
+        <div class="col-start-10 col-end-11 flex items-center mx-1 ml-5">
+          <span class="font-semibold">{{ board.fungsi }}</span>
+        </div>
+        <div class="col-start-11 col-end-12 flex items-center mx-1 ml-3">
+          <span class="">{{ board.status }}</span>
+        </div>
+        <div
+          class="col-start-12 col-end-13 flex items-center mx-1 justify-evenly"
+        >
+          <i-feather
+            name="edit2"
+            style="height: 16px; width: 16px"
+            class="text-neutral-600 hover:text-cm-blue-500 hover:scale-110 duration-100 cursor-pointer"
+          ></i-feather>
+          <i-feather
+            name="trash2"
+            style="height: 16px; width: 16px"
+            class="text-neutral-600 hover:text-red-500 hover:scale-110 duration-100 cursor-pointer"
+          ></i-feather>
+        </div>
       </div>
     </div>
+
+    <!-- INPUT -->
+    <form
+      *ngIf="!idOnEdit"
+      [formGroup]="formBoard"
+      (ngSubmit)="onSubmitPostBoard()"
+      class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
+    >
+      <div class="col-start-1 col-end-3 flex items-center mx-1 py-0.5 ml-2">
+        <input
+          formControlName="name"
+          type="text"
+          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+          placeholder="Nama"
+        />
+      </div>
+      <div
+        class="col-start-3 col-end-6 flex items-center mx-1 py-0.5 mr-10 ml-3"
+      >
+        <input
+          formControlName="birthDate"
+          type="date"
+          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+          placeholder="Tanggal Lahir"
+        />
+      </div>
+      <div class="col-start-6 col-end-9 flex items-center mr-2 ml-[-10px]">
+        <input
+          formControlName="address"
+          type="text"
+          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+          placeholder="Jl. Kebenaran No.1"
+        />
+      </div>
+      <div class="col-start-9 col-end-10 flex items-center mx-1">
+        <input
+          formControlName="phoneNumber"
+          type="text"
+          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+          placeholder="0812345..."
+        />
+      </div>
+      <div class="col-start-10 col-end-11 flex items-center mx-1 py-0.5 ml-5">
+        <!-- <select
+          id="fungsi"
+          formControlName="fungsi"
+          [(ngModel)]="selectedFungsi"
+          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+        >
+          <option
+            *ngFor="let option of optionsFungsi"
+            [value]="option"
+            class="text-xs"
+          >
+            {{ option }}
+          </option>
+        </select> -->
+      </div>
+      <div class="col-start-11 col-end-12 flex items-center mx-1 py-0.5 ml-3">
+        <!-- <select
+          formControlName="status"
+          id="status"
+          [(ngModel)]="selectedStatus"
+          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+        >
+          <option
+            *ngFor="let opt of optionsStatus"
+            [value]="opt"
+            class="text-xs"
+          >
+            {{ opt }}
+          </option>
+        </select> -->
+      </div>
+      <div
+        class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
+      >
+        <button type="submit">
+          <i-feather
+            name="plus"
+            style="height: 16px; width: 16px"
+            class="text-neutral-600 hover:text-cm-green-500 hover:scale-125 duration-200 cursor-pointer"
+          ></i-feather>
+        </button>
+      </div>
+    </form>
   </div>
 </div>
