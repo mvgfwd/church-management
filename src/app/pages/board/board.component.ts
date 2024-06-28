@@ -13,10 +13,23 @@ import { FormGroupOf } from 'src/app/components/input/form-utility';
 })
 export class BoardComponent {
   boardList$: Observable<PaginationResultDTO<BoardDTO>> | undefined;
-  idOnEdit = false;
+  idOnEdit: number | undefined = undefined;
   selectedFungsi = 'STAFF';
   selectedStatus = 'ACTIVE';
   optionsStatus = ['PENDIDIKAN', 'ACTIVE', 'PENSIUN'];
+  optionsEditStatus = ['PENDIDIKAN', 'ACTIVE', 'PENSIUN'];
+  optionsEditFungsi = [
+    'PENDETA',
+    'CALON_PENDETA',
+    'SINTUA',
+    'CALON_SINTUA',
+    'DIAGONES',
+    'CALON_DIAGONES',
+    'BIBELVROUW',
+    'GURU_HURIA',
+    'STAFF',
+  ];
+  
   optionsFungsi = [
     'PENDETA',
     'CALON_PENDETA',
@@ -28,6 +41,28 @@ export class BoardComponent {
     'GURU_HURIA',
     'STAFF',
   ];
+
+  formEditBoard: FormGroup = new FormGroup<FormGroupOf<Partial<BoardDTO>>>({
+    name: new FormControl<string>('', Validators.required),
+    birthDate: new FormControl<string>('', Validators.required),
+    address: new FormControl<string>('', Validators.required),
+    phoneNumber: new FormControl<string>('', Validators.required),
+    fungsi: new FormControl<
+      | 'PENDETA'
+      | 'CALON_PENDETA'
+      | 'SINTUA'
+      | 'CALON_SINTUA'
+      | 'DIAGONES'
+      | 'CALON_DIAGONES'
+      | 'BIBELVROUW'
+      | 'GURU_HURIA'
+      | 'STAFF'
+    >('STAFF', Validators.required),
+    status: new FormControl<'PENDIDIKAN' | 'ACTIVE' | 'PENSIUN'>(
+      'ACTIVE',
+      Validators.required
+    ),
+  })
 
   formBoard: FormGroup = new FormGroup<FormGroupOf<BoardDTO>>({
     id: new FormControl<number>(0),
@@ -64,4 +99,13 @@ export class BoardComponent {
   onSubmitPostBoard() {
     console.log(this.formBoard.value);
   }
+
+  onClickEditById(board: BoardDTO){
+    this.idOnEdit = board.id;
+  }
+
+  onSubmitPutBoard(){
+    console.log(this.formEditBoard);
+  }
+
 }

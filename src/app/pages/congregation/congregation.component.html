@@ -55,13 +55,6 @@
             <span *ngIf="idOnEdit !== congregation.id" class="py-1"
               >{{ ageCalculate(congregation.birthDate) }} Tahun</span
             >
-            <input
-              *ngIf="idOnEdit === congregation.id"
-              formControlName="age"
-              type="number"
-              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-              placeholder="30"
-            />
           </div>
           <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3 mr-2">
             <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
@@ -71,7 +64,7 @@
               *ngIf="idOnEdit === congregation.id"
               formControlName="birthDate"
               type="date"
-              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              class="h-[35px] w-[185px] border-neutral-400 placeholder:text-neutral-500 ml-[-75px] px-3 focus:outline-cm-blue-200 text-sm rounded-xl border border-sda-neutral-400 placeholder:text-sm"
               placeholder="Nama"
             />
           </div>
