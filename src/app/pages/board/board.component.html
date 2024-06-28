@@ -37,11 +37,10 @@
 
     <!-- TABLE BODY -->
     <div *ngIf="boardList$ | async as boardList">
-      <form
-        [formGroup]="formEditBoard"
-        (ngSubmit)="onSubmitPutBoard()">
+      <form [formGroup]="formEditBoard" (ngSubmit)="onSubmitPutBoard()">
         <div
-          *ngFor="let board of boardList.data"
+          *ngFor="let board of boardList.data; let i = index"
+          [ngClass]="i % 2 === 0 ? '' : 'bg-green-50'"
           class="grid grid-cols-12 text-xs text-neutral-800 border-b-2 border-x-2 py-2"
         >
           <div class="col-start-1 col-end-3 flex items-center mx-1 text-sm">
@@ -57,10 +56,14 @@
             />
           </div>
           <div class="col-start-3 col-end-4 flex items-center mx-1 ml-3">
-            <span *ngIf="idOnEdit !== board.id" class="">{{ board.age }} Tahun</span>
+            <span *ngIf="idOnEdit !== board.id" class=""
+              >{{ ageCalculate(board.birthDate) }} Tahun</span
+            >
           </div>
           <div class="col-start-4 col-end-6 flex items-center mx-1 ml-2">
-            <span *ngIf="idOnEdit !== board.id" class="">{{ board.birthDate }}</span>
+            <span *ngIf="idOnEdit !== board.id" class="">{{
+              board.birthDate | date : "longDate"
+            }}</span>
             <input
               *ngIf="idOnEdit === board.id"
               formControlName="birthDate"
@@ -70,7 +73,9 @@
             />
           </div>
           <div class="col-start-6 col-end-9 flex items-center ml-[-10px] mr-2">
-            <span *ngIf="idOnEdit !== board.id" class="">{{ board.address }}</span>
+            <span *ngIf="idOnEdit !== board.id" class="">{{
+              board.address
+            }}</span>
             <input
               *ngIf="idOnEdit === board.id"
               formControlName="address"
@@ -80,7 +85,9 @@
             />
           </div>
           <div class="col-start-9 col-end-10 flex items-center mx-1">
-            <span *ngIf="idOnEdit !== board.id" class="">{{ board.phoneNumber }}</span>
+            <span *ngIf="idOnEdit !== board.id" class="">{{
+              board.phoneNumber
+            }}</span>
             <input
               *ngIf="idOnEdit === board.id"
               formControlName="phoneNumber"
@@ -90,12 +97,14 @@
             />
           </div>
           <div class="col-start-10 col-end-11 flex items-center mx-1 ml-5">
-            <span *ngIf="idOnEdit !== board.id" class="font-semibold">{{ board.fungsi }}</span>
+            <span *ngIf="idOnEdit !== board.id" class="font-semibold">{{
+              board.fungsi
+            }}</span>
             <select
-            *ngIf="idOnEdit == board.id"
-            id="fungsi"
-            formControlName="fungsi"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              *ngIf="idOnEdit == board.id"
+              id="fungsi"
+              formControlName="fungsi"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
             >
               <option
                 *ngFor="let option of optionsEditFungsi"
@@ -107,12 +116,14 @@
             </select>
           </div>
           <div class="col-start-11 col-end-12 flex items-center mx-1 ml-3">
-            <span *ngIf="idOnEdit !== board.id" class="">{{ board.status }}</span>
+            <span *ngIf="idOnEdit !== board.id" class="">{{
+              board.status
+            }}</span>
             <select
-            *ngIf="idOnEdit === board.id"
-            formControlName="status"
-            id="status"
-            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+              *ngIf="idOnEdit === board.id"
+              formControlName="status"
+              id="status"
+              class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
             >
               <option
                 *ngFor="let opt of optionsStatus"

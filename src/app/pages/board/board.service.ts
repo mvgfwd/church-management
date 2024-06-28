@@ -6,7 +6,7 @@ import { HttpService } from 'src/app/services/http.service';
 
 @Injectable()
 export class BoardService {
-  BoardList: PaginationResultDTO<BoardDTO> = {
+  PaginationBoardList: PaginationResultDTO<BoardDTO> = {
     currentPage: 1,
     totalItems: 2,
     lastPage: 2,
@@ -18,7 +18,7 @@ export class BoardService {
         id: 1,
         name: 'Andrew Matthew S.Th',
         age: 67,
-        birthDate: '08 Agustus 1957',
+        birthDate: '1957-12-31',
         address: 'Jl. Poris no.34 RT01/RW01 Tangerang Sektor IV',
         phoneNumber: '081234567890',
         fungsi: 'PENDETA',
@@ -28,7 +28,7 @@ export class BoardService {
         id: 2,
         name: 'ir. Ricky Marnaek Sibarani',
         age: 23,
-        birthDate: '08 Agustus 1957',
+        birthDate: '1977-10-25',
         address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
         phoneNumber: '081209876543',
         fungsi: 'SINTUA',
@@ -38,6 +38,15 @@ export class BoardService {
   };
 
   getBoardListObs(): Observable<PaginationResultDTO<BoardDTO>> {
-    return of(this.BoardList);
+    return of(this.PaginationBoardList);
+  }
+
+  putBoardById(data: BoardDTO): Observable<PaginationResultDTO<BoardDTO>> {
+    const index = this.PaginationBoardList.data.findIndex(
+      (e) => e.id === data.id
+    );
+    const updatedData = (this.PaginationBoardList.data[index] = data);
+    const result = { ...this.PaginationBoardList, updatedData };
+    return of(result);
   }
 }

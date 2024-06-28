@@ -36,7 +36,8 @@
         (ngSubmit)="onSubmitEdittedData()"
       >
         <div
-          *ngFor="let congregation of congreData.data"
+          *ngFor="let congregation of congreData.data; let i = index"
+          [ngClass]="i % 2 === 0 ? '' : 'bg-green-50'"
           class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
         >
           <div class="col-start-1 col-end-4 flex items-center mx-1">
