@@ -41,6 +41,14 @@ export class BoardService {
     return of(this.PaginationBoardList);
   }
 
+  postBoardList(data: BoardDTO): Observable<number> {
+    const result = this.PaginationBoardList.data.push({
+      ...data,
+      id: this.PaginationBoardList.data.length + 1,
+    });
+    return of(result);
+  }
+
   putBoardById(data: BoardDTO): Observable<PaginationResultDTO<BoardDTO>> {
     const index = this.PaginationBoardList.data.findIndex(
       (e) => e.id === data.id

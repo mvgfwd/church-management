@@ -1,8 +1,24 @@
 <div class="rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
-  <span class="font-bold mb-10 text-lg">Anggota Jemaat</span>
+  <div class="flex justify-between mb-6">
+    <span class="font-bold text-lg">Anggota Jemaat</span>
+    <app-button (click)="idOnEdit = undefined; isAddMode = !isAddMode"
+      ><i-feather
+        name="plus"
+        style="height: 14px; width: 14px"
+        class="mt-1 mr-1"
+        [ngClass]="
+          isAddMode === true
+            ? 'duration-300 rotate-45'
+            : 'duration-300 rotate-0'
+        "
+      ></i-feather>
+      <span *ngIf="!isAddMode">Jemaat</span>
+      <span *ngIf="isAddMode">Batal</span>
+    </app-button>
+  </div>
 
   <!-- TABLE -->
-  <div class="mt-6">
+  <div class="relative mt-6 h-[90%]">
     <!-- TABLE HEAD -->
     <div
       class="grid grid-cols-12 h-9 rounded-t-xl text-sm font-semibold text-neutral-50 bg-cm-green-500"
@@ -30,8 +46,13 @@
     </div>
 
     <!-- TABLE BODY -->
-    <div *ngIf="congregationList | async as congreData">
+    <div
+      [@slideInDown]="!isAddMode"
+      *ngIf="congregationList | async as congreData"
+      class="h-[90%] overflow-auto modifscrollbar"
+    >
       <form
+        *ngIf="!isAddMode"
         [formGroup]="formEditCongregation"
         (ngSubmit)="onSubmitEdittedData()"
       >
@@ -70,7 +91,7 @@
             />
           </div>
           <div class="col-start-7 col-end-10 flex items-center mx-1 ml-[-4px]">
-            <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
+            <span *ngIf="idOnEdit !== congregation.id" class="py-1 text-xs">{{
               congregation.address
             }}</span>
             <input
@@ -130,57 +151,65 @@
     </div>
 
     <!-- INPUT -->
-    <form
-      *ngIf="!idOnEdit"
-      [formGroup]="formCongregation"
-      (ngSubmit)="onSubmitPost()"
-      class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
-    >
-      <div class="col-start-1 col-end-4 flex items-center mx-1 py-0.5">
-        <input
-          formControlName="name"
-          type="text"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="Nama"
-        />
-      </div>
-      <div class="col-start-4 col-end-7 flex items-center mx-1 py-0.5 mr-5">
-        <input
-          formControlName="birthDate"
-          type="date"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="Tanggal Lahir"
-        />
-      </div>
-      <div
-        class="col-start-7 col-end-10 flex items-center mx-1 py-0.5 ml-[-4px]"
+    <div [@slideInDown]="isAddMode" class="absolute top-9 right-0 left-0">
+      <form
+        *ngIf="!idOnEdit && isAddMode"
+        [formGroup]="formCongregation"
+        (ngSubmit)="onSubmitPost()"
+        class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
       >
-        <input
-          formControlName="address"
-          type="text"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="Jl. Kebenaran No.1"
-        />
-      </div>
-      <div class="col-start-10 col-end-12 flex items-center mx-1 py-0.5 ml-5">
-        <input
-          formControlName="phoneNumber"
-          type="text"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="0812345..."
-        />
-      </div>
-      <div
-        class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
-      >
-        <button type="submit">
+        <div class="col-start-1 col-end-4 flex items-center mx-1 py-0.5">
+          <input
+            formControlName="name"
+            type="text"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="Nama"
+          />
+        </div>
+        <div class="col-start-4 col-end-7 flex items-center mx-1 py-0.5 mr-5">
+          <input
+            formControlName="birthDate"
+            type="date"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="Tanggal Lahir"
+          />
+        </div>
+        <div
+          class="col-start-7 col-end-10 flex items-center mx-1 py-0.5 ml-[-4px]"
+        >
+          <input
+            formControlName="address"
+            type="text"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="Jl. Kebenaran No.1"
+          />
+        </div>
+        <div class="col-start-10 col-end-12 flex items-center mx-1 py-0.5 ml-5">
+          <input
+            formControlName="phoneNumber"
+            type="text"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="0812345..."
+          />
+        </div>
+        <div
+          class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
+        >
           <i-feather
-            name="plus"
+            (click)="isAddMode = false"
+            name="x"
             style="height: 16px; width: 16px"
-            class="text-neutral-600 hover:text-cm-green-500 hover:scale-125 duration-200 cursor-pointer"
+            class="text-neutral-600 hover:text-yellow-500 rotate-180 hover:scale-110 duration-100 cursor-pointer"
           ></i-feather>
-        </button>
-      </div>
-    </form>
+          <button type="submit">
+            <i-feather
+              name="plus"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-cm-green-500 hover:scale-125 duration-200 cursor-pointer"
+            ></i-feather>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

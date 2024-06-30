@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
 
   constructor(private router: Router) {
     this.menu = [
-      { path: 'home', icon: 'clipboard', name: 'Dashboard' },
+      { path: 'dashboard', icon: 'clipboard', name: 'Dashboard' },
       { path: 'financial', icon: 'dollar-sign', name: 'Keuangan' },
       {
         path: 'board',

@@ -1,8 +1,24 @@
 <div class="rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
-  <span class="font-bold mb-10 text-lg">Anggota Majelis</span>
+  <div class="flex justify-between mb-6">
+    <span class="font-bold text-lg">Anggota Majelis</span>
+    <app-button (click)="idOnEdit = undefined; isAddMode = !isAddMode"
+      ><i-feather
+        name="plus"
+        style="height: 14px; width: 14px"
+        class="mt-1 mr-1"
+        [ngClass]="
+          isAddMode === true
+            ? 'duration-300 rotate-45'
+            : 'duration-300 rotate-0'
+        "
+      ></i-feather>
+      <span *ngIf="!isAddMode">Majelis</span>
+      <span *ngIf="isAddMode">Batal</span>
+    </app-button>
+  </div>
 
   <!-- TABLE -->
-  <div class="mt-6">
+  <div class="relative mt-6 h-[90%]">
     <!-- TABLE HEAD -->
     <div
       class="grid grid-cols-12 h-9 rounded-t-xl text-sm font-semibold text-neutral-50 bg-cm-green-500"
@@ -22,10 +38,10 @@
       <div class="col-start-9 col-end-10 flex items-center mx-1">
         <span class="">Phone</span>
       </div>
-      <div class="col-start-10 col-end-11 flex items-center mx-1 ml-5">
+      <div class="col-start-10 col-end-11 flex items-center mx-1 ml-4">
         <span class="">Fungsi</span>
       </div>
-      <div class="col-start-11 col-end-12 flex items-center mx-1 ml-3">
+      <div class="col-start-11 col-end-12 flex items-center mx-1">
         <span class="">Status</span>
       </div>
       <div
@@ -36,12 +52,20 @@
     </div>
 
     <!-- TABLE BODY -->
-    <div *ngIf="boardList$ | async as boardList">
-      <form [formGroup]="formEditBoard" (ngSubmit)="onSubmitPutBoard()">
+    <div
+      [@slideInDown]="!isAddMode"
+      *ngIf="boardList$ | async as boardList"
+      class="h-[90%] overflow-auto modifscrollbar"
+    >
+      <form
+        *ngIf="!isAddMode"
+        [formGroup]="formEditBoard"
+        (ngSubmit)="onSubmitPutBoard()"
+      >
         <div
           *ngFor="let board of boardList.data; let i = index"
           [ngClass]="i % 2 === 0 ? '' : 'bg-green-50'"
-          class="grid grid-cols-12 text-xs text-neutral-800 border-b-2 border-x-2 py-2"
+          class="grid grid-cols-12 text-xs text-neutral-800 border-b-2 border-x-2 border-t-0 py-2"
         >
           <div class="col-start-1 col-end-3 flex items-center mx-1 text-sm">
             <span *ngIf="idOnEdit !== board.id" class="ml-2 py-1">{{
@@ -98,7 +122,7 @@
           </div>
           <div class="col-start-10 col-end-11 flex items-center mx-1 ml-5">
             <span *ngIf="idOnEdit !== board.id" class="font-semibold">{{
-              board.fungsi
+              beautifyFungsi(board.fungsi)
             }}</span>
             <select
               *ngIf="idOnEdit == board.id"
@@ -111,13 +135,13 @@
                 [value]="option"
                 class="text-xs"
               >
-                {{ option }}
+                {{ beautifyFungsi(option) }}
               </option>
             </select>
           </div>
           <div class="col-start-11 col-end-12 flex items-center mx-1 ml-3">
             <span *ngIf="idOnEdit !== board.id" class="">{{
-              board.status
+              beautifyStatus(board.status)
             }}</span>
             <select
               *ngIf="idOnEdit === board.id"
@@ -130,7 +154,7 @@
                 [value]="opt"
                 class="text-xs"
               >
-                {{ opt }}
+                {{ beautifyStatus(opt) }}
               </option>
             </select>
           </div>
@@ -170,87 +194,95 @@
     </div>
 
     <!-- INPUT -->
-    <form
-      *ngIf="!idOnEdit"
-      [formGroup]="formBoard"
-      (ngSubmit)="onSubmitPostBoard()"
-      class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
-    >
-      <div class="col-start-1 col-end-3 flex items-center mx-1 py-0.5 ml-2">
-        <input
-          formControlName="name"
-          type="text"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="Nama"
-        />
-      </div>
-      <div
-        class="col-start-3 col-end-6 flex items-center mx-1 py-0.5 mr-10 ml-3"
+    <div [@slideInDown]="isAddMode" class="absolute top-9">
+      <form
+        *ngIf="isAddMode && !idOnEdit"
+        [formGroup]="formBoard"
+        (ngSubmit)="onSubmitPostBoard()"
+        class="grid grid-cols-12 text-sm text-neutral-800 border-2 border-t-0 py-1"
       >
-        <input
-          formControlName="birthDate"
-          type="date"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="Tanggal Lahir"
-        />
-      </div>
-      <div class="col-start-6 col-end-9 flex items-center mr-2 ml-[-10px]">
-        <input
-          formControlName="address"
-          type="text"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="Jl. Kebenaran No.1"
-        />
-      </div>
-      <div class="col-start-9 col-end-10 flex items-center mx-1">
-        <input
-          formControlName="phoneNumber"
-          type="text"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
-          placeholder="0812345..."
-        />
-      </div>
-      <div class="col-start-10 col-end-11 flex items-center mx-1 py-0.5 ml-5">
-        <select
-          id="fungsi"
-          formControlName="fungsi"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+        <div class="col-start-1 col-end-3 flex items-center mx-1 py-0.5 ml-2">
+          <input
+            formControlName="name"
+            type="text"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="Nama"
+          />
+        </div>
+        <div
+          class="col-start-3 col-end-6 flex items-center mx-1 py-0.5 mr-10 ml-3"
         >
-          <option
-            *ngFor="let option of optionsFungsi"
-            [value]="option"
-            class="text-xs"
+          <input
+            formControlName="birthDate"
+            type="date"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="Tanggal Lahir"
+          />
+        </div>
+        <div class="col-start-6 col-end-9 flex items-center mr-2 ml-[-10px]">
+          <input
+            formControlName="address"
+            type="text"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="Jl. Kebenaran No.1"
+          />
+        </div>
+        <div class="col-start-9 col-end-10 flex items-center mx-1">
+          <input
+            formControlName="phoneNumber"
+            type="text"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-sm w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            placeholder="0812345..."
+          />
+        </div>
+        <div class="col-start-10 col-end-11 flex items-center mx-1 py-0.5 ml-5">
+          <select
+            id="fungsi"
+            formControlName="fungsi"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
           >
-            {{ option }}
-          </option>
-        </select>
-      </div>
-      <div class="col-start-11 col-end-12 flex items-center mx-1 py-0.5 ml-3">
-        <select
-          formControlName="status"
-          id="status"
-          class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+            <option
+              *ngFor="let option of optionsFungsi"
+              [value]="option"
+              class="text-xs"
+            >
+              {{ beautifyFungsi(option) }}
+            </option>
+          </select>
+        </div>
+        <div class="col-start-11 col-end-12 flex items-center mx-1 py-0.5 ml-3">
+          <select
+            formControlName="status"
+            id="status"
+            class="h-[35px] border-neutral-400 placeholder:text-neutral-500 px-2 focus:outline-cm-blue-200 text-xs w-full rounded-xl border border-sda-neutral-400 placeholder:text-sm"
+          >
+            <option
+              *ngFor="let opt of optionsStatus"
+              [value]="opt"
+              class="text-xs"
+            >
+              {{ beautifyStatus(opt) }}
+            </option>
+          </select>
+        </div>
+        <div
+          class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
         >
-          <option
-            *ngFor="let opt of optionsStatus"
-            [value]="opt"
-            class="text-xs"
-          >
-            {{ opt }}
-          </option>
-        </select>
-      </div>
-      <div
-        class="col-start-12 col-end-13 flex items-center justify-evenly mx-1 py-0.5"
-      >
-        <button type="submit">
           <i-feather
-            name="plus"
+            (click)="isAddMode = false"
+            name="x"
             style="height: 16px; width: 16px"
-            class="text-neutral-600 hover:text-cm-green-500 hover:scale-125 duration-200 cursor-pointer"
+            class="text-neutral-600 hover:text-yellow-500 rotate-180 hover:scale-110 duration-100 cursor-pointer"
           ></i-feather>
-        </button>
-      </div>
-    </form>
+          <button type="submit">
+            <i-feather
+              name="plus"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-cm-green-500 hover:scale-125 duration-200 cursor-pointer"
+            ></i-feather>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

@@ -1,1 +1,73 @@
-<span>BERITA</span>
+<div class="flex calcHeight justify-between">
+  <div class="rounded-xl w-[46%] bg-white shadow-xl px-6 py-8">
+    <span class="font-bold text-lg">Berita</span>
+
+    <!-- TABEL -->
+    <div class="relative mt-6 h-[95%]">
+      <!-- TABEL HEAD -->
+      <div
+        class="grid grid-cols-7 h-9 rounded-t-xl text-sm font-semibold text-neutral-50 bg-cm-green-500"
+      >
+        <div class="col-start-1 col-end-2 flex items-center justify-center">
+          <span class="">Tanggal</span>
+        </div>
+        <div class="col-start-2 col-end-4 flex items-center justify-center">
+          <span class="">Judul</span>
+        </div>
+        <div class="col-start-4 col-end-8 flex items-center justify-center">
+          <span class="">Konten</span>
+        </div>
+      </div>
+      <!-- TABLE BODY -->
+      <div class="h-[90%] overflow-auto modifscrollbar">
+        <div
+          *ngFor="let news of newsList$?.data; let l = last; let i = index"
+          class="grid grid-cols-7 text-sm border border-t-0 border-x-cm-green-500"
+          [ngClass]="l ? 'border-b-cm-green-500' : 'border-y-0'"
+        >
+          <div
+            class="col-start-1 col-end-2 flex items-center py-1 px-1"
+            [ngClass]="i % 2 === 0 ? '' : 'bg-green-50'"
+          >
+            <span class="text-xs">{{
+              news.publishedDate | date : "mediumDate"
+            }}</span>
+          </div>
+          <div
+            class="col-start-2 col-end-4 flex items-center pl-2 border border-y-0 border-x-neutral-500"
+            [ngClass]="i % 2 === 0 ? '' : 'bg-green-50'"
+          >
+            <span class="text-xs">{{
+              news.title.length > 17
+                ? news.title.slice(0, 17) + "..."
+                : news.title
+            }}</span>
+          </div>
+          <div
+            class="col-start-4 col-end-8 flex items-center justify-between pl-2"
+            [ngClass]="i % 2 === 0 ? '' : 'bg-green-50'"
+          >
+            <span class="text-xs">{{
+              news.content.length > 31
+                ? news.content.slice(0, 31) + "..."
+                : news.content
+            }}</span>
+            <span
+              [routerLink]="news.id.toString()"
+              class="text-xs mr-1 text-neutral-500 hover:underline hover:text-blue-500 cursor-pointer"
+              >more</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROUTER OUTLET KELAK -->
+  <div class="w-[53%] rounded-xl bg-white shadow-xl px-6 py-8 h-full">
+    <div class="flex justify-center mb-6 border-b border-b-blue-500">
+      <span class="font-bold font-nunito text-lg">Detail Berita</span>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

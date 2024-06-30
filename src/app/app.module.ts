@@ -12,6 +12,10 @@ import { CongregationService } from './pages/congregation/congregation.service';
 import { CongregationComponent } from './pages/congregation/congregation.component';
 import { BoardService } from './pages/board/board.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { NewsService } from './pages/news/news.service';
+import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BoardComponent,
     NewsComponent,
     CongregationComponent,
+    DashboardComponent,
+    NewsDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,9 +34,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     IconsModule,
     ReactiveFormsModule,
     FormsModule,
+    BrowserAnimationsModule,
   ],
   exports: [IconsModule],
-  providers: [CongregationService, BoardService],
+  providers: [CongregationService, BoardService, NewsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

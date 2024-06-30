@@ -7,11 +7,77 @@ import { FormGroupOf } from 'src/app/components/input/form-utility';
 import Swal from 'sweetalert2';
 import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  keyframes,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-congregation',
   templateUrl: './congregation.component.html',
   styleUrls: ['./congregation.component.css'],
+  animations: [
+    trigger('slideInDown', [
+      state('true', style({ height: '*', transform: 'translateY(0px)' })),
+      state(
+        'false',
+        style({
+          height: 0,
+          opacity: 0.5,
+          transform: 'translateY(-40px)',
+        })
+      ),
+      transition(
+        'false => true',
+        animate(
+          '300ms ease-in',
+          keyframes([
+            style({ opacity: 0, transform: 'translateY(-100%)', offset: 0 }),
+            style({
+              opacity: 0.1,
+              transform: 'translateY(-10px)',
+              offset: 0.1,
+              height: 0,
+            }),
+            style({
+              opacity: 1,
+              transform: 'translateY(0)',
+              offset: 1.0,
+              height: '*',
+            }),
+          ])
+        )
+      ),
+      transition(
+        'true => false',
+        animate(
+          '200ms 250ms ease-out',
+          keyframes([
+            style({
+              opacity: 1,
+              transform: 'translateY(0%)',
+              height: '*',
+              offset: 0,
+            }),
+            style({
+              opacity: 0.6,
+              offset: 0.4,
+            }),
+            style({
+              opacity: 0,
+              transform: 'translateY(-10px)',
+              height: 0,
+              offset: 1,
+            }),
+          ])
+        )
+      ),
+    ]),
+  ],
 })
 export class CongregationComponent implements OnInit {
   congregationList:
@@ -26,6 +92,7 @@ export class CongregationComponent implements OnInit {
     phoneNumber: new FormControl<string>('', Validators.required),
   });
 
+  isAddMode = false;
   idOnEdit: number | undefined = undefined;
   lastCongregationEditClicked: CongregationDTO | undefined;
   formEditCongregation: FormGroup = new FormGroup<
@@ -74,6 +141,7 @@ export class CongregationComponent implements OnInit {
         tap<void>({
           next: () => {
             this.formCongregation.reset();
+            this.isAddMode = false;
             this.Toast.fire({
               icon: 'success',
               title: 'Data added succesfully',
