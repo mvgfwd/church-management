@@ -1,31 +1,31 @@
-<div class="flex justify-between">
-  <div class="flex flex-col">
-    <span class="font-bold text-xs text-cm-blue-500 mt-1">TANGGAL</span>
-    <span class="text-neutral-900 text-sm">{{
-      detailNews?.publishedDate | date : "fullDate"
-    }}</span>
+<div class="newsDetailHeight flex flex-col">
+  <div class="flex grow-0 h-[40%]">
+    <img src="../../../../assets/img/dummy_png.png" alt="" class="rounded-xl" />
+    <div class="flex flex-col justify-between">
+      <!-- JUDUL -->
+      <div class="flex flex-col ml-3">
+        <span class="font-bold text-xs text-cm-blue-500 mt-1">JUDUL</span>
+        <span class="text-neutral-800 text-sm font-bold font-nunito">{{
+          detailNews?.title
+        }}</span>
+      </div>
+      <!-- CATEGORY -->
+      <div class="flex flex-col ml-3">
+        <span class="font-semibold text-xs text-cm-blue-500">CATEGORY</span>
+        <span class="text-neutral-900 text-xs font-bold">{{
+          detailNews?.category![0].toUpperCase() +
+            detailNews?.category!.substring(1)
+        }}</span>
+      </div>
+    </div>
   </div>
-  <div class="flex flex-col">
-    <span class="font-bold text-xs text-cm-blue-500 mt-1 text-right"
-      >CATEGORY</span
-    >
-    <span class="text-neutral-900 text-right text-sm font-bold">{{
-      detailNews?.category![0].toUpperCase() +
-        detailNews?.category!.substring(1)
-    }}</span>
-  </div>
-</div>
 
-<div class="flex flex-col my-5">
-  <span class="font-bold text-xs text-cm-blue-500 mt-1">JUDUL</span>
-  <span class="text-neutral-800 text-sm font-bold font-nunito">{{
-    detailNews?.title
-  }}</span>
-</div>
-
-<div class="flex flex-col h-[65%]">
-  <span class="font-bold text-xs text-cm-blue-500 my-1">ISI</span>
-  <div class="overflow-auto modifscrollbar">
+  <span class="font-bold text-xs text-cm-blue-500 mt-6 mb-1">ISI</span>
+  <div class="flex flex-col flex-grow overflow-auto modifscrollbar">
     <span class="text-neutral-900">{{ detailNews?.content }}</span>
   </div>
+  <span
+    class="text-neutral-900 text-xs absolute font-bold font-nunito left-6 bottom-6"
+    >{{ detailNews?.publishedDate | date : "fullDate" }}</span
+  >
 </div>

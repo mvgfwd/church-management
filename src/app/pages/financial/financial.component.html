@@ -2,43 +2,77 @@
   <!-- GENERAL REPORT -->
   <div class="flex justify-between h-[31%] flex-grow-0">
     <!-- INCOME -->
-    <div class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white flex flex-col justify-between">
+    <div
+      class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white flex flex-col justify-between"
+    >
       <div class="flex flex-col">
-        <div class="flex  justify-between">
+        <div class="flex justify-between">
           <span class="font-semibold">Income by</span>
-          <select id="" class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2">
-            <option *ngFor="let opt of dateOptions" [value]="opt">{{opt}}</option>
+          <select
+            [(ngModel)]="incomeMonth"
+            id=""
+            class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2"
+          >
+            <option *ngFor="let opt of dateOptions" [value]="opt">
+              {{ opt }}
+            </option>
           </select>
         </div>
-        <select id="" class="bg-white w-fit text-xs text-neutral-700">
-          <option *ngFor="let opt of incomeOptions" [value]="opt">{{opt}}</option>
+        <select
+          (change)="countIncNom()"
+          [(ngModel)]="incomeCategory"
+          id=""
+          class="bg-white w-fit text-xs text-neutral-700"
+        >
+          <option *ngFor="let opt of incomeOptions" [value]="opt">
+            {{ opt }}
+          </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-cm-green-500">Rp200.000</span>
+      <span class="font-nunito text-[30px] font-bold text-cm-green-500">{{
+        incomeNominal
+      }}</span>
     </div>
     <!-- OUTCOME -->
-    <div class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white flex flex-col justify-between">
+    <div
+      class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white flex flex-col justify-between"
+    >
       <div class="flex flex-col">
-        <div class="flex  justify-between">
+        <div class="flex justify-between">
           <span class="font-semibold">Outcome by</span>
-          <select id="" class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2">
-            <option *ngFor="let opt of dateOptions" [value]="opt">{{opt}}</option>
+          <select
+            id=""
+            class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2"
+          >
+            <option *ngFor="let opt of dateOptions" [value]="opt">
+              {{ opt }}
+            </option>
           </select>
         </div>
         <select id="" class="bg-white w-fit text-xs text-neutral-700">
-          <option *ngFor="let opt of outcomeOptions" [value]="opt">{{opt}}</option>
+          <option *ngFor="let opt of outcomeOptions" [value]="opt">
+            {{ opt }}
+          </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-red-700">Rp200.000</span>
+      <span class="font-nunito text-[30px] font-bold text-red-700"
+        >Rp200.000</span
+      >
     </div>
     <!-- SUMMART -->
-    <div class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white">
+    <div
+      class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white"
+    >
       <span class="font-semibold">Summary</span>
     </div>
   </div>
 
   <!-- INPUT -->
-  <div class="flex border border-brown-50 bg-white rounded-xl shadow-xl h-[66%]">
-
+  <div
+    *ngIf="incomeList | async as income"
+    class="flex border border-brown-50 bg-white rounded-xl shadow-xl h-[66%]"
+  >
+    {{ incomeMonth }}
+    {{ incomeCategory }}
   </div>
 </div>
