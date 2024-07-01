@@ -5,6 +5,7 @@ export interface ActivityDTO{
     description: string;
     timeHour: Time;
     activityDate: Date;
+    activityTime: Time;
     location: string;
     pic: string;
 }
