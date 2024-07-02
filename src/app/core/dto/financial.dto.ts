@@ -13,16 +13,18 @@ export interface IncomeDTO{
     incomeDonate?: string; //donasi
     incomeOther?: string;
     dateIncome: Date;
+    description?: string;
 }
 
 export interface OutcomeDTO{
     outcomeId: number;
-    outcomeDeposit?: string; //setor
     outcomeBuilding?: string; //pembangunan
+    outcomeDeposit?: string; //setor
     outcomeDiakonia?: string; //diakonia
+    outcomeEvent?: string; //acara
     outcomeGuest?: string; //pelayanan
     outcomeOperational?: string; //listrik, air
-    outcomeEvent?: string; //acara
     outcomeOther?: string;
     dateOutcome: Date;
+    description?: string;
 }

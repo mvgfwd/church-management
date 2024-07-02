@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IncomeDTO } from 'src/app/core/dto/financial.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
-import { FinancialService } from './financial.service';
+import { IncomeService } from './income.service';
 import { Observable, map, take } from 'rxjs';
+import { OutcomeService } from './outcome.service';
 
 @Component({
   selector: 'app-financial',
@@ -12,8 +13,10 @@ import { Observable, map, take } from 'rxjs';
 export class FinancialComponent implements OnInit {
   incomeList: Observable<PaginationResultDTO<IncomeDTO>> | undefined;
   incomeNominal = 0;
+  outcomeNominal = 0;
   incomeMonth: string = '2024';
   incomeCategory: string = 'All Category';
+  outcomeCategory: string = 'All Category';
   incomeOptions: string[] = [
     'All Category',
     'Persembahan',
@@ -24,7 +27,7 @@ export class FinancialComponent implements OnInit {
     'Lainnya',
   ];
   outcomeOptions: string[] = [
-    'All Catagory',
+    'All Category',
     'Deposit',
     'Pembangunan',
     'Diakonia',
@@ -48,8 +51,8 @@ export class FinancialComponent implements OnInit {
     'Desember',
   ];
 
-  constructor(private financialSvc: FinancialService) {
-    this.financialSvc
+  constructor(private incomeSvc: IncomeService, private outcomeSvc: OutcomeService) {
+    this.incomeSvc
       .getIncomeList()
       .pipe((e) => (this.incomeList = e))
       .pipe(take(1))
@@ -57,14 +60,22 @@ export class FinancialComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.incomeNominal = this.financialSvc.countIncomeByCategory(
+    this.incomeNominal = this.incomeSvc.countIncomeByCategory(
+      this.incomeCategory
+    );
+
+    this.outcomeNominal = this.outcomeSvc.countOutcomeByCategory(this.outcomeCategory)
+  }
+
+  countIncNom(){
+    this.incomeNominal = this.incomeSvc.countIncomeByCategory(
       this.incomeCategory
     );
   }
 
-  countIncNom() {
-    this.incomeNominal = this.financialSvc.countIncomeByCategory(
-      this.incomeCategory
+  countOutNom() {
+    this.outcomeNominal = this.outcomeSvc.countOutcomeByCategory(
+      this.outcomeCategory
     );
   }
 }

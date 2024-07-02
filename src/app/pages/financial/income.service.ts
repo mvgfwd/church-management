@@ -4,7 +4,7 @@ import { IncomeDTO } from 'src/app/core/dto/financial.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 
 Injectable();
-export class FinancialService {
+export class IncomeService {
   PaginationIncomeList: PaginationResultDTO<IncomeDTO> = {
     currentPage: 1,
     totalItems: 2,
@@ -42,17 +42,27 @@ export class FinancialService {
 
   countIncomeByCategory(cat: string): number {
     let nominal = 0;
-    // this.incomeList
-    //   ?.pipe(
-    //     map((x) => {
-    //       x.data.map((inc) => console.log(inc));
-    //     })
-    //   )
-    //   .pipe(take(1))
-    //   .subscribe();
     switch (cat) {
       case 'All Category':
-        break;
+        of(this.PaginationIncomeList)
+        .pipe(
+          map((x) => {
+           x.data.forEach(income => {
+            if (income.incomeGive) {
+              nominal += parseInt(income.incomeGive, 10);
+            }
+            if (income.incomeBuilding) {
+              nominal += parseInt(income.incomeBuilding, 10);
+            }
+            if (income.incomeService) {
+              nominal += parseInt(income.incomeService, 10);
+            }
+          });
+          })
+      )
+      .pipe(take(1))
+      .subscribe();
+      break;
       case 'Persembahan':
         of(this.PaginationIncomeList)
           .pipe(
@@ -65,7 +75,7 @@ export class FinancialService {
           )
           .pipe(take(1))
           .subscribe();
-        break;
+      break;
       case 'Pembangunan':
         of(this.PaginationIncomeList)
           ?.pipe(
@@ -78,7 +88,7 @@ export class FinancialService {
           )
           .pipe(take(1))
           .subscribe();
-        break;
+      break;
       case 'Perpuluhan':
         of(this.PaginationIncomeList)
           ?.pipe(
@@ -91,7 +101,33 @@ export class FinancialService {
           )
           .pipe(take(1))
           .subscribe();
-        break;
+      break;
+      case 'Service':
+        of(this.PaginationIncomeList)
+          ?.pipe(
+            map((incRes) => {
+              const res = incRes.data.filter((item) =>
+                item.hasOwnProperty('incomeService')
+              );
+              nominal = res.reduce((bf, aft) => bf + +aft.incomeService!, 0);
+            })
+          )
+          .pipe(take(1))
+          .subscribe();
+      break;
+      case 'Lainnya':
+        of(this.PaginationIncomeList)
+          ?.pipe(
+            map((incRes) => {
+              const res = incRes.data.filter((item) =>
+                item.hasOwnProperty('incomeOther')
+              );
+              nominal = res.reduce((bf, aft) => bf + +aft.incomeOther!, 0);
+            })
+          )
+          .pipe(take(1))
+          .subscribe();
+      break;
       default:
         console.log('default');
     }

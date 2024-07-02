@@ -16,7 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NewsService } from './pages/news/news.service';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
-import { FinancialService } from './pages/financial/financial.service';
+import { IncomeService } from './pages/financial/income.service';
+import { OutcomeService } from './pages/financial/outcome.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { FinancialService } from './pages/financial/financial.service';
     BrowserAnimationsModule,
   ],
   exports: [IconsModule],
-  providers: [CongregationService, BoardService, NewsService, FinancialService],
+  providers: [CongregationService, BoardService, NewsService, IncomeService, OutcomeService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
