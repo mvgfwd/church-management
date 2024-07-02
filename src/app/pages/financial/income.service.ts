@@ -16,11 +16,13 @@ export class IncomeService {
       {
         incomeId: 1,
         incomeGive: '1000000',
+        incomeBuilding: '400000',
         dateIncome: new Date('2024-11-16'),
       },
       {
         incomeId: 2,
         incomeBuilding: '1200000',
+        incomeTenth: '180000',
         dateIncome: new Date('2024-11-29'),
       },
       {
@@ -31,6 +33,9 @@ export class IncomeService {
       {
         incomeId: 4,
         incomeGive: '1700000',
+        incomeTenth: '1110000',
+        incomeDonate: '10000',
+        description: 'Partopak Na Holit',
         dateIncome: new Date('2024-12-31'),
       },
     ],
@@ -40,29 +45,95 @@ export class IncomeService {
     return of(this.PaginationIncomeList);
   }
 
+  getIncomeListDetail(str: string): Observable<PaginationResultDTO<IncomeDTO>> {
+    switch (str) {
+      case 'All Category':
+        return of(this.PaginationIncomeList);
+      case 'Persembahan':
+        const resGive = {
+          ...this.PaginationIncomeList,
+          data: this.PaginationIncomeList.data.filter((item) =>
+            item.hasOwnProperty('incomeGive')
+          ),
+        };
+        return of(resGive);
+      case 'Perpuluhan':
+        const resTenth = {
+          ...this.PaginationIncomeList,
+          data: this.PaginationIncomeList.data.filter((item) =>
+            item.hasOwnProperty('incomeTenth')
+          ),
+        };
+        return of(resTenth);
+      case 'Pembangunan':
+        const resBuilding = {
+          ...this.PaginationIncomeList,
+          data: this.PaginationIncomeList.data.filter((item) =>
+            item.hasOwnProperty('incomeBuilding')
+          ),
+        };
+        return of(resBuilding);
+      case 'Service':
+        const resService = {
+          ...this.PaginationIncomeList,
+          data: this.PaginationIncomeList.data.filter((item) =>
+            item.hasOwnProperty('incomeService')
+          ),
+        };
+        return of(resService);
+      case 'Donasi':
+        const resDonate = {
+          ...this.PaginationIncomeList,
+          data: this.PaginationIncomeList.data.filter((item) =>
+            item.hasOwnProperty('incomeDonate')
+          ),
+        };
+        return of(resDonate);
+      case 'Lainnya':
+        const resOther = {
+          ...this.PaginationIncomeList,
+          data: this.PaginationIncomeList.data.filter((item) =>
+            item.hasOwnProperty('incomeOther')
+          ),
+        };
+        return of(resOther);
+      default:
+        return of(this.PaginationIncomeList);
+    }
+  }
+
   countIncomeByCategory(cat: string): number {
     let nominal = 0;
     switch (cat) {
       case 'All Category':
         of(this.PaginationIncomeList)
-        .pipe(
-          map((x) => {
-           x.data.forEach(income => {
-            if (income.incomeGive) {
-              nominal += parseInt(income.incomeGive, 10);
-            }
-            if (income.incomeBuilding) {
-              nominal += parseInt(income.incomeBuilding, 10);
-            }
-            if (income.incomeService) {
-              nominal += parseInt(income.incomeService, 10);
-            }
-          });
-          })
-      )
-      .pipe(take(1))
-      .subscribe();
-      break;
+          .pipe(
+            map((x) => {
+              x.data.forEach((income) => {
+                if (income.incomeGive) {
+                  nominal += parseInt(income.incomeGive, 10);
+                }
+                if (income.incomeBuilding) {
+                  nominal += parseInt(income.incomeBuilding, 10);
+                }
+                if (income.incomeService) {
+                  nominal += parseInt(income.incomeService, 10);
+                }
+                if (income.incomeDonate) {
+                  nominal += parseInt(income.incomeDonate, 10);
+                }
+                if (income.incomeTenth) {
+                  nominal += parseInt(income.incomeTenth, 10);
+                }
+                if (income.incomeOther) {
+                  nominal += parseInt(income.incomeOther, 10);
+                }
+              });
+            })
+          )
+          .pipe(take(1))
+          .subscribe();
+        break;
       case 'Persembahan':
         of(this.PaginationIncomeList)
           .pipe(
@@ -75,7 +146,7 @@ export class IncomeService {
           )
           .pipe(take(1))
           .subscribe();
-      break;
+        break;
       case 'Pembangunan':
         of(this.PaginationIncomeList)
           ?.pipe(
@@ -88,7 +159,7 @@ export class IncomeService {
           )
           .pipe(take(1))
           .subscribe();
-      break;
+        break;
       case 'Perpuluhan':
         of(this.PaginationIncomeList)
           ?.pipe(
@@ -101,7 +172,7 @@ export class IncomeService {
           )
           .pipe(take(1))
           .subscribe();
-      break;
+        break;
       case 'Service':
         of(this.PaginationIncomeList)
           ?.pipe(
@@ -114,7 +185,7 @@ export class IncomeService {
           )
           .pipe(take(1))
           .subscribe();
-      break;
+        break;
       case 'Lainnya':
         of(this.PaginationIncomeList)
           ?.pipe(
@@ -127,9 +198,8 @@ export class IncomeService {
           )
           .pipe(take(1))
           .subscribe();
-      break;
+        break;
       default:
-        console.log('default');
     }
     return nominal;
   }

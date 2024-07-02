@@ -19,7 +19,7 @@
           </select>
         </div>
         <select
-          (change)="countIncNom()"
+          (change)="countIncNom(); retrieveIncomeListDetail(incomeCategory)"
           [(ngModel)]="incomeCategory"
           id=""
           class="bg-white w-fit text-xs text-neutral-700"
@@ -51,15 +51,18 @@
         </div>
         <select
           (change)="countOutNom()"
-          [(ngModel)]="outcomeCategory" id="" class="bg-white w-fit text-xs text-neutral-700">
+          [(ngModel)]="outcomeCategory"
+          id=""
+          class="bg-white w-fit text-xs text-neutral-700"
+        >
           <option *ngFor="let opt of outcomeOptions" [value]="opt">
             {{ opt }}
           </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-red-700"
-        >{{outcomeNominal}}</span
-      >
+      <span class="font-nunito text-[30px] font-bold text-red-700">{{
+        outcomeNominal
+      }}</span>
     </div>
     <!-- SUMMARY -->
     <div
@@ -70,24 +73,121 @@
   </div>
 
   <!-- DETAIL & INPUT -->
-  <div class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl h-[68%]"
+  <div
+    class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl h-[68%]"
   >
-    <span class="mt-4 mb-3 ml-4 font-semibold text-neutral-900">Detail Financial</span>
+    <span class="mt-4 mb-3 ml-4 font-semibold text-neutral-900"
+      >Financial Detail</span
+    >
     <div class="flex h-full mx-4 mb-4 justify-between">
       <!-- DETAIL INCOME -->
-      <div class="h-full border border-red-500 w-[32%]">
-  
-      </div>
-  
-      <!-- DETAIL OUTCOME -->
-      <div class="h-full border border-red-500 w-[32%]">
-  
+      <div class="relative h-full w-[32%]">
+        <span class="text-xs">Income</span>
+        <!-- head table income -->
+        <div
+          class="grid grid-cols-11 text-xs pl-1.5 h-6 rounded-t-lg text-neutral-50 bg-cm-green-500"
+        >
+          <div class="flex items-center col-start-1 col-end-3">
+            {{ incomeCategory === "All Category" ? "No" : "Date" }}
+          </div>
+          <div class="flex items-center col-start-3 col-end-6">Income Type</div>
+          <div class="flex items-center col-start-6 col-end-8">Nominal</div>
+          <div class="flex items-center col-start-8 col-end-12 ml-2">Ket.</div>
+        </div>
+        <!-- body table JIKA incomeCategory bukan 'All Category' -->
+        <div *ngIf="incomeCategory !== 'All Category'">
+          <div
+            *ngIf="incomeListDetail$ | async as incList"
+            class="border border-cm-green-500 border-t-0"
+          >
+            <div
+              *ngFor="let incData of incList.data; let i = index"
+              class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
+              [ngClass]="i % 2 !== 0 ? 'bg-cm-green-50' : ''"
+            >
+              <div class="flex items-center col-start-1 col-end-3">
+                {{ incData.dateIncome | date : "shortDate" }}
+              </div>
+              <div class="flex items-center col-start-3 col-end-6">
+                {{ incomeCategory }}
+              </div>
+              <div class="flex items-center col-start-6 col-end-8">
+                <span *ngIf="incomeCategory === 'Persembahan'">{{
+                  incData.incomeGive
+                }}</span>
+                <span *ngIf="incomeCategory === 'Perpuluhan'">{{
+                  incData.incomeTenth
+                }}</span>
+                <span *ngIf="incomeCategory === 'Pembangunan'">{{
+                  incData.incomeBuilding
+                }}</span>
+                <span *ngIf="incomeCategory === 'Service'">{{
+                  incData.incomeService
+                }}</span>
+                <span *ngIf="incomeCategory === 'Donasi'">{{
+                  incData.incomeDonate
+                }}</span>
+                <span *ngIf="incomeCategory === 'Lainnya'">{{
+                  incData.incomeOther
+                }}</span>
+              </div>
+              <div class="flex items-center col-start-8 col-end-12 ml-2">
+                {{ incData.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- body table JIKA incomeCategory bukan 'All Category' -->
+        <div *ngIf="incomeCategory === 'All Category'">
+          <div
+            *ngFor="
+              let incOpt of incomeOptions;
+              let i = index;
+              let f = first;
+              let l = last
+            "
+            class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-500"
+            [ngClass]="
+              i % 2 !== 0
+                ? 'bg-cm-green-50'
+                : l
+                ? 'border-t-cm-green-500 border-x-0 border-b-0'
+                : ''
+            "
+          >
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+            >
+              {{ i }}
+            </div>
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-3 col-end-6 mt-[-40px]"
+            >
+              {{ incOpt }}
+            </div>
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-6 col-end-8 mt-[-40px]"
+            >
+              {{ countIncomePerCat(incOpt) }}
+            </div>
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-8 ml-2 col-end-12 mt-[-40px]"
+            >
+              No Desc
+            </div>
+          </div>
+        </div>
       </div>
 
+      <!-- DETAIL OUTCOME -->
+      <div class="h-full border border-red-500 w-[32%]"></div>
+
       <!-- INPUT -->
-      <div class="h-full border border-red-500 w-[32%]">
-  
-      </div>
+      <div class="h-full border border-red-500 w-[32%]"></div>
     </div>
   </div>
 </div>
