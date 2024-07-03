@@ -17,18 +17,18 @@ export class IncomeService {
         incomeId: 1,
         incomeGive: '1000000',
         incomeBuilding: '400000',
-        dateIncome: new Date('2024-11-16'),
+        dateIncome: '16-11-2024',
       },
       {
         incomeId: 2,
         incomeBuilding: '1200000',
         incomeTenth: '180000',
-        dateIncome: new Date('2024-11-29'),
+        dateIncome: '29-11-2024',
       },
       {
         incomeId: 3,
         incomeService: '800000',
-        dateIncome: new Date('2024-12-28'),
+        dateIncome: '28-12-2024',
       },
       {
         incomeId: 4,
@@ -36,13 +36,22 @@ export class IncomeService {
         incomeTenth: '1110000',
         incomeDonate: '10000',
         description: 'Partopak Na Holit',
-        dateIncome: new Date('2024-12-31'),
+        dateIncome: '31-12-2024',
       },
     ],
   };
 
   getIncomeList(): Observable<PaginationResultDTO<IncomeDTO>> {
     return of(this.PaginationIncomeList);
+  }
+
+  postIncomeData(form: IncomeDTO): Observable<number> {
+    const res = this.PaginationIncomeList.data.push({
+      ...form,
+      incomeId: this.PaginationIncomeList.data.length + 1,
+    });
+    console.log('res', this.PaginationIncomeList);
+    return of(res);
   }
 
   getIncomeListDetail(str: string): Observable<PaginationResultDTO<IncomeDTO>> {

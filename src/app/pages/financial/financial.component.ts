@@ -4,6 +4,8 @@ import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 import { IncomeService } from './income.service';
 import { Observable, map, of, take } from 'rxjs';
 import { OutcomeService } from './outcome.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroupOf } from 'src/app/components/input/form-utility';
 
 @Component({
   selector: 'app-financial',
@@ -19,7 +21,6 @@ export class FinancialComponent implements OnInit {
   incomeMonth: string = '2024';
   incomeCategory: string = 'Persembahan';
   outcomeCategory: string = 'All Category';
-  inputIncomeCategory: string = '';
   incomeInputOptions: string[] = [
     'Persembahan',
     'Perpuluhan',
@@ -67,6 +68,18 @@ export class FinancialComponent implements OnInit {
   isAddIncomeActive: boolean = false;
   isAddOutcomeActive: boolean = false;
 
+  // income form
+  incomeForm = new FormGroup<FormGroupOf<IncomeDTO>>({
+    dateIncome: new FormControl<string | null>(''),
+    incomeGive: new FormControl<string>(''),
+    incomeTenth: new FormControl<string>(''),
+    incomeBuilding: new FormControl<string>(''),
+    incomeService: new FormControl<string>(''),
+    incomeDonate: new FormControl<string>(''),
+    incomeOther: new FormControl<string>(''),
+    description: new FormControl<string>(''),
+  });
+
   constructor(
     private incomeSvc: IncomeService,
     private outcomeSvc: OutcomeService
@@ -82,6 +95,29 @@ export class FinancialComponent implements OnInit {
     this.outcomeNominal = this.outcomeSvc.countOutcomeByCategory(
       this.outcomeCategory
     );
+  }
+
+  returnFormControlName(str: string) {
+    const x = this.parseToProperty(str);
+    return x;
+  }
+
+  onClickAddIncomeDetail() {
+    this.incomeForm.value.dateIncome = this.formatDate(
+      this.incomeForm.value.dateIncome!
+    );
+    const form = this.incomeForm.value as IncomeDTO;
+    const cleaned = this.cleanObject(form);
+    this.incomeSvc
+      .postIncomeData(cleaned)
+      .pipe(
+        map((e) => {
+          this.retrieveIncomeListDetail(this.incomeCategory);
+          this.countIncNom();
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 
   countIncNom() {
@@ -124,7 +160,6 @@ export class FinancialComponent implements OnInit {
       .pipe(
         map((inc) => {
           this.outcomeListDetail$ = of(inc);
-          console.log(inc)
         })
       )
       .pipe(take(1))
@@ -143,11 +178,29 @@ export class FinancialComponent implements OnInit {
       case 'Service':
         return (res = 'incomeService');
       case 'Donasi':
-        return (res = 'incomeDonasi');
+        return (res = 'incomeDonate');
       case 'Lainnya':
         return (res = 'incomeOther');
       default:
         return (res = '');
     }
+  }
+
+  formatDate(dateString: string) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  cleanObject(obj: any): any {
+    const cleanedObj: any = {};
+    for (const key in obj) {
+      if (obj[key] !== '') {
+        cleanedObj[key] = String(obj[key]);
+      }
+    }
+    return cleanedObj;
   }
 }

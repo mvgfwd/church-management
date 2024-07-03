@@ -85,12 +85,14 @@ export class ButtonComponent implements OnInit {
   setColor(): void {
     switch (this.color) {
       case 'primary': {
-        this.colorClass = ' bg-cm-blue-500 text-white text-sm';
+        this.colorClass =
+          'bg-cm-blue-500 text-white text-sm hover:bg-cm-blue-600 hover:text-white';
         this.heroStyle = ' text-neutral-50 ';
         break;
       }
       case 'secondary': {
-        this.colorClass = 'border border-cm-blue-500 text-cm-blue-500 hover:bg-cm-blue-50 hover:text-cm-blue-700';
+        this.colorClass =
+          'border border-cm-blue-500 text-cm-blue-500 hover:bg-cm-blue-50 hover:text-cm-blue-700';
         this.heroStyle = ' text-usm-brown-500 ';
         break;
       }
