@@ -90,7 +90,7 @@ export class ButtonComponent implements OnInit {
         break;
       }
       case 'secondary': {
-        this.colorClass = 'border border-cm-blue-500 text-cm-blue-500';
+        this.colorClass = 'border border-cm-blue-500 text-cm-blue-500 hover:bg-cm-blue-50 hover:text-cm-blue-700';
         this.heroStyle = ' text-usm-brown-500 ';
         break;
       }
@@ -107,7 +107,7 @@ export class ButtonComponent implements OnInit {
       }
       case 'error': {
         this.colorClass =
-          'bg-red-500 border border-red-300 hover:text-red-700 text-red-600 bg-white';
+          'bg-red-500 border border-red-500 hover:text-red-700 text-red-600 bg-white hover:bg-red-100';
         this.heroStyle = ' text-red-300 ';
         break;
       }

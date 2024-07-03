@@ -29,7 +29,7 @@
           </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-cm-green-500">{{
+      <span class="font-nunito text-[30px] font-bold text-cm-green-700">{{
         incomeNominal
       }}</span>
     </div>
@@ -50,7 +50,7 @@
           </select>
         </div>
         <select
-          (change)="countOutNom()"
+          (change)="countOutNom(); retrieveOutcomeListDetail(outcomeCategory);"
           [(ngModel)]="outcomeCategory"
           id=""
           class="bg-white w-fit text-xs text-neutral-700"
@@ -60,7 +60,7 @@
           </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-red-700">{{
+      <span class="font-nunito text-[30px] font-bold text-red-800">{{
         outcomeNominal
       }}</span>
     </div>
@@ -81,8 +81,8 @@
     >
     <div class="flex h-full mx-4 mb-4 justify-between">
       <!-- DETAIL INCOME -->
-      <div class="relative h-full w-[32%]">
-        <span class="text-xs">Income</span>
+      <div class="relative h-full w-[33%]">
+        <span class="text-xs font-bold">Income</span>
         <!-- head table income -->
         <div
           class="grid grid-cols-11 text-xs pl-1.5 h-6 rounded-t-lg text-neutral-50 bg-cm-green-500"
@@ -103,10 +103,10 @@
             <div
               *ngFor="let incData of incList.data; let i = index"
               class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
-              [ngClass]="i % 2 !== 0 ? 'bg-cm-green-50' : ''"
+              [ngClass]="i % 2 !== 0 ? 'bg-cm-green-500 bg-opacity-20' : ''"
             >
               <div class="flex items-center col-start-1 col-end-3">
-                {{ incData.dateIncome | date : "shortDate" }}
+                {{ incData.dateIncome | date : "dd/MM/yy"}}
               </div>
               <div class="flex items-center col-start-3 col-end-6">
                 {{ incomeCategory }}
@@ -137,7 +137,7 @@
             </div>
           </div>
         </div>
-        <!-- body table JIKA incomeCategory bukan 'All Category' -->
+        <!-- body table JIKA incomeCategory = 'All Category' -->
         <div *ngIf="incomeCategory === 'All Category'">
           <div
             *ngFor="
@@ -149,7 +149,7 @@
             class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-500"
             [ngClass]="
               i % 2 !== 0
-                ? 'bg-cm-green-50'
+                ? 'bg-cm-green-500 bg-opacity-20'
                 : l
                 ? 'border-t-cm-green-500 border-x-0 border-b-0'
                 : ''
@@ -184,10 +184,142 @@
       </div>
 
       <!-- DETAIL OUTCOME -->
-      <div class="h-full border border-red-500 w-[32%]"></div>
+      <div class="relative h-full w-[33%]">
+        <span class="text-xs font-bold">Outcome</span>
+        <!-- head table income -->
+        <div
+          class="grid grid-cols-10 text-xs pl-1.5 h-6 rounded-t-lg text-neutral-50 bg-red-800"
+        >
+          <div class="flex items-center col-start-1 col-end-3">
+            {{ outcomeCategory === "All Category" ? "No" : "Date" }}
+          </div>
+          <div class="flex items-center col-start-3 col-end-5">Tipe</div>
+          <div class="flex items-center col-start-5 col-end-8">Nominal</div>
+          <div class="flex items-center col-start-8 col-end-11">Ket.</div>
+        </div>
+        <!-- body table JIKA outcomeCategory bukan 'All Category' -->
+        <div *ngIf="outcomeCategory !== 'All Category'">
+          <div
+            *ngIf="outcomeListDetail$ | async as outList"
+            class="border border-red-800 border-t-0"
+          >
+            <div
+              *ngFor="let outcData of outList.data; let i = index"
+              class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
+              [ngClass]="i % 2 !== 0 ? 'bg-red-500 bg-opacity-20' : ''"
+            >
+              <div class="flex items-center col-start-1 col-end-3">
+                {{ outcData.dateOutcome | date : "dd/MM/yy"}}
+              </div>
+              <div class="flex items-center col-start-3 col-end-7">
+                {{ outcomeCategory }}
+              </div>
+              <div class="flex items-center col-start-7 col-end-9">
+                <span *ngIf="outcomeCategory === 'Deposit'">{{
+                  outcData.outcomeDeposit
+                }}</span>
+                <span *ngIf="outcomeCategory === 'Pembangunan'">{{
+                  outcData.outcomeBuilding
+                }}</span>
+                <span *ngIf="outcomeCategory === 'Diakonia'">{{
+                  outcData.outcomeDiakonia
+                }}</span>
+                <span *ngIf="outcomeCategory === 'Pelayanan'">{{
+                  outcData.outcomeGuest
+                }}</span>
+                <span *ngIf="outcomeCategory === 'Operasional'">{{
+                  outcData.outcomeOperational
+                }}</span>
+                <span *ngIf="outcomeCategory === 'Acara'">{{
+                  outcData.outcomeEvent
+                }}</span>
+                <span *ngIf="outcomeCategory === 'Lainnya'">{{
+                  outcData.outcomeOther
+                }}</span>
+              </div>
+              <div class="flex items-center col-start-9 col-end-12">
+                {{ outcData.description }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- body table JIKA outcomeCategory = 'All Category' -->
+        <div *ngIf="outcomeCategory === 'All Category'">
+          <div
+            *ngFor="
+              let outOpt of outcomeOptions;
+              let i = index;
+              let f = first;
+              let l = last
+            "
+            class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800"
+            [ngClass]=" l ? 'border border-t-red-800 border-x-0 border-b-0' : i % 2 !== 0 ? 'bg-red-800 bg-opacity-20' : ''"
+          >
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+            >
+              {{ i }}
+            </div>
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-3 col-end-7 mt-[-40px]"
+            >
+              {{ outOpt }}
+            </div>
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-7 col-end-9 mt-[-40px]"
+            >
+              {{ countOutcomePerCat(outOpt) }}
+            </div>
+            <div
+              *ngIf="!f"
+              class="flex items-center col-start-9 col-end-12 mt-[-40px]"
+            >
+              No Desc
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- INPUT -->
-      <div class="h-full border border-red-500 w-[32%]"></div>
+      <div class="h-full w-[30%]">
+        <span class="text-xs font-bold">Input</span>
+        <!-- head table input -->
+        <div
+        class="grid grid-cols-11 text-xs pl-1.5 h-6 rounded-t-lg text-neutral-100 bg-black"
+        >
+          <div class="flex items-center justify-center col-start-1 col-end-12">Input</div>
+        </div>
+
+        <!-- IS ADD INCOME ACTIVE -->
+        <div class="w-full">
+          <div class="my-1">
+            <input type="date" class="text-xs border border-neutral-500 rounded-md px-2 h-6" name="" id="">
+          </div>
+          <div class="flex w-full justify-between">
+            <select
+            [(ngModel)]="inputIncomeCategory"
+            id=""
+            class="bg-white text-xs text-neutral-900 w-[48%] border rounded-md border-neutral-500"
+            >
+              <option disabled selected value="">Category</option>
+              <option *ngFor="let opt of incomeInputOptions" [value]="opt">
+                {{ opt }}
+              </option>
+            </select>
+            <input type="number" name="" id="" class="border rounded-md border-neutral-500 w-[50%]  text-xs text-neutral-800 px-1.5 py-1" placeholder="1000000">
+          </div>
+          <div>more</div>
+        </div> 
+          
+      <!-- Button add income/outcome -->
+      <div class="w-full flex justify-evenly mt-2">
+        <app-button color="secondary" size="small" >Add Income</app-button>
+        <app-button color="error" size="small" >Add Outcome</app-button>
+      </div>
+      </div>
     </div>
   </div>
 </div>

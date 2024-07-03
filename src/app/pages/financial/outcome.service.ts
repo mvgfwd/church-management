@@ -30,7 +30,8 @@ export class OutcomeService {
       },
       {
         outcomeId: 4,
-        outcomeEvent: '1700000',
+        outcomeEvent: '1100000',
+        outcomeBuilding: '500000',
         dateOutcome: new Date('2024-12-31'),
       },
     ],
@@ -38,6 +39,71 @@ export class OutcomeService {
 
   getOutcomeList(): Observable<PaginationResultDTO<OutcomeDTO>> {
     return of(this.PaginationOutcomeList);
+  }
+
+  getOutcomeListDetail(str: string): Observable<PaginationResultDTO<OutcomeDTO>>{
+    switch(str){
+      case 'All Category':
+        return of(this.PaginationOutcomeList);
+      case 'Deposit': 
+        const resDep = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeDeposit')
+            )
+        };
+        return of(resDep);
+      case 'Pembangunan':
+        const resBuild = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeBuilding')
+            )
+        };
+        return of(resBuild)
+      case 'Diakonia':
+        const resDiakonia = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeDiakonia')
+            )
+        };
+        return of(resDiakonia);
+      case 'Pelayanan':
+        const resGuest = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeGuest')
+            )
+        };
+        return of(resGuest);
+      case 'Operasional':
+        const resOperational = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeOperational')
+            )
+        };
+        return of(resOperational);
+      case 'Acara':
+        const resEvent = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeEvent')
+            )
+        };
+        return of(resEvent);
+      case 'Lainnya':
+        const resOther = {
+          ...this.PaginationOutcomeList,
+          data: this.PaginationOutcomeList.data.filter(item => 
+              item.hasOwnProperty('outcomeOther')
+            )
+        };
+        return of(resOther);
+      default:
+        return of(this.PaginationOutcomeList)
+    }
   }
 
   countOutcomeByCategory(cat: string): number {
@@ -93,7 +159,7 @@ export class OutcomeService {
           ?.pipe(
             map((incRes) => {
               const res = incRes.data.filter((item) =>
-                item.hasOwnProperty('incomeDeposit')
+                item.hasOwnProperty('outcomeDeposit')
               );
               nominal = res.reduce((bf, aft) => bf + +aft.outcomeDeposit!, 0);
             })

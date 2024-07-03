@@ -186,6 +186,19 @@ export class IncomeService {
           .pipe(take(1))
           .subscribe();
         break;
+      case 'Donasi':
+        of(this.PaginationIncomeList)
+          ?.pipe(
+            map((incRes) => {
+              const res = incRes.data.filter((item) =>
+                item.hasOwnProperty('incomeDonate')
+              );
+              nominal = res.reduce((bf, aft) => bf + +aft.incomeDonate!, 0);
+            })
+          )
+          .pipe(take(1))
+          .subscribe();
+        break;
       case 'Lainnya':
         of(this.PaginationIncomeList)
           ?.pipe(
