@@ -29,7 +29,7 @@
           </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-cm-green-700">{{
+      <span class="font-nunito text-[30px] font-bold text-cm-green-900">{{
         incomeNominal
       }}</span>
     </div>
@@ -60,7 +60,7 @@
           </option>
         </select>
       </div>
-      <span class="font-nunito text-[30px] font-bold text-red-800">{{
+      <span class="font-nunito text-[30px] font-bold text-red-900">{{
         outcomeNominal
       }}</span>
     </div>
@@ -74,38 +74,40 @@
 
   <!-- DETAIL -->
   <div class="flex h-[68%] justify-between">
-    <div class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl w-[70%]">
+    <div
+      class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl w-[70%]"
+    >
       <span class="mt-4 mb-1 ml-4 font-semibold text-neutral-900"
         >Financial Detail</span
       >
-      <div
-        class=" "
-      >
-        <div class="flex mx-4 mb-4 justify-between ">
+      <div class=" ">
+        <div class="flex mx-4 mb-4 justify-between">
           <!-- DETAIL INCOME -->
           <div class="relative h-full w-[49%]">
             <span class="text-xs font-bold">Income</span>
             <!-- head table income -->
             <div
-              class="grid grid-cols-10 text-xs pl-1.5 h-6 rounded-t-lg text-neutral-50 bg-cm-green-500"
+              class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-cm-green-700 font-nunito font-semibold"
             >
               <div class="flex items-center col-start-1 col-end-3">
                 {{ incomeCategory === "All Category" ? "No" : "Date" }}
               </div>
               <div class="flex items-center col-start-3 col-end-5">Tipe</div>
               <div class="flex items-center col-start-5 col-end-8">Nominal</div>
-              <div class="flex items-center col-start-8 col-end-11 ml-2">Ket.</div>
+              <div class="flex items-center col-start-8 col-end-11 ml-2">
+                Ket.
+              </div>
             </div>
             <!-- body table JIKA incomeCategory bukan 'All Category' -->
             <div *ngIf="incomeCategory !== 'All Category'">
               <div
                 *ngIf="incomeListDetail$ | async as incList"
-                class="border border-cm-green-500 border-t-0"
+                class="border border-cm-green-700 border-t-0"
               >
                 <div
                   *ngFor="let incData of incList.data; let i = index"
                   class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
-                  [ngClass]="i % 2 !== 0 ? 'bg-cm-green-500 bg-opacity-20' : ''"
+                  [ngClass]="i % 2 !== 0 ? 'bg-cm-green-700 bg-opacity-10' : ''"
                 >
                   <div class="flex items-center col-start-1 col-end-3 text-xs">
                     {{ showSimpleDate(incData.dateIncome) }}
@@ -148,12 +150,12 @@
                   let f = first;
                   let l = last
                 "
-                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-500"
+                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-700"
                 [ngClass]="
                   i % 2 !== 0
-                    ? 'bg-cm-green-500 bg-opacity-20'
+                    ? 'bg-cm-green-700 bg-opacity-10'
                     : l
-                    ? 'border-t-cm-green-500 border-x-0 border-b-0'
+                    ? 'border-t-cm-green-700 border-x-0 border-b-0'
                     : ''
                 "
               >
@@ -184,13 +186,13 @@
               </div>
             </div>
           </div>
-    
+
           <!-- DETAIL OUTCOME -->
           <div class="relative h-full w-[49%]">
             <span class="text-xs font-bold">Outcome</span>
             <!-- head table income -->
             <div
-              class="grid grid-cols-10 text-xs pl-1.5 h-6 rounded-t-lg text-neutral-50 bg-red-800"
+              class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-red-950 font-nunito font-semibold"
             >
               <div class="flex items-center col-start-1 col-end-3">
                 {{ outcomeCategory === "All Category" ? "No" : "Date" }}
@@ -203,15 +205,15 @@
             <div *ngIf="outcomeCategory !== 'All Category'">
               <div
                 *ngIf="outcomeListDetail$ | async as outList"
-                class="border border-red-800 border-t-0"
+                class="border border-red-950 border-t-0"
               >
                 <div
                   *ngFor="let outcData of outList.data; let i = index"
                   class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
-                  [ngClass]="i % 2 !== 0 ? 'bg-red-500 bg-opacity-20' : ''"
+                  [ngClass]="i % 2 !== 0 ? 'bg-red-700 bg-opacity-10' : ''"
                 >
                   <div class="flex items-center col-start-1 col-end-3">
-                    {{ outcData.dateOutcome | date : "dd/MM/yy" }}
+                    {{ showSimpleDate(outcData.dateOutcome) }}
                   </div>
                   <div class="flex items-center col-start-3 col-end-7">
                     {{ outcomeCategory }}
@@ -254,12 +256,14 @@
                   let f = first;
                   let l = last
                 "
-                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800"
+                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800 border-t-0"
                 [ngClass]="
-                  l
-                    ? 'border border-t-red-800 border-x-0 border-b-0'
+                  i === 6
+                    ? 'border border-b-red-700'
+                    : l
+                    ? ' border-t-red-800 border-x-0 border-b-0'
                     : i % 2 !== 0
-                    ? 'bg-red-800 bg-opacity-20'
+                    ? 'bg-red-700 bg-opacity-15'
                     : ''
                 "
               >
@@ -295,39 +299,92 @@
     </div>
 
     <!-- INPUT -->
-    <div class="p-4 border border-brown-50 bg-white rounded-xl shadow-xl w-[29%] h-fit">
-      <div class="flex" [ngClass]="!isAddIncomeActive && !isAddOutcomeActive ? 'justify-start':'justify-between'">
-        <span class="mb-1 font-semibold text-neutral-900"
-          >Financial Form</span
-        >
-        <i-feather *ngIf="isAddIncomeActive || isAddOutcomeActive" name="x" style="height: 18px; width: 18px;" class="text-red-700 cursor-pointer" (click)="isAddIncomeActive = false; isAddOutcomeActive = false;"></i-feather>
+    <div
+      class="p-4 border border-brown-50 bg-white rounded-xl shadow-xl w-[29%] h-fit"
+    >
+      <div
+        class="flex"
+        [ngClass]="
+          !isAddIncomeActive && !isAddOutcomeActive
+            ? 'justify-start'
+            : 'justify-between'
+        "
+      >
+        <span class="mb-1 font-semibold text-neutral-900">Financial Form</span>
+        <i-feather
+          *ngIf="isAddIncomeActive || isAddOutcomeActive"
+          name="x"
+          style="height: 18px; width: 18px"
+          class="text-red-700 cursor-pointer"
+          (click)="isAddIncomeActive = false; isAddOutcomeActive = false"
+        ></i-feather>
       </div>
       <div class="flex items-center">
         <!-- Button add income/outcome -->
-        <div class="w-full flex mb-1" [ngClass]="!isAddIncomeActive && !isAddOutcomeActive ? 'justify-center mt-2':'justify-end'">
+        <div
+          class="w-full flex mb-1"
+          [ngClass]="
+            !isAddIncomeActive && !isAddOutcomeActive
+              ? 'justify-center mt-2'
+              : 'justify-end'
+          "
+        >
           <app-button
-          class="mr-1"
+            class="mr-1"
             color="secondary"
             size="small"
             [disableTerm]="isAddIncomeActive"
-            (onButtonClick)="isAddIncomeActive = true; isAddOutcomeActive = false"
-            ><i-feather name="plus" style="height: 16px; width: 16px;" class="mr-1"></i-feather> Income</app-button
+            (onButtonClick)="
+              isAddIncomeActive = true; isAddOutcomeActive = false
+            "
+            ><i-feather
+              name="plus"
+              style="height: 16px; width: 16px"
+              class="mr-1"
+            ></i-feather>
+            Income</app-button
           >
-          <app-button color="error" (onButtonClick)="isAddOutcomeActive = true; isAddIncomeActive = false" [disableTerm]="isAddOutcomeActive" size="small"><i-feather name="plus" style="height: 16px; width: 16px;"></i-feather> Outcome</app-button>
+          <app-button
+            color="error"
+            (onButtonClick)="
+              isAddOutcomeActive = true; isAddIncomeActive = false
+            "
+            [disableTerm]="isAddOutcomeActive"
+            size="small"
+            ><i-feather
+              name="plus"
+              style="height: 16px; width: 16px"
+            ></i-feather>
+            Outcome</app-button
+          >
         </div>
       </div>
 
       <!-- head table input -->
       <div
-        class="grid grid-cols-11 text-xs" [ngClass]="!isAddIncomeActive && !isAddOutcomeActive ? 'hidden':'pl-1.5 rounded-t-lg h-6 bg-black text-neutral-100'"
+        class="grid grid-cols-11 text-xs"
+        [ngClass]="
+          !isAddIncomeActive && !isAddOutcomeActive
+            ? 'hidden'
+            : 'pl-1.5 rounded-t-lg h-6 bg-black text-neutral-100'
+        "
       >
         <div class="flex items-center justify-center col-start-1 col-end-12">
-          {{isAddIncomeActive ? 'Insert Income' : isAddOutcomeActive ? 'Insert Outcome' : 'Pilih Input'}}
+          {{
+            isAddIncomeActive
+              ? "Insert Income"
+              : isAddOutcomeActive
+              ? "Insert Outcome"
+              : "Pilih Input"
+          }}
         </div>
       </div>
 
-        <!-- IS ADD INCOME ACTIVE -->
-      <div *ngIf="isAddIncomeActive" class="h-[230px] pt-1 px-1 border border-neutral-900">
+      <!-- IS ADD INCOME ACTIVE -->
+      <div
+        *ngIf="isAddIncomeActive"
+        class="h-[230px] pt-1 px-1 border border-neutral-900"
+      >
         <div class="mt-1 mb-2 flex justify-between" [formGroup]="incomeForm">
           <input
             type="date"
@@ -349,7 +406,7 @@
           <div
             *ngFor="let incCat of incomeInputOptions; let i = index"
             class="flex w-full justify-between mb-1 items-center"
-            [ngClass]="i % 2 === 0 ? 'bg-cm-green-500 bg-opacity-20' : ''"
+            [ngClass]="i % 2 === 0 ? 'bg-neutral-800 bg-opacity-10' : ''"
             [formGroup]="incomeForm"
           >
             <label class="text-xs w-[39%] ml-2" [for]="incCat">{{
@@ -372,7 +429,7 @@
         </div>
         <div class="w-full flex justify-end">
           <app-button
-            color="primary"
+            color="tertiary"
             size="small"
             (onButtonClick)="onClickAddIncomeDetail()"
             >Add Data</app-button
@@ -380,8 +437,11 @@
         </div>
       </div>
 
-        <!-- IS ADD OUTCOME ACTIVE -->
-      <div *ngIf="isAddOutcomeActive" class="w-full h-[230px] pt-1 px-1 border border-neutral-900">
+      <!-- IS ADD OUTCOME ACTIVE -->
+      <div
+        *ngIf="isAddOutcomeActive"
+        class="w-full h-[230px] pt-1 px-1 border border-neutral-900"
+      >
         <div class="mt-1 mb-2 flex justify-between" [formGroup]="outcomeForm">
           <input
             type="date"
@@ -399,11 +459,11 @@
             class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
           />
         </div>
-        <div class="h-[65%]  overflow-auto modifscrollbar mb-2">
+        <div class="h-[65%] overflow-auto modifscrollbar mb-2">
           <div
             *ngFor="let outCat of outcomeInputOptions; let i = index"
             class="flex w-full justify-between mb-1 items-center"
-            [ngClass]="i % 2 === 0 ? 'bg-red-700 bg-opacity-20' : ''"
+            [ngClass]="i % 2 === 0 ? 'bg-neutral-800 bg-opacity-10' : ''"
             [formGroup]="outcomeForm"
           >
             <label class="text-xs w-[39%] ml-2" [for]="outCat">{{
@@ -426,16 +486,13 @@
         </div>
         <div class="w-full flex justify-end">
           <app-button
-            color="primary"
+            color="tertiary"
             size="small"
-            (onButtonClick)="onClickAddIncomeDetail()"
+            (onButtonClick)="onClickAddOutcomeDetail()"
             >Add Data</app-button
           >
         </div>
       </div>
-      
     </div>
-
   </div>
-
 </div>

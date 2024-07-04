@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { IncomeDTO, OutcomeDTO } from 'src/app/core/dto/financial.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 import { IncomeService } from './income.service';
-import { Observable, map, of, take } from 'rxjs';
+import { Observable, map, of, take, tap } from 'rxjs';
 import { OutcomeService } from './outcome.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormGroupOf } from 'src/app/components/input/form-utility';
+import Swal from 'sweetalert2';
+import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
 
 @Component({
   selector: 'app-financial',
@@ -19,8 +21,8 @@ export class FinancialComponent implements OnInit {
   incomeNominal = 0;
   outcomeNominal = 0;
   incomeMonth: string = '2024';
-  incomeCategory: string = 'Persembahan';
-  outcomeCategory: string = 'Deposit';
+  incomeCategory: string = 'All Category';
+  outcomeCategory: string = 'All Category';
   incomeInputOptions: string[] = [
     'Persembahan',
     'Perpuluhan',
@@ -72,6 +74,13 @@ export class FinancialComponent implements OnInit {
     'Desember',
   ];
 
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1500,
+  });
+
   // input show variable
   isInputShow: boolean = false;
   isAddIncomeActive: boolean = false;
@@ -79,7 +88,7 @@ export class FinancialComponent implements OnInit {
 
   // income form
   incomeForm = new FormGroup<FormGroupOf<IncomeDTO>>({
-    dateIncome: new FormControl<string | null>(''),
+    dateIncome: new FormControl<string | null>('', Validators.required),
     incomeGive: new FormControl<string>(''),
     incomeTenth: new FormControl<string>(''),
     incomeBuilding: new FormControl<string>(''),
@@ -91,7 +100,7 @@ export class FinancialComponent implements OnInit {
 
   // outcome form
   outcomeForm = new FormGroup<FormGroupOf<OutcomeDTO>>({
-    dateOutcome: new FormControl<string | null> (''),
+    dateOutcome: new FormControl<string | null>('', Validators.required),
     outcomeBuilding: new FormControl<string>(''),
     outcomeDeposit: new FormControl<string>(''),
     outcomeDiakonia: new FormControl<string>(''),
@@ -99,8 +108,8 @@ export class FinancialComponent implements OnInit {
     outcomeGuest: new FormControl<string>(''),
     outcomeOperational: new FormControl<string>(''),
     outcomeOther: new FormControl<string>(''),
-    description: new FormControl<string>('')
-  })
+    description: new FormControl<string>(''),
+  });
 
   constructor(
     private incomeSvc: IncomeService,
@@ -124,19 +133,58 @@ export class FinancialComponent implements OnInit {
     return x;
   }
 
+  @Confirmable({
+    title: 'Add Income Confirmation',
+    html: 'Are you sure want to add income?',
+  })
   onClickAddIncomeDetail() {
+    if (this.incomeForm.invalid) {
+      this.Toast.fire({
+        icon: 'error',
+        title: 'Please fill date',
+      });
+      return;
+    }
     this.incomeForm.value.dateIncome = this.formatDate(
       this.incomeForm.value.dateIncome!
     );
     const form = this.incomeForm.value as IncomeDTO;
     const cleaned = this.cleanObject(form);
-    console.log(cleaned)
     this.incomeSvc
       .postIncomeData(cleaned)
       .pipe(
         map((e) => {
           this.retrieveIncomeListDetail(this.incomeCategory);
           this.countIncNom();
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
+  }
+
+  @Confirmable({
+    title: 'Add Outcome Confirmation',
+    html: 'Are you sure want to add outcome?',
+  })
+  onClickAddOutcomeDetail() {
+    if (this.outcomeForm.invalid) {
+      this.Toast.fire({
+        icon: 'error',
+        title: 'Please fill date',
+      });
+      return;
+    }
+    this.outcomeForm.value.dateOutcome = this.formatDate(
+      this.outcomeForm.value.dateOutcome!
+    );
+    const form = this.outcomeForm.value as OutcomeDTO;
+    const cleaned = this.cleanObject(form);
+    this.outcomeSvc
+      .postOutcomeData(cleaned)
+      .pipe(
+        map((e) => {
+          this.retrieveOutcomeListDetail(this.outcomeCategory);
+          this.countOutNom();
         })
       )
       .pipe(take(1))

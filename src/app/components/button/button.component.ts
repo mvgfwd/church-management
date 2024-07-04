@@ -10,6 +10,7 @@ export class ButtonComponent implements OnInit {
   @Input() color:
     | 'primary'
     | 'secondary'
+    | 'tertiary'
     | 'warning'
     | 'error'
     | 'success'
@@ -92,7 +93,13 @@ export class ButtonComponent implements OnInit {
       }
       case 'secondary': {
         this.colorClass =
-          'border border-cm-blue-500 text-cm-blue-500 hover:bg-cm-blue-50 hover:text-cm-blue-700';
+          'border border-cm-green-500 text-cm-green-500 hover:bg-neutral-100 hover:text-cm-green-700 disabled:border-neutral-300';
+        this.heroStyle = ' text-usm-brown-500 ';
+        break;
+      }
+      case 'tertiary': {
+        this.colorClass =
+          'border border-cm-green-500 bg-cm-green-500 text-white hover:bg-cm-green-600 hover:text-neutral-50';
         this.heroStyle = ' text-usm-brown-500 ';
         break;
       }
@@ -109,7 +116,7 @@ export class ButtonComponent implements OnInit {
       }
       case 'error': {
         this.colorClass =
-          'bg-red-500 border border-red-500 hover:text-red-700 text-red-600 bg-white hover:bg-red-100';
+          'bg-red-500 border border-red-500 hover:text-red-700 text-red-600 bg-white hover:bg-red-100 disabled:border-neutral-300';
         this.heroStyle = ' text-red-300 ';
         break;
       }
