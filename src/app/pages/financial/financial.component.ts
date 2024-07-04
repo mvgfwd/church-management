@@ -20,7 +20,7 @@ export class FinancialComponent implements OnInit {
   outcomeNominal = 0;
   incomeMonth: string = '2024';
   incomeCategory: string = 'Persembahan';
-  outcomeCategory: string = 'All Category';
+  outcomeCategory: string = 'Deposit';
   incomeInputOptions: string[] = [
     'Persembahan',
     'Perpuluhan',
@@ -48,6 +48,15 @@ export class FinancialComponent implements OnInit {
     'Acara',
     'Lainnya',
   ];
+  outcomeInputOptions: string[] = [
+    'Deposit',
+    'Pembangunan',
+    'Diakonia',
+    'Pelayanan',
+    'Operasional',
+    'Acara',
+    'Lainnya',
+  ];
   dateOptions: string[] = [
     '2024',
     'Januari',
@@ -63,7 +72,7 @@ export class FinancialComponent implements OnInit {
     'Desember',
   ];
 
-  // input variable
+  // input show variable
   isInputShow: boolean = false;
   isAddIncomeActive: boolean = false;
   isAddOutcomeActive: boolean = false;
@@ -79,6 +88,19 @@ export class FinancialComponent implements OnInit {
     incomeOther: new FormControl<string>(''),
     description: new FormControl<string>(''),
   });
+
+  // outcome form
+  outcomeForm = new FormGroup<FormGroupOf<OutcomeDTO>>({
+    dateOutcome: new FormControl<string | null> (''),
+    outcomeBuilding: new FormControl<string>(''),
+    outcomeDeposit: new FormControl<string>(''),
+    outcomeDiakonia: new FormControl<string>(''),
+    outcomeEvent: new FormControl<string>(''),
+    outcomeGuest: new FormControl<string>(''),
+    outcomeOperational: new FormControl<string>(''),
+    outcomeOther: new FormControl<string>(''),
+    description: new FormControl<string>('')
+  })
 
   constructor(
     private incomeSvc: IncomeService,
@@ -98,7 +120,7 @@ export class FinancialComponent implements OnInit {
   }
 
   returnFormControlName(str: string) {
-    const x = this.parseToProperty(str);
+    const x = this.parseToIncomeProperty(str);
     return x;
   }
 
@@ -108,6 +130,7 @@ export class FinancialComponent implements OnInit {
     );
     const form = this.incomeForm.value as IncomeDTO;
     const cleaned = this.cleanObject(form);
+    console.log(cleaned)
     this.incomeSvc
       .postIncomeData(cleaned)
       .pipe(
@@ -166,7 +189,7 @@ export class FinancialComponent implements OnInit {
       .subscribe();
   }
 
-  parseToProperty(str: string): string {
+  parseToIncomeProperty(str: string): string {
     let res: string = '';
     switch (str) {
       case 'Persembahan':
@@ -186,12 +209,40 @@ export class FinancialComponent implements OnInit {
     }
   }
 
+  parseToOutcomeProperty(str: string): string {
+    let res: string = '';
+    switch (str) {
+      case 'Deposit':
+        return (res = 'outcomeDeposit');
+      case 'Pembangunan':
+        return (res = 'outcomeBuilding');
+      case 'Diakonia':
+        return (res = 'outcomeDiakonia');
+      case 'Pelayanan':
+        return (res = 'outcomeGuest');
+      case 'Operasional':
+        return (res = 'outcomeOperational');
+      case 'Acara':
+        return (res = 'outcomeEvent');
+      case 'Lainnya':
+        return (res = 'outcomeOther');
+      default:
+        return (res = '');
+    }
+  }
+
   formatDate(dateString: string) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
+  }
+
+  showSimpleDate(dateString: string): string {
+    const [day, month, year] = dateString.split('-');
+    const shortYear = year.slice(-2);
+    return `${day}/${month}/${shortYear}`;
   }
 
   cleanObject(obj: any): any {

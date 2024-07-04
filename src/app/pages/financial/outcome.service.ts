@@ -16,23 +16,23 @@ export class OutcomeService {
       {
         outcomeId: 1,
         outcomeDeposit: '1023000',
-        dateOutcome: new Date('2024-11-17'),
+        dateOutcome: '17-11-2024',
       },
       {
         outcomeId: 2,
         outcomeBuilding: '1170000',
-        dateOutcome: new Date('2024-11-30'),
+        dateOutcome: '30-11-2024',
       },
       {
         outcomeId: 3,
         outcomeOperational: '800000',
-        dateOutcome: new Date('2024-12-01'),
+        dateOutcome: '01-12-2024',
       },
       {
         outcomeId: 4,
         outcomeEvent: '1100000',
         outcomeBuilding: '500000',
-        dateOutcome: new Date('2024-12-31'),
+        dateOutcome: '2024-12-31',
       },
     ],
   };

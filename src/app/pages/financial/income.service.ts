@@ -50,7 +50,6 @@ export class IncomeService {
       ...form,
       incomeId: this.PaginationIncomeList.data.length + 1,
     });
-    console.log('res', this.PaginationIncomeList);
     return of(res);
   }
 

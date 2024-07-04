@@ -25,6 +25,6 @@ export interface OutcomeDTO {
   outcomeGuest?: string; //pelayanan
   outcomeOperational?: string; //listrik, air
   outcomeOther?: string;
-  dateOutcome: Date;
+  dateOutcome: string; // dd/MM/yyyy
   description?: string;
 }
