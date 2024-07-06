@@ -1,12 +1,35 @@
 .nav-menu-btn-active {
-  background-color: #021f6f;
+  /* background-color: #021f6f; */
   border-radius: 10px;
   color: white;
+  animation: backgroundIn 0.3s forwards;
 }
+
+/* .sidebar:not(.nav-menu-btn-active) {
+  animation: backgroundOut 0.2s forwards;
+} */
 
 .nav-menu-btn-active-havechild {
   background-color: white;
   border-radius: 12px;
   color: black;
   outline: 2px solid #021f6f;
+}
+
+@keyframes backgroundIn {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: #021f6f;
+  }
+}
+
+@keyframes backgroundOut {
+  from {
+    /* background-color: #021f6f; */
+  }
+  to {
+    /* background-color: transparent; */
+  }
 }

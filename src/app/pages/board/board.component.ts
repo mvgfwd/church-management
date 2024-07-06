@@ -5,7 +5,6 @@ import { Observable, map, of, take, tap } from 'rxjs';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormGroupOf } from 'src/app/components/input/form-utility';
-import Swal from 'sweetalert2';
 import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
 import {
   trigger,
@@ -15,6 +14,7 @@ import {
   transition,
   keyframes,
 } from '@angular/animations';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-board',
@@ -112,13 +112,6 @@ export class BoardComponent {
     'STAFF',
   ];
 
-  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 1500,
-  });
-
   formEditBoard: FormGroup = new FormGroup<FormGroupOf<BoardDTO>>({
     name: new FormControl<string>('', Validators.required),
     birthDate: new FormControl<string>('', Validators.required),
@@ -167,10 +160,20 @@ export class BoardComponent {
     ),
   });
 
-  constructor(private boardService: BoardService) {
+  totalPage: number[] | undefined;
+
+  constructor(
+    private boardService: BoardService,
+    private toastSvc: ToastService
+  ) {
     this.boardService
       .getBoardListObs()
-      .pipe(map((board) => (this.boardList$ = of(board))))
+      .pipe(
+        map((board) => {
+          this.boardList$ = of(board);
+          this.totalPage = Array.from({ length: board.lastPage }, (_, i) => i);
+        })
+      )
       .pipe(take(1))
       .subscribe();
   }
@@ -181,20 +184,14 @@ export class BoardComponent {
   })
   onSubmitPutBoard() {
     if (this.formEditBoard.invalid) {
-      this.Toast.fire({
-        icon: 'warning',
-        title: 'Form data is invalid',
-      });
+      this.toastSvc.formInvalidNotif();
       return;
     }
     const data = this.formEditBoard.value as BoardDTO;
     const objLastCEC = Object.values(this.lastCongregationEditClicked!).sort();
     const dataObj = Object.values(data).sort();
     if (JSON.stringify(objLastCEC) === JSON.stringify(dataObj)) {
-      this.Toast.fire({
-        icon: 'error',
-        title: 'Data not changed',
-      });
+      this.toastSvc.formDataNotChangedNotif();
       return;
     }
     this.boardService
@@ -207,16 +204,10 @@ export class BoardComponent {
       .pipe(
         tap<void>({
           next: () => {
-            this.Toast.fire({
-              icon: 'success',
-              title: 'Data editted succesfully',
-            });
+            this.toastSvc.editSuccessNotif('Majelis');
           },
           error: (e) => {
-            this.Toast.fire({
-              icon: 'error',
-              title: 'Failed edit data',
-            });
+            this.toastSvc.editFailNotif('majelis');
           },
         })
       )
@@ -229,10 +220,7 @@ export class BoardComponent {
   })
   onSubmitPostBoard() {
     if (this.formBoard.invalid) {
-      this.Toast.fire({
-        icon: 'error',
-        title: 'Please fill all field',
-      });
+      this.toastSvc.fillAllRequiredField();
       return;
     }
     const data = this.formBoard.value as BoardDTO;
@@ -247,17 +235,28 @@ export class BoardComponent {
         tap({
           next: () => {
             this.isAddMode = false;
-            this.Toast.fire({
-              icon: 'success',
-              title: 'Majelis added successfully',
-            });
+            this.toastSvc.addSuccessNotif('Majelis');
           },
           error: (err) => {
-            this.Toast.fire({
-              icon: 'error',
-              title: 'Failed added data',
-            });
+            this.toastSvc.addFailNotif('majelis');
           },
+        })
+      )
+      .subscribe();
+  }
+
+  @Confirmable({
+    title: 'Delete Confirmation',
+    html: 'Are you sure want to delete?',
+  })
+  onClickDelete(id: number) {
+    this.boardService
+      .deleteBoardById(id)
+      .pipe(map((e) => {}))
+      .pipe(
+        tap<void>({
+          next: () => this.toastSvc.deleteSuccessNotif('Majelis'),
+          error: (e) => this.toastSvc.deleteFailNotif('majelis'),
         })
       )
       .subscribe();
@@ -337,5 +336,22 @@ export class BoardComponent {
         result = '###';
     }
     return result;
+  }
+
+  onClickChangePage(page: number) {
+    // this.userReq.page = page;
+    // this.getWebMobileList();
+  }
+
+  nextPage(page: number) {
+    // this.userReq.page = page;
+    // this.paginationScroll.nativeElement.scrollLeft +=28;
+    // this.getWebMobileList();
+  }
+
+  prevPage(page: number) {
+    // this.userReq.page = page;
+    // this.paginationScroll.nativeElement.scrollLeft -=28;
+    // this.getWebMobileList();
   }
 }

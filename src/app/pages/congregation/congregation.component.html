@@ -1,4 +1,4 @@
-<div class="rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
+<div class="relative rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
   <div class="flex justify-between mb-6">
     <span class="font-bold text-lg">Anggota Jemaat</span>
     <app-button
@@ -23,7 +23,7 @@
   <div class="relative mt-6 h-[90%]">
     <!-- TABLE HEAD -->
     <div
-      class="grid grid-cols-12 h-9 rounded-t-lg text-xs font-semibold text-cm-blue-50 bg-cm-blue-500"
+      class="grid grid-cols-12 h-9 rounded-t-lg text-xs font-semibold text-white bg-cm-blue-400"
     >
       <div class="col-start-1 col-end-4 flex items-center mx-1">
         <span class="ml-2">Nama Lengkap</span>
@@ -51,7 +51,7 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="congregationList | async as congreData"
-      class="h-[90%] overflow-auto modifscrollbar"
+      class="h-[55vh] overflow-auto modifscrollbar"
     >
       <form
         *ngIf="!isAddMode"
@@ -59,9 +59,21 @@
         (ngSubmit)="onSubmitEdittedData()"
       >
         <div
-          *ngFor="let congregation of congreData.data; let i = index"
-          [ngClass]="i % 2 === 0 ? '' : 'bg-cm-blue-500 bg-opacity-10'"
-          class="grid grid-cols-12 text-sm text-neutral-800 border-b-2 border-x-2 py-1"
+          *ngFor="
+            let congregation of congreData.data;
+            let i = index;
+            let l = last
+          "
+          [ngClass]="
+            l && i % 2 !== 0
+              ? 'bg-cm-blue-500 bg-opacity-10 border border-t-0 border-b-cm-blue-500'
+              : l
+              ? 'border border-t-0 border-b-cm-blue-500'
+              : i % 2 === 0
+              ? ''
+              : 'bg-cm-blue-500 bg-opacity-10'
+          "
+          class="grid grid-cols-12 text-sm text-neutral-800 border-x border-cm-blue-500 py-1"
         >
           <div class="col-start-1 col-end-4 flex items-center mx-1">
             <span *ngIf="idOnEdit !== congregation.id" class="ml-2 py-1">{{
@@ -153,7 +165,7 @@
     </div>
 
     <!-- INPUT -->
-    <div [@slideInDown]="isAddMode" class="absolute top-10 right-0 left-0">
+    <div [@slideInDown]="isAddMode" class="absolute top-9 right-0 left-0">
       <form
         *ngIf="!idOnEdit && isAddMode"
         [formGroup]="formCongregation"
@@ -214,4 +226,60 @@
       </form>
     </div>
   </div>
+
+  <!-- PAGINATION -->
+  <div *ngIf="!isAddMode" class="absolute bottom-4 right-6">
+    <div
+      *ngIf="congregationList | async as pagination"
+      class="flex absolute right-1 bottom-1 text-sm pr-2 my-2"
+    >
+      <app-button
+        color="secondary"
+        size="small"
+        class="mr-0.5"
+        [disableTerm]="!pagination.hasPrev"
+        (onButtonClick)="onClickChangePage(pagination.currentPage - 1)"
+      >
+        <
+      </app-button>
+      <div
+        #paginationScroll
+        [ngClass]="
+          pagination.lastPage < 2
+            ? 'w[25px]'
+            : pagination.lastPage === 2
+            ? 'w-[57px]'
+            : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+        "
+        class="flex"
+      >
+        <div *ngFor="let page of totalPage; let i = index; let l = last">
+          <app-button
+            color="secondary"
+            [ngClass]="
+              pagination.currentPage === i + 1
+                ? 'bg-cm-blue-500 rounded-md text-white'
+                : ''
+            "
+            size="small"
+            class="flex mx-0.5"
+            (onButtonClick)="onClickChangePage(i + 1)"
+            ><span
+              [ngClass]="pagination.currentPage === i + 1 ? 'text-white' : ''"
+              >{{ i + 1 }}</span
+            ></app-button
+          >
+        </div>
+      </div>
+      <app-button
+        color="secondary"
+        size="small"
+        class="ml-0.5"
+        [disableTerm]="!pagination.hasNext"
+        (onButtonClick)="onClickChangePage(pagination.currentPage + 1)"
+        >></app-button
+      >
+    </div>
+  </div>
+  <!-- END OF PAGINATION -->
 </div>

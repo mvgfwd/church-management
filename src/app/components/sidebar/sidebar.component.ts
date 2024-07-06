@@ -16,11 +16,14 @@ export class SidebarComponent implements OnInit {
   constructor(private router: Router) {
     this.menu = [
       { path: 'dashboard', icon: 'clipboard', name: 'Dashboard' },
-      { path: 'financial', icon: 'dollar-sign', name: 'Keuangan',
-      // childrenComponents: [
-      //     { path: 'financial/income', icon: 'layout', name: 'Pemasukan' },
-      //     { path: 'board/outcome', icon: 'layout', name: 'Pengeluaran' },
-      //   ], 
+      {
+        path: 'financial',
+        icon: 'dollar-sign',
+        name: 'Keuangan',
+        // childrenComponents: [
+        //     { path: 'financial/income', icon: 'layout', name: 'Pemasukan' },
+        //     { path: 'board/outcome', icon: 'layout', name: 'Pengeluaran' },
+        //   ],
       },
       {
         path: 'board',
@@ -30,6 +33,7 @@ export class SidebarComponent implements OnInit {
       { path: 'congregation', icon: 'users', name: 'Anggota Jemaat' },
       { path: 'news', icon: 'globe', name: 'Berita' },
       { path: 'home', icon: 'activity', name: 'Jadwal Kegiatan' },
+      { path: 'asset', icon: 'package', name: 'Aset' },
     ];
   }
 

@@ -93,7 +93,7 @@ export class ButtonComponent implements OnInit {
       }
       case 'secondary': {
         this.colorClass =
-          'border border-cm-green-500 text-cm-green-500 hover:bg-neutral-100 hover:text-cm-green-700 disabled:border-neutral-300';
+          'border border-cm-green-500 text-cm-green-500 hover:border-cm-green-700 hover:text-cm-green-700 disabled:border-neutral-300';
         this.heroStyle = ' text-usm-brown-500 ';
         break;
       }

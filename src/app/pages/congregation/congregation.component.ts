@@ -4,7 +4,6 @@ import { CongregationService } from './congregation.service';
 import { Observable, map, of, take, tap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormGroupOf } from 'src/app/components/input/form-utility';
-import Swal from 'sweetalert2';
 import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 import {
@@ -15,6 +14,8 @@ import {
   transition,
   keyframes,
 } from '@angular/animations';
+import { ToastService } from 'src/app/services/toast.service';
+import { UserRequest } from 'src/app/core/dto/user-request.dto';
 
 @Component({
   selector: 'app-congregation',
@@ -106,17 +107,30 @@ export class CongregationComponent implements OnInit {
     phoneNumber: new FormControl<string>('', Validators.required),
   });
 
-  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 1500,
-  });
+  totalPage: number[] | undefined;
 
-  constructor(private congreService: CongregationService) {
+  userReq: UserRequest = {
+    size: 10,
+    page: 1,
+    searchTerm: '',
+  };
+
+  constructor(
+    private congreService: CongregationService,
+    private toastSvc: ToastService
+  ) {
+    this.retrieveCongregationData();
+  }
+
+  retrieveCongregationData() {
     this.congreService
-      .getCongregationListObs()
-      .pipe(map((cg) => (this.congregationList = of(cg))))
+      .getCongregationListObs(this.userReq)
+      .pipe(
+        map((cg) => {
+          this.congregationList = of(cg);
+          this.totalPage = Array.from({ length: cg.lastPage }, (_, i) => i);
+        })
+      )
       .pipe(take(1))
       .subscribe();
   }
@@ -127,10 +141,7 @@ export class CongregationComponent implements OnInit {
   })
   onSubmitPost() {
     if (this.formCongregation.invalid) {
-      this.Toast.fire({
-        icon: 'error',
-        title: 'Please fill all field',
-      });
+      this.toastSvc.fillAllRequiredField();
       return;
     }
     const data = this.formCongregation.value as CongregationDTO;
@@ -142,16 +153,10 @@ export class CongregationComponent implements OnInit {
           next: () => {
             this.formCongregation.reset();
             this.isAddMode = false;
-            this.Toast.fire({
-              icon: 'success',
-              title: 'Data added succesfully',
-            });
+            this.toastSvc.addSuccessNotif('Jemaat');
           },
           error: (e) => {
-            this.Toast.fire({
-              icon: 'error',
-              title: 'Failed add data',
-            });
+            this.toastSvc.addFailNotif('Jemaat');
           },
         })
       )
@@ -165,20 +170,18 @@ export class CongregationComponent implements OnInit {
   onClickDelete(id: number) {
     this.congreService
       .deleteCongregationById(id)
-      .pipe(map((e) => {}))
+      .pipe(
+        map((e) => {
+          this.retrieveCongregationData();
+        })
+      )
       .pipe(
         tap<void>({
           next: () => {
-            this.Toast.fire({
-              icon: 'success',
-              title: 'Data deleted succesfully',
-            });
+            this.toastSvc.deleteSuccessNotif('Jemaat');
           },
           error: (e) => {
-            this.Toast.fire({
-              icon: 'error',
-              title: 'Failed delete data',
-            });
+            this.toastSvc.deleteFailNotif('jemaat');
           },
         })
       )
@@ -204,20 +207,14 @@ export class CongregationComponent implements OnInit {
   })
   onSubmitEdittedData() {
     if (this.formEditCongregation.invalid) {
-      this.Toast.fire({
-        icon: 'warning',
-        title: 'Form data is invalid',
-      });
+      this.toastSvc.formInvalidNotif();
       return;
     }
     const data = this.formEditCongregation.value as CongregationDTO;
     const objLastCEC = Object.values(this.lastCongregationEditClicked!).sort();
     const dataObj = Object.values(data).sort();
     if (JSON.stringify(objLastCEC) === JSON.stringify(dataObj)) {
-      this.Toast.fire({
-        icon: 'error',
-        title: 'Data not changed',
-      });
+      this.toastSvc.formDataNotChangedNotif();
       return;
     }
     this.congreService
@@ -225,21 +222,16 @@ export class CongregationComponent implements OnInit {
       .pipe(
         map((e) => {
           this.idOnEdit = undefined;
+          this.retrieveCongregationData();
         })
       )
       .pipe(
         tap<void>({
           next: () => {
-            this.Toast.fire({
-              icon: 'success',
-              title: 'Data editted succesfully',
-            });
+            this.toastSvc.editSuccessNotif('Jemaat');
           },
           error: (e) => {
-            this.Toast.fire({
-              icon: 'error',
-              title: 'Failed edit data',
-            });
+            this.toastSvc.editFailNotif('jemaat');
           },
         })
       )
@@ -253,5 +245,20 @@ export class CongregationComponent implements OnInit {
     const timeDiff = Math.abs(Date.now() - convertAge.getTime());
     const result = Math.floor(timeDiff / (1000 * 3600 * 24) / 365);
     return result;
+  }
+
+  // PAGINATION FUNCTION SUPPORT
+  onClickChangePage(page: number) {
+    this.userReq.page = page;
+    this.congreService
+      .getCongregationListObs(this.userReq)
+      .pipe(
+        map((e) => {
+          this.congregationList = of(e);
+        })
+      )
+      .subscribe();
+    // this.userReq.page = page;
+    // this.getWebMobileList();
   }
 }

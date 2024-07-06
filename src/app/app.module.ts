@@ -18,6 +18,7 @@ import { NewsService } from './pages/news/news.service';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 import { IncomeService } from './pages/financial/income.service';
 import { OutcomeService } from './pages/financial/outcome.service';
+import { ToastService } from './services/toast.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,14 @@ import { OutcomeService } from './pages/financial/outcome.service';
     BrowserAnimationsModule,
   ],
   exports: [IconsModule],
-  providers: [CongregationService, BoardService, NewsService, IncomeService, OutcomeService],
+  providers: [
+    ToastService,
+    CongregationService,
+    BoardService,
+    NewsService,
+    IncomeService,
+    OutcomeService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

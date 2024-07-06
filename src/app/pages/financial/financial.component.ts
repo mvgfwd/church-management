@@ -6,8 +6,8 @@ import { Observable, map, of, take, tap } from 'rxjs';
 import { OutcomeService } from './outcome.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormGroupOf } from 'src/app/components/input/form-utility';
-import Swal from 'sweetalert2';
 import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-financial',
@@ -74,13 +74,6 @@ export class FinancialComponent implements OnInit {
     'Desember',
   ];
 
-  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 1500,
-  });
-
   // input show variable
   isInputShow: boolean = false;
   isAddIncomeActive: boolean = false;
@@ -113,7 +106,8 @@ export class FinancialComponent implements OnInit {
 
   constructor(
     private incomeSvc: IncomeService,
-    private outcomeSvc: OutcomeService
+    private outcomeSvc: OutcomeService,
+    private toastSvc: ToastService
   ) {
     this.retrieveIncomeListDetail(this.incomeCategory);
     this.retrieveOutcomeListDetail(this.outcomeCategory);
@@ -139,10 +133,7 @@ export class FinancialComponent implements OnInit {
   })
   onClickAddIncomeDetail() {
     if (this.incomeForm.invalid) {
-      this.Toast.fire({
-        icon: 'error',
-        title: 'Please fill date',
-      });
+      this.toastSvc.formInvalidNotif('date');
       return;
     }
     this.incomeForm.value.dateIncome = this.formatDate(
@@ -168,10 +159,7 @@ export class FinancialComponent implements OnInit {
   })
   onClickAddOutcomeDetail() {
     if (this.outcomeForm.invalid) {
-      this.Toast.fire({
-        icon: 'error',
-        title: 'Please fill date',
-      });
+      this.toastSvc.formInvalidNotif('date');
       return;
     }
     this.outcomeForm.value.dateOutcome = this.formatDate(

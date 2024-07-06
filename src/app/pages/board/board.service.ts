@@ -6,6 +6,9 @@ import { HttpService } from 'src/app/services/http.service';
 
 @Injectable()
 export class BoardService {
+  // DUMMY DATA FUNCTION
+
+  // DUMMY DATA
   PaginationBoardList: PaginationResultDTO<BoardDTO> = {
     currentPage: 1,
     totalItems: 2,
@@ -34,6 +37,16 @@ export class BoardService {
         fungsi: 'SINTUA',
         status: 'PENDIDIKAN',
       },
+      {
+        id: 3,
+        name: 'ir. Ricky Marnaek Sibarani',
+        age: 23,
+        birthDate: '1977-10-25',
+        address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
+        phoneNumber: '081209876543',
+        fungsi: 'SINTUA',
+        status: 'PENDIDIKAN',
+      },
     ],
   };
 
@@ -46,6 +59,15 @@ export class BoardService {
       ...data,
       id: this.PaginationBoardList.data.length + 1,
     });
+    return of(result);
+  }
+
+  deleteBoardById(
+    id: number
+  ): Observable<PaginationResultDTO<CongregationDTO>> {
+    const index = this.PaginationBoardList.data.findIndex((e) => e.id === id);
+    const spliced = this.PaginationBoardList.data.splice(index, 1);
+    const result = { ...this.PaginationBoardList, spliced };
     return of(result);
   }
 
