@@ -8,13 +8,103 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormGroupOf } from 'src/app/components/input/form-utility';
 import { Confirmable } from 'src/app/core/dto/confirmable.decorator';
 import { ToastService } from 'src/app/services/toast.service';
+import {
+  animate,
+  keyframes,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-financial',
   templateUrl: './financial.component.html',
   styleUrls: ['./financial.component.css'],
+  animations: [
+    trigger('slideInDown', [
+      state('true', style({ height: '*', transform: 'translateY(0px)' })),
+      state(
+        'false',
+        style({
+          height: 0,
+          opacity: 0.5,
+          transform: 'translateY(-40px)',
+        })
+      ),
+      transition(
+        'false => true',
+        animate(
+          '300ms ease-in',
+          keyframes([
+            style({ opacity: 0, transform: 'translateY(-100%)', offset: 0 }),
+            style({
+              opacity: 0.1,
+              transform: 'translateY(-10px)',
+              offset: 0.1,
+              height: 0,
+            }),
+            style({
+              opacity: 1,
+              transform: 'translateY(0)',
+              offset: 1.0,
+              height: '*',
+            }),
+          ])
+        )
+      ),
+      transition(
+        'true => false',
+        animate(
+          '200ms 250ms ease-out',
+          keyframes([
+            style({
+              opacity: 1,
+              transform: 'translateY(0%)',
+              height: '*',
+              offset: 0,
+            }),
+            style({
+              opacity: 0.6,
+              offset: 0.4,
+            }),
+            style({
+              opacity: 0,
+              transform: 'translateY(-10px)',
+              height: 0,
+              offset: 1,
+            }),
+          ])
+        )
+      ),
+    ]),
+    trigger('justifyContent', [
+      state(
+        'center',
+        style({
+          // justifyContent: 'center',
+          transform: 'translateX(calc(100% - 177px))',
+          width: '177px',
+        })
+      ),
+      state(
+        'end',
+        style({
+          // transform: 'translateX(100%)',
+          transform: 'translateX(calc(100% + 75px))',
+          width: '177px',
+        })
+      ),
+      transition('center <=> end', [animate('300ms ease-in-out')]),
+    ]),
+  ],
 })
 export class FinancialComponent implements OnInit {
+  get justifyState() {
+    return !this.isAddIncomeActive && !this.isAddOutcomeActive
+      ? 'center'
+      : 'end';
+  }
   // incomeSummary: Observable<PaginationResultDTO<IncomeDTO>> | undefined;
   incomeListDetail$: Observable<PaginationResultDTO<IncomeDTO>> | undefined;
   outcomeListDetail$: Observable<PaginationResultDTO<OutcomeDTO>> | undefined;

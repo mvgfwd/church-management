@@ -32,7 +32,7 @@ export class OutcomeService {
         outcomeId: 4,
         outcomeEvent: '1100000',
         outcomeBuilding: '500000',
-        dateOutcome: '2024-12-31',
+        dateOutcome: '31-12-2024',
       },
     ],
   };

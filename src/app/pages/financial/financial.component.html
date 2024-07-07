@@ -150,12 +150,12 @@
                   let f = first;
                   let l = last
                 "
-                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-700"
+                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-700 border-y-0"
                 [ngClass]="
                   i % 2 !== 0
                     ? 'bg-cm-green-700 bg-opacity-10'
                     : l
-                    ? 'border-t-cm-green-700 border-x-0 border-b-0'
+                    ? 'border-t-cm-green-700 border-x-0 border-t'
                     : ''
                 "
               >
@@ -200,6 +200,17 @@
               <div class="flex items-center col-start-3 col-end-5">Tipe</div>
               <div class="flex items-center col-start-5 col-end-8">Nominal</div>
               <div class="flex items-center col-start-8 col-end-11">Ket.</div>
+            </div>
+            <!-- IF NO DATA (OUTCOME NOMINAL 0) -->
+            <div
+              *ngIf="outcomeNominal === 0"
+              class="flex justify-center border border-x-red-950"
+            >
+              <img
+                src="../../../assets/img/nodata.jpg"
+                alt=""
+                class="h-[180px]"
+              />
             </div>
             <!-- body table JIKA outcomeCategory bukan 'All Category' -->
             <div *ngIf="outcomeCategory !== 'All Category'">
@@ -256,12 +267,12 @@
                   let f = first;
                   let l = last
                 "
-                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800 border-t-0"
+                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800 border-y-0"
                 [ngClass]="
                   i === 6
                     ? 'border border-b-red-700'
                     : l
-                    ? ' border-t-red-800 border-x-0 border-b-0'
+                    ? 'border border-t-red-800 border-x-0 border-t'
                     : i % 2 !== 0
                     ? 'bg-red-700 bg-opacity-15'
                     : ''
@@ -315,20 +326,13 @@
           *ngIf="isAddIncomeActive || isAddOutcomeActive"
           name="x"
           style="height: 18px; width: 18px"
-          class="text-red-700 cursor-pointer"
+          class="text-black hover:text-red-700 cursor-pointer"
           (click)="isAddIncomeActive = false; isAddOutcomeActive = false"
         ></i-feather>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center relative w-full h-8">
         <!-- Button add income/outcome -->
-        <div
-          class="w-full flex mb-1"
-          [ngClass]="
-            !isAddIncomeActive && !isAddOutcomeActive
-              ? 'justify-center mt-2'
-              : 'justify-end'
-          "
-        >
+        <div class="w-full flex mb-1 absolute" [@justifyContent]="justifyState">
           <app-button
             class="mr-1"
             color="secondary"
@@ -361,136 +365,138 @@
       </div>
 
       <!-- head table input -->
-      <div
-        class="grid grid-cols-11 text-xs"
-        [ngClass]="
-          !isAddIncomeActive && !isAddOutcomeActive
-            ? 'hidden'
-            : 'pl-1.5 rounded-t-lg h-6 bg-black text-neutral-100'
-        "
-      >
-        <div class="flex items-center justify-center col-start-1 col-end-12">
-          {{
-            isAddIncomeActive
-              ? "Insert Income"
-              : isAddOutcomeActive
-              ? "Insert Outcome"
-              : "Pilih Input"
-          }}
-        </div>
-      </div>
-
-      <!-- IS ADD INCOME ACTIVE -->
-      <div
-        *ngIf="isAddIncomeActive"
-        class="h-[230px] pt-1 px-1 border border-neutral-900"
-      >
-        <div class="mt-1 mb-2 flex justify-between" [formGroup]="incomeForm">
-          <input
-            type="date"
-            class="text-xs border border-neutral-500 rounded-md px-2 h-6"
-            name=""
-            id=""
-            formControlName="dateIncome"
-          />
-          <input
-            formControlName="description"
-            type="text"
-            name=""
-            id=""
-            placeholder="Description"
-            class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
-          />
-        </div>
-        <div class="h-[66%] overflow-auto modifscrollbar mb-2">
-          <div
-            *ngFor="let incCat of incomeInputOptions; let i = index"
-            class="flex w-full justify-between mb-1 items-center"
-            [ngClass]="i % 2 === 0 ? 'bg-neutral-800 bg-opacity-10' : ''"
-            [formGroup]="incomeForm"
-          >
-            <label class="text-xs w-[39%] ml-2" [for]="incCat">{{
-              incCat
-            }}</label>
-            <input
-              [formControlName]="parseToIncomeProperty(incCat)"
-              type="number"
-              [name]="incCat"
-              [id]="incCat"
-              class="border rounded-md border-neutral-500 text-xs text-neutral-800 px-1.5 py-1 w-[58%]"
-              [ngClass]="
-                i % 2 === 0
-                  ? 'bg-transparent text-black placeholder:text-neutral-700'
-                  : ''
-              "
-              placeholder="0"
-            />
+      <div [@slideInDown]="isAddIncomeActive || isAddOutcomeActive">
+        <div
+          class="grid grid-cols-11 text-xs"
+          [ngClass]="
+            !isAddIncomeActive && !isAddOutcomeActive
+              ? 'hidden'
+              : 'pl-1.5 rounded-t-lg h-6 bg-black text-neutral-100'
+          "
+        >
+          <div class="flex items-center justify-center col-start-1 col-end-12">
+            {{
+              isAddIncomeActive
+                ? "Insert Income"
+                : isAddOutcomeActive
+                ? "Insert Outcome"
+                : "Pilih Input"
+            }}
           </div>
         </div>
-        <div class="w-full flex justify-end">
-          <app-button
-            color="tertiary"
-            size="small"
-            (onButtonClick)="onClickAddIncomeDetail()"
-            >Add Data</app-button
-          >
-        </div>
-      </div>
 
-      <!-- IS ADD OUTCOME ACTIVE -->
-      <div
-        *ngIf="isAddOutcomeActive"
-        class="w-full h-[230px] pt-1 px-1 border border-neutral-900"
-      >
-        <div class="mt-1 mb-2 flex justify-between" [formGroup]="outcomeForm">
-          <input
-            type="date"
-            class="text-xs border border-neutral-500 rounded-md px-2 h-6"
-            name=""
-            id=""
-            formControlName="dateOutcome"
-          />
-          <input
-            formControlName="description"
-            type="text"
-            name=""
-            id=""
-            placeholder="Description"
-            class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
-          />
-        </div>
-        <div class="h-[65%] overflow-auto modifscrollbar mb-2">
-          <div
-            *ngFor="let outCat of outcomeInputOptions; let i = index"
-            class="flex w-full justify-between mb-1 items-center"
-            [ngClass]="i % 2 === 0 ? 'bg-neutral-800 bg-opacity-10' : ''"
-            [formGroup]="outcomeForm"
-          >
-            <label class="text-xs w-[39%] ml-2" [for]="outCat">{{
-              outCat
-            }}</label>
+        <!-- IS ADD INCOME ACTIVE -->
+        <div
+          *ngIf="isAddIncomeActive"
+          class="h-[230px] pt-1 px-1 border border-neutral-900"
+        >
+          <div class="mt-1 mb-2 flex justify-between" [formGroup]="incomeForm">
             <input
-              [formControlName]="parseToOutcomeProperty(outCat)"
-              type="number"
-              [name]="outCat"
-              [id]="outCat"
-              class="border rounded-md border-neutral-500 text-xs text-neutral-800 px-1.5 py-1 w-[58%]"
-              [ngClass]="
-                i % 2 === 0
-                  ? 'bg-transparent text-black placeholder:text-neutral-700'
-                  : ''
-              "
-              placeholder="0"
+              type="date"
+              class="text-xs border border-neutral-500 rounded-md px-2 h-6"
+              name=""
+              id=""
+              formControlName="dateIncome"
+            />
+            <input
+              formControlName="description"
+              type="text"
+              name=""
+              id=""
+              placeholder="Description"
+              class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
             />
           </div>
+          <div class="h-[66%] overflow-auto modifscrollbar mb-2">
+            <div
+              *ngFor="let incCat of incomeInputOptions; let i = index"
+              class="flex w-full justify-between mb-1 items-center"
+              [ngClass]="i % 2 === 0 ? 'bg-neutral-800 bg-opacity-10' : ''"
+              [formGroup]="incomeForm"
+            >
+              <label class="text-xs w-[39%] ml-2" [for]="incCat">{{
+                incCat
+              }}</label>
+              <input
+                [formControlName]="parseToIncomeProperty(incCat)"
+                type="number"
+                [name]="incCat"
+                [id]="incCat"
+                class="border rounded-md border-neutral-500 text-xs text-neutral-800 px-1.5 py-1 w-[58%]"
+                [ngClass]="
+                  i % 2 === 0
+                    ? 'bg-transparent text-black placeholder:text-neutral-700'
+                    : ''
+                "
+                placeholder="0"
+              />
+            </div>
+          </div>
+          <div class="w-full flex justify-end">
+            <app-button
+              color="tertiary"
+              size="small"
+              (onButtonClick)="onClickAddIncomeDetail()"
+              >Add Data</app-button
+            >
+          </div>
         </div>
-        <div class="w-full flex justify-end">
-          <app-button
-            color="tertiary"
-            size="small"
-            (onButtonClick)="onClickAddOutcomeDetail()"
-            >Add Data</app-button
-          >
+
+        <!-- IS ADD OUTCOME ACTIVE -->
+        <div
+          *ngIf="isAddOutcomeActive"
+          class="w-full h-[230px] pt-1 px-1 border border-neutral-900"
+        >
+          <div class="mt-1 mb-2 flex justify-between" [formGroup]="outcomeForm">
+            <input
+              type="date"
+              class="text-xs border border-neutral-500 rounded-md px-2 h-6"
+              name=""
+              id=""
+              formControlName="dateOutcome"
+            />
+            <input
+              formControlName="description"
+              type="text"
+              name=""
+              id=""
+              placeholder="Description"
+              class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
+            />
+          </div>
+          <div class="h-[65%] overflow-auto modifscrollbar mb-2">
+            <div
+              *ngFor="let outCat of outcomeInputOptions; let i = index"
+              class="flex w-full justify-between mb-1 items-center"
+              [ngClass]="i % 2 === 0 ? 'bg-neutral-800 bg-opacity-10' : ''"
+              [formGroup]="outcomeForm"
+            >
+              <label class="text-xs w-[39%] ml-2" [for]="outCat">{{
+                outCat
+              }}</label>
+              <input
+                [formControlName]="parseToOutcomeProperty(outCat)"
+                type="number"
+                [name]="outCat"
+                [id]="outCat"
+                class="border rounded-md border-neutral-500 text-xs text-neutral-800 px-1.5 py-1 w-[58%]"
+                [ngClass]="
+                  i % 2 === 0
+                    ? 'bg-transparent text-black placeholder:text-neutral-700'
+                    : ''
+                "
+                placeholder="0"
+              />
+            </div>
+          </div>
+          <div class="w-full flex justify-end">
+            <app-button
+              color="tertiary"
+              size="small"
+              (onButtonClick)="onClickAddOutcomeDetail()"
+              >Add Data</app-button
+            >
+          </div>
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ import {
   keyframes,
 } from '@angular/animations';
 import { ToastService } from 'src/app/services/toast.service';
+import { UserRequest } from 'src/app/core/dto/user-request.dto';
 
 @Component({
   selector: 'app-board',
@@ -162,12 +163,22 @@ export class BoardComponent {
 
   totalPage: number[] | undefined;
 
+  userReq: UserRequest = {
+    size: 10,
+    page: 1,
+    searchTerm: '',
+  };
+
   constructor(
     private boardService: BoardService,
     private toastSvc: ToastService
   ) {
+    this.retrieveBoardData();
+  }
+
+  retrieveBoardData() {
     this.boardService
-      .getBoardListObs()
+      .getBoardListObs(this.userReq)
       .pipe(
         map((board) => {
           this.boardList$ = of(board);
@@ -199,6 +210,7 @@ export class BoardComponent {
       .pipe(
         map((e) => {
           this.idOnEdit = undefined;
+          this.retrieveBoardData();
         })
       )
       .pipe(
@@ -339,19 +351,17 @@ export class BoardComponent {
   }
 
   onClickChangePage(page: number) {
+    this.userReq.page = page;
+    this.boardService
+      .getBoardListObs(this.userReq)
+      .pipe(
+        map((e) => {
+          this.boardList$ = of(e);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
     // this.userReq.page = page;
-    // this.getWebMobileList();
-  }
-
-  nextPage(page: number) {
-    // this.userReq.page = page;
-    // this.paginationScroll.nativeElement.scrollLeft +=28;
-    // this.getWebMobileList();
-  }
-
-  prevPage(page: number) {
-    // this.userReq.page = page;
-    // this.paginationScroll.nativeElement.scrollLeft -=28;
     // this.getWebMobileList();
   }
 }
