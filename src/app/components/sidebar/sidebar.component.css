@@ -2,7 +2,15 @@
   /* background-color: #021f6f; */
   border-radius: 10px;
   color: white;
-  animation: backgroundIn 0.3s forwards;
+  animation: backgroundIn 0.4s forwards;
+}
+
+.nav-menu-btn-active > span {
+  animation: translateXText 0.4s forwards;
+}
+
+.nav-menu-btn-active > i-feather {
+  animation: translateIcon 0.4s forwards;
 }
 
 /* .sidebar:not(.nav-menu-btn-active) {
@@ -22,6 +30,24 @@
   }
   to {
     background-color: #021f6f;
+  }
+}
+
+@keyframes translateXText {
+  from {
+    background-color: transparent;
+  }
+  to {
+    transform: translateX(12px);
+  }
+}
+
+@keyframes translateIcon {
+  from {
+    background-color: transparent;
+  }
+  to {
+    transform: translateX(5px);
   }
 }
 

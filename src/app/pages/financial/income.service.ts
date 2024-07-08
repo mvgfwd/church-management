@@ -16,9 +16,9 @@ export class IncomeService {
     data: [],
   };
 
-    // CONSTRUCTOR FOR DUMMY DATA SUPPORT
-    constructor() {
-      this.PaginationIncomeList.data = [
+  // CONSTRUCTOR FOR DUMMY DATA SUPPORT
+  constructor() {
+    this.PaginationIncomeList.data = [
       {
         incomeId: 1,
         incomeGive: '1000000',
@@ -113,41 +113,44 @@ export class IncomeService {
         description: 'Giat J. Sagala',
         dateIncome: '23-12-2024',
       },
-      ]
-      this.PaginationIncomeList.totalItems = this.PaginationIncomeList.data.length;
+    ];
+    this.PaginationIncomeList.totalItems =
+      this.PaginationIncomeList.data.length;
 
-      this.PaginationIncomeList.lastPage = Math.ceil(
-        this.PaginationIncomeList.data.length /
-          this.PaginationIncomeList.totalItemsPerPage
-      );
-  
-      this.PaginationIncomeList.currentPage === this.PaginationIncomeList.lastPage
-        ? (this.PaginationIncomeList.hasNext = false)
-        : (this.PaginationIncomeList.hasNext = true);
-  
-      this.PaginationIncomeList.currentPage === 1
-        ? (this.PaginationIncomeList.hasPrev = false)
-        : (this.PaginationIncomeList.hasPrev = true);
-    }
+    this.PaginationIncomeList.lastPage = Math.ceil(
+      this.PaginationIncomeList.data.length /
+        this.PaginationIncomeList.totalItemsPerPage
+    );
 
-  getIncomeList(userReq: UserRequest): Observable<PaginationResultDTO<IncomeDTO>> {
-    // DUMMY PER-PAGE-AN
-    const curPage = (this.PaginationIncomeList.currentPage = userReq.page!);
-    userReq.page! > 1
-      ? (this.PaginationIncomeList.hasPrev = true)
-      : (this.PaginationIncomeList.hasPrev = false);
-    userReq.page! === this.PaginationIncomeList.lastPage
+    this.PaginationIncomeList.currentPage === this.PaginationIncomeList.lastPage
       ? (this.PaginationIncomeList.hasNext = false)
       : (this.PaginationIncomeList.hasNext = true);
-    this.PaginationIncomeList.lastPage = Math.ceil(
-      this.PaginationIncomeList.data.length / userReq.size!
-    );
-    // DUMMY PERDATAAN
-    const start = (curPage - 1) * userReq.size!;
-    const end = start + userReq.size!;
-    let data = this.PaginationIncomeList.data.slice(start, end);
-    return of({ ...this.PaginationIncomeList, data, curPage });
+
+    this.PaginationIncomeList.currentPage === 1
+      ? (this.PaginationIncomeList.hasPrev = false)
+      : (this.PaginationIncomeList.hasPrev = true);
   }
+
+  // getIncomeList(
+  //   userReq: UserRequest
+  // ): Observable<PaginationResultDTO<IncomeDTO>> {
+  //   // DUMMY PER-PAGE-AN
+  //   const curPage = (this.PaginationIncomeList.currentPage = userReq.page!);
+  //   userReq.page! > 1
+  //     ? (this.PaginationIncomeList.hasPrev = true)
+  //     : (this.PaginationIncomeList.hasPrev = false);
+  //   userReq.page! === this.PaginationIncomeList.lastPage
+  //     ? (this.PaginationIncomeList.hasNext = false)
+  //     : (this.PaginationIncomeList.hasNext = true);
+  //   this.PaginationIncomeList.lastPage = Math.ceil(
+  //     this.PaginationIncomeList.data.length / userReq.size!
+  //   );
+  //   // DUMMY PERDATAAN
+  //   const start = (curPage - 1) * userReq.size!;
+  //   const end = start + userReq.size!;
+  //   let data = this.PaginationIncomeList.data.slice(start, end);
+  //   return of({ ...this.PaginationIncomeList, data, curPage });
+  // }
 
   postIncomeData(form: IncomeDTO): Observable<number> {
     const res = this.PaginationIncomeList.data.push({
@@ -157,20 +160,11 @@ export class IncomeService {
     return of(res);
   }
 
-  getIncomeListDetail(userReq: UserRequest, str: string): Observable<PaginationResultDTO<IncomeDTO>> {
-    // DUMMY PER-PAGE-AN
-    const curPage = (this.PaginationIncomeList.currentPage = userReq.page!);
-    userReq.page! > 1
-      ? (this.PaginationIncomeList.hasPrev = true)
-      : (this.PaginationIncomeList.hasPrev = false);
-    userReq.page! === this.PaginationIncomeList.lastPage
-      ? (this.PaginationIncomeList.hasNext = false)
-      : (this.PaginationIncomeList.hasNext = true);
-    this.PaginationIncomeList.lastPage = Math.ceil(
-      this.PaginationIncomeList.data.length / userReq.size!
-    );
-    // DUMMY PERDATAAN
-    const start = (curPage - 1) * userReq.size!;
+  getIncomeListDetail(
+    userReq: UserRequest,
+    str: string
+  ): Observable<PaginationResultDTO<IncomeDTO>> {
+    const start = (userReq.page! - 1) * userReq.size!;
     const end = start + userReq.size!;
     switch (str) {
       case 'All Category':
@@ -180,52 +174,107 @@ export class IncomeService {
           ...this.PaginationIncomeList,
           data: this.PaginationIncomeList.data.filter((item) =>
             item.hasOwnProperty('incomeGive')
-          ).slice(start, end),
+          ),
         };
-        return of({ ...resGive });
+        resGive.totalItems = resGive.data.length;
+        resGive.lastPage = Math.ceil(resGive.data.length / userReq.size!);
+        resGive.currentPage = userReq.page!;
+        userReq.page! > 1
+          ? (resGive.hasPrev = true)
+          : (resGive.hasPrev = false);
+        userReq.page! === resGive.lastPage || resGive.lastPage === 0
+          ? (resGive.hasNext = false)
+          : (resGive.hasNext = true);
+        return of({ ...resGive, data: resGive.data.slice(start, end) });
       case 'Perpuluhan':
         const resTenth = {
           ...this.PaginationIncomeList,
           data: this.PaginationIncomeList.data.filter((item) =>
             item.hasOwnProperty('incomeTenth')
-            ).slice(start, end),
-          };
-          // let data = this.PaginationIncomeList.data.slice(start, end);
-        return of({ ...resTenth });
+          ),
+        };
+        resTenth.totalItems = resTenth.data.length;
+        resTenth.lastPage = Math.ceil(resTenth.data.length / userReq.size!);
+        resTenth.currentPage = userReq.page!;
+        userReq.page! > 1
+          ? (resTenth.hasPrev = true)
+          : (resTenth.hasPrev = false);
+        userReq.page! === resTenth.lastPage || resTenth.lastPage === 0
+          ? (resTenth.hasNext = false)
+          : (resTenth.hasNext = true);
+        return of({ ...resTenth, data: resTenth.data.slice(start, end) });
       case 'Pembangunan':
         const resBuilding = {
           ...this.PaginationIncomeList,
           data: this.PaginationIncomeList.data.filter((item) =>
             item.hasOwnProperty('incomeBuilding')
-          ).slice(start, end),
+          ),
         };
-        return of({ ...resBuilding });
+        resBuilding.totalItems = resBuilding.data.length;
+        resBuilding.lastPage = Math.ceil(
+          resBuilding.data.length / userReq.size!
+        );
+        resBuilding.currentPage = userReq.page!;
+        userReq.page! > 1
+          ? (resBuilding.hasPrev = true)
+          : (resBuilding.hasPrev = false);
+        userReq.page! === resBuilding.lastPage || resBuilding.lastPage === 0
+          ? (resBuilding.hasNext = false)
+          : (resBuilding.hasNext = true);
+        return of({ ...resBuilding, data: resBuilding.data.slice(start, end) });
       case 'Service':
         const resService = {
           ...this.PaginationIncomeList,
           data: this.PaginationIncomeList.data.filter((item) =>
             item.hasOwnProperty('incomeService')
-          ).slice(start, end),
+          ),
         };
-        return of({ ...resService });
+        resService.totalItems = resService.data.length;
+        resService.lastPage = Math.ceil(resService.data.length / userReq.size!);
+        resService.currentPage = userReq.page!;
+        userReq.page! > 1
+          ? (resService.hasPrev = true)
+          : (resService.hasPrev = false);
+        userReq.page! === resService.lastPage || resService.lastPage === 0
+          ? (resService.hasNext = false)
+          : (resService.hasNext = true);
+        return of({ ...resService, data: resService.data.slice(start, end) });
       case 'Donasi':
         const resDonate = {
           ...this.PaginationIncomeList,
           data: this.PaginationIncomeList.data.filter((item) =>
             item.hasOwnProperty('incomeDonate')
-          ).slice(start, end),
+          ),
         };
-        return of({ ...resDonate });
+        resDonate.totalItems = resDonate.data.length;
+        resDonate.lastPage = Math.ceil(resDonate.data.length / userReq.size!);
+        resDonate.currentPage = userReq.page!;
+        userReq.page! > 1
+          ? (resDonate.hasPrev = true)
+          : (resDonate.hasPrev = false);
+        userReq.page! === resDonate.lastPage || resDonate.lastPage === 0
+          ? (resDonate.hasNext = false)
+          : (resDonate.hasNext = true);
+        return of({ ...resDonate, data: resDonate.data.slice(start, end) });
       case 'Lainnya':
         const resOther = {
           ...this.PaginationIncomeList,
           data: this.PaginationIncomeList.data.filter((item) =>
             item.hasOwnProperty('incomeOther')
-          ).slice(start, end),
+          ),
         };
-        return of({ ...resOther });
+        resOther.totalItems = resOther.data.length;
+        resOther.lastPage = Math.ceil(resOther.data.length / userReq.size!);
+        resOther.currentPage = userReq.page!;
+        userReq.page! > 1
+          ? (resOther.hasPrev = true)
+          : (resOther.hasPrev = false);
+        userReq.page! === resOther.lastPage || resOther.lastPage === 0
+          ? (resOther.hasNext = false)
+          : (resOther.hasNext = true);
+        return of({ ...resOther, data: resOther.data.slice(start, end) });
       default:
-        return of({ ...this.PaginationIncomeList});
+        return of({ ...this.PaginationIncomeList });
     }
   }
 

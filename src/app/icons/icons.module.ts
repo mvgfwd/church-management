@@ -14,6 +14,7 @@ import {
   LogOut,
   Trash2,
   Package,
+  ArrowRight,
 } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
@@ -32,6 +33,7 @@ const icons = {
   LogOut,
   Trash2,
   Package,
+  ArrowRight,
 };
 
 @NgModule({

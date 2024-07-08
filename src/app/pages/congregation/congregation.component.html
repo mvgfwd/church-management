@@ -51,8 +51,8 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="congregationList | async as congreData"
-      class="h-[80%] overflow-auto modifscrollbar border border-cm-blue-500"
-      [ngClass]="isAddMode ? 'border-0':''"
+      class="lg:h-fit h-[80%] overflow-auto modifscrollbar border border-cm-blue-500"
+      [ngClass]="isAddMode ? 'border-0' : ''"
     >
       <form
         *ngIf="!isAddMode"
@@ -74,7 +74,7 @@
               ? ''
               : 'bg-cm-blue-500 bg-opacity-10'
           "
-          class="grid grid-cols-12 text-sm text-neutral-800"
+          class="grid grid-cols-12 text-sm text-neutral-800 py-1"
         >
           <div class="col-start-1 col-end-4 flex items-center mx-1">
             <span *ngIf="idOnEdit !== congregation.id" class="ml-2 py-1">{{
@@ -88,12 +88,14 @@
               placeholder="Nama"
             />
           </div>
-          <div class="col-start-4 col-end-5 flex items-center mx-1">
+          <div class="col-start-4 col-end-5 flex items-center mx-1 text-xs">
             <span *ngIf="idOnEdit !== congregation.id" class="py-1"
               >{{ ageCalculate(congregation.birthDate) }} Tahun</span
             >
           </div>
-          <div class="col-start-5 col-end-7 flex items-center mx-1 ml-3 mr-2">
+          <div
+            class="col-start-5 col-end-7 flex items-center mx-1 ml-3 mr-2 text-xs font-nunito font-semibold"
+          >
             <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
               congregation.birthDate | date : "longDate"
             }}</span>
@@ -117,7 +119,9 @@
               placeholder="Jl Damai No.1"
             />
           </div>
-          <div class="col-start-10 col-end-12 flex items-center mx-1 ml-5">
+          <div
+            class="col-start-10 col-end-12 flex items-center mx-1 ml-5 font-nunito font-semibold text-sm"
+          >
             <span *ngIf="idOnEdit !== congregation.id" class="py-1">{{
               congregation.phoneNumber
             }}</span>

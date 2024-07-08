@@ -20,6 +20,7 @@ import { IncomeService } from './pages/financial/income.service';
 import { OutcomeService } from './pages/financial/outcome.service';
 import { ToastService } from './services/toast.service';
 import { CurrencyFormatPipe } from './core/pipe/currency-format.pipe';
+import { NumberFormatPipe } from './core/pipe/number-no-rp.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CurrencyFormatPipe } from './core/pipe/currency-format.pipe';
     CongregationComponent,
     DashboardComponent,
     NewsDetailComponent,
-    CurrencyFormatPipe
+    CurrencyFormatPipe,
+    NumberFormatPipe,
   ],
   imports: [
     BrowserModule,

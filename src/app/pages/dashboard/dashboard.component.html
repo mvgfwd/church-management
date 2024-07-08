@@ -70,7 +70,20 @@
       <div
         class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col justify-between"
       >
-        <span class="font-nunito font-extrabold">Berita</span>
+        <!-- JUDUL BERITA DAN VIEW MORE -->
+        <div class="flex flex-row justify-between">
+          <span class="font-nunito font-extrabold">Berita</span>
+          <span
+            [routerLink]="'../news'"
+            class="font-nunito text-xs flex items-center hover:text-cm-blue-500 hover:scale-105 duration-100 cursor-pointer"
+            >more news
+            <i-feather
+              name="arrow-right"
+              style="height: 14px; width: 14px"
+              class="ml-1 mt-0.5"
+            ></i-feather
+          ></span>
+        </div>
       </div>
 
       <!-- BARIS 3 - ANGGOTA MAJELIS -->

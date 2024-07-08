@@ -84,7 +84,7 @@ import { UserRequest } from 'src/app/core/dto/user-request.dto';
         'center',
         style({
           // justifyContent: 'center',
-          position:'absolute',
+          position: 'absolute',
           left: '0',
           // transform: 'translateX(calc(100% - 177px))',
           width: '177px',
@@ -115,9 +115,10 @@ export class FinancialComponent implements OnInit {
   incomeNominal = 0;
   outcomeNominal = 0;
   incomeMonth: string = '2024';
-  incomeCategory: string = 'Perpuluhan';
+  incomeCategory: string = 'All Category';
   outcomeCategory: string = 'All Category';
-  totalPage: number[] = [];
+  totalPageIncome: number[] = [];
+  totalPageOutcome: number[] = [];
   incomeInputOptions: string[] = [
     'Persembahan',
     'Perpuluhan',
@@ -250,6 +251,17 @@ export class FinancialComponent implements OnInit {
           this.countIncNom();
         })
       )
+      .pipe(
+        tap<void>({
+          next: () => {
+            this.incomeForm.reset();
+            this.toastSvc.addSuccessNotif('Income data');
+          },
+          error: (e) => {
+            this.toastSvc.addFailNotif('income data');
+          },
+        })
+      )
       .pipe(take(1))
       .subscribe();
   }
@@ -276,6 +288,17 @@ export class FinancialComponent implements OnInit {
           this.countOutNom();
         })
       )
+      .pipe(
+        tap<void>({
+          next: () => {
+            this.outcomeForm.reset();
+            this.toastSvc.addSuccessNotif('Outcome data');
+          },
+          error: (e) => {
+            this.toastSvc.addFailNotif('outcome data');
+          },
+        })
+      )
       .pipe(take(1))
       .subscribe();
   }
@@ -299,11 +322,14 @@ export class FinancialComponent implements OnInit {
 
   retrieveIncomeListDetail(str: string) {
     return this.incomeSvc
-      .getIncomeListDetail(this.userReq, str)
+      .getIncomeListDetail({ page: 1, size: 10 }, str)
       .pipe(
         map((inc) => {
           this.incomeListDetail$ = of(inc);
-          this.totalPage = Array.from({ length: inc.lastPage }, (_, i) => i);
+          this.totalPageIncome = Array.from(
+            { length: inc.lastPage },
+            (_, i) => i
+          );
         })
       )
       .pipe(take(1))
@@ -317,10 +343,14 @@ export class FinancialComponent implements OnInit {
 
   retrieveOutcomeListDetail(str: string) {
     return this.outcomeSvc
-      .getOutcomeListDetail(str)
+      .getOutcomeListDetail({ page: 1, size: 10 }, str)
       .pipe(
-        map((inc) => {
-          this.outcomeListDetail$ = of(inc);
+        map((outc) => {
+          this.outcomeListDetail$ = of(outc);
+          this.totalPageOutcome = Array.from(
+            { length: outc.lastPage },
+            (_, i) => i
+          );
         })
       )
       .pipe(take(1))
@@ -393,7 +423,7 @@ export class FinancialComponent implements OnInit {
     return cleanedObj;
   }
 
-  onClickChangePage(page: number, str: string) {
+  onClickChangePageIncome(page: number, str: string) {
     this.userReq.page = page;
     this.incomeSvc
       .getIncomeListDetail(this.userReq, str)
@@ -406,5 +436,18 @@ export class FinancialComponent implements OnInit {
       .subscribe();
     // this.userReq.page = page;
     // this.getWebMobileList();
+  }
+
+  onClickChangePageOutcome(page: number, str: string) {
+    this.userReq.page = page;
+    this.outcomeSvc
+      .getOutcomeListDetail(this.userReq, str)
+      .pipe(
+        map((e) => {
+          this.outcomeListDetail$ = of(e);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 }

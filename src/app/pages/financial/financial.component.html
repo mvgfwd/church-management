@@ -80,288 +80,398 @@
       <span class="mt-4 mb-1 ml-4 font-semibold text-neutral-900"
         >Financial Detail</span
       >
-        <div class="flex mx-4 mb-4 justify-between h-full">
-          <!-- DETAIL INCOME -->
-          <div class="relative h-full w-[49%]">
-            <span class="text-xs font-bold">Income</span>
-            <!-- head table income -->
-            <div
-              class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-cm-green-700 font-nunito font-semibold"
-            >
-              <div class="flex items-center col-start-1 col-end-3">
-                {{ incomeCategory === "All Category" ? "No" : "Date" }}
-              </div>
-              <div class="flex items-center col-start-3 col-end-5">Tipe</div>
-              <div class="flex items-center col-start-5 col-end-7 ml-5">Nominal</div>
-              <div class="flex items-center col-start-7 col-end-11 ml-6">
-                Ket.
-              </div>
+      <div class="flex mx-4 mb-4 justify-between h-full">
+        <!-- DETAIL INCOME -->
+        <div class="relative h-full w-[49%]">
+          <span class="text-xs font-bold">Income</span>
+          <!-- head table income -->
+          <div
+            class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-cm-green-700 font-nunito font-semibold"
+          >
+            <div class="flex items-center col-start-1 col-end-3">
+              {{ incomeCategory === "All Category" ? "No" : "Date" }}
             </div>
-            <!-- body table JIKA incomeCategory bukan 'All Category' -->
-            <div *ngIf="incomeCategory !== 'All Category'" class="h-[65%] overflow-auto modifscrollbar border border-cm-green-700">
+            <div class="flex items-center col-start-3 col-end-5">Tipe</div>
+            <div class="flex items-center col-start-5 col-end-7 ml-5">
+              Nominal
+            </div>
+            <div class="flex items-center col-start-7 col-end-11 ml-6">
+              Ket.
+            </div>
+          </div>
+          <!-- body table JIKA incomeCategory bukan 'All Category' -->
+          <div
+            *ngIf="incomeCategory !== 'All Category'"
+            class="h-fit overflow-auto modifscrollbar border border-cm-green-700"
+          >
+            <div
+              *ngIf="incomeListDetail$ | async as incList"
+              class="border-t-0"
+            >
               <div
-                *ngIf="incomeListDetail$ | async as incList"
-                class="border-t-0"
+                *ngFor="let incData of incList.data; let i = index"
+                class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900"
+                [ngClass]="i % 2 !== 0 ? 'bg-cm-green-700 bg-opacity-10' : ''"
               >
+                <div class="flex items-center col-start-1 col-end-3 text-xs">
+                  {{ showSimpleDate(incData.dateIncome) }}
+                </div>
+                <div class="flex items-center col-start-3 col-end-5">
+                  {{ incomeCategory }}
+                </div>
                 <div
-                  *ngFor="let incData of incList.data; let i = index"
-                  class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900"
-                  [ngClass]="i % 2 !== 0 ? 'bg-cm-green-700 bg-opacity-10' : ''"
+                  class="flex items-center col-start-5 col-end-7 pt-0.5 ml-5 font-nunito font-bold"
                 >
-                  <div class="flex items-center col-start-1 col-end-3 text-xs">
-                    {{ showSimpleDate(incData.dateIncome) }}
-                  </div>
-                  <div class="flex items-center col-start-3 col-end-5">
-                    {{ incomeCategory }}
-                  </div>
-                  <div class="flex items-center col-start-5 col-end-7 pt-0.5 ml-5 font-nunito font-bold">
-                    <span *ngIf="incomeCategory === 'Persembahan'">{{
-                      incData.incomeGive
-                    }}</span>
-                    <span *ngIf="incomeCategory === 'Perpuluhan'">{{
-                      incData.incomeTenth
-                    }}</span>
-                    <span *ngIf="incomeCategory === 'Pembangunan'">{{
-                      incData.incomeBuilding
-                    }}</span>
-                    <span *ngIf="incomeCategory === 'Service'">{{
-                      incData.incomeService
-                    }}</span>
-                    <span *ngIf="incomeCategory === 'Donasi'">{{
-                      incData.incomeDonate
-                    }}</span>
-                    <span *ngIf="incomeCategory === 'Lainnya'">{{
-                      incData.incomeOther
-                    }}</span>
-                  </div>
-                  <div class="flex items-center col-start-7 col-end-11 ml-6 whitespace-nowrap overflow-auto hidescrollbar mr-1">
-                    {{ incData.description }}
-                  </div>
+                  <span *ngIf="incomeCategory === 'Persembahan'">{{
+                    +incData.incomeGive! | formatNum
+                  }}</span>
+                  <span *ngIf="incomeCategory === 'Perpuluhan'">{{
+                    +incData.incomeTenth! | formatNum
+                  }}</span>
+                  <span *ngIf="incomeCategory === 'Pembangunan'">{{
+                    +incData.incomeBuilding! | formatNum
+                  }}</span>
+                  <span *ngIf="incomeCategory === 'Service'">{{
+                    +incData.incomeService! | formatNum
+                  }}</span>
+                  <span *ngIf="incomeCategory === 'Donasi'">{{
+                    +incData.incomeDonate! | formatNum
+                  }}</span>
+                  <span *ngIf="incomeCategory === 'Lainnya'">{{
+                    +incData.incomeOther! | formatNum
+                  }}</span>
+                </div>
+                <div
+                  class="flex items-center col-start-7 col-end-11 ml-6 whitespace-nowrap overflow-auto hidescrollbar mr-1"
+                >
+                  {{ incData.description }}
                 </div>
               </div>
             </div>
-            <!-- body table JIKA incomeCategory = 'All Category' -->
-            <div *ngIf="incomeCategory === 'All Category'">
+          </div>
+          <!-- body table JIKA incomeCategory = 'All Category' -->
+          <div *ngIf="incomeCategory === 'All Category'">
+            <div
+              *ngFor="
+                let incOpt of incomeOptions;
+                let i = index;
+                let f = first;
+                let l = last
+              "
+              class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-700 border-y-0"
+              [ngClass]="
+                i % 2 !== 0
+                  ? 'bg-cm-green-700 bg-opacity-10'
+                  : l
+                  ? 'border-t-cm-green-700 border-x-0 border-t'
+                  : ''
+              "
+            >
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+              >
+                {{ i }}
+              </div>
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-3 col-end-6 mt-[-40px]"
+              >
+                {{ incOpt }}
+              </div>
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-6 col-end-8 mt-[-40px] font-nunito font-semibold"
+              >
+                {{ countIncomePerCat(incOpt) | formatNum }}
+              </div>
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-8 ml-2 col-end-12 mt-[-40px]"
+              >
+                No Desc
+              </div>
+            </div>
+          </div>
+          <!-- INCOME PAGINATION -->
+          <div
+            *ngIf="incomeListDetail$ | async as pagination"
+            class="absolute bottom-0 left-0 flex text-sm"
+            [ngClass]="incomeCategory === 'All Category' ? 'hidden' : ''"
+          >
+            <app-button
+              color="secondary"
+              size="small"
+              class="mr-0.5"
+              [disableTerm]="!pagination.hasPrev"
+              (onButtonClick)="
+                onClickChangePageIncome(
+                  pagination.currentPage - 1,
+                  incomeCategory
+                )
+              "
+            >
+              <
+            </app-button>
+            <div
+              #paginationScroll
+              [ngClass]="
+                pagination.lastPage < 2
+                  ? 'w[25px]'
+                  : pagination.lastPage === 2
+                  ? 'w-[57px]'
+                  : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+              "
+              class="flex"
+            >
               <div
                 *ngFor="
-                  let incOpt of incomeOptions;
+                  let page of totalPageIncome;
                   let i = index;
-                  let f = first;
                   let l = last
                 "
-                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-700 border-y-0"
-                [ngClass]="
-                  i % 2 !== 0
-                    ? 'bg-cm-green-700 bg-opacity-10'
-                    : l
-                    ? 'border-t-cm-green-700 border-x-0 border-t'
-                    : ''
-                "
-              >
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-1 col-end-3 mt-[-40px]"
-                >
-                  {{ i }}
-                </div>
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-3 col-end-6 mt-[-40px]"
-                >
-                  {{ incOpt }}
-                </div>
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-6 col-end-8 mt-[-40px]"
-                >
-                  {{ countIncomePerCat(incOpt) }}
-                </div>
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-8 ml-2 col-end-12 mt-[-40px]"
-                >
-                  No Desc
-                </div>
-              </div>
-            </div>
-            <!-- INCOME PAGINATION -->
-            <div class="absolute bottom-0 right-0">
-              <div
-                *ngIf="incomeListDetail$ | async as pagination"
-                class="flex text-sm"
               >
                 <app-button
                   color="secondary"
-                  size="small"
-                  class="mr-0.5"
-                  [disableTerm]="!pagination.hasPrev"
-                  (onButtonClick)="onClickChangePage(pagination.currentPage - 1, incomeCategory)"
-                >
-                  <
-                </app-button>
-                <div
-                  #paginationScroll
                   [ngClass]="
-                    pagination.lastPage < 2
-                      ? 'w[25px]'
-                      : pagination.lastPage === 2
-                      ? 'w-[57px]'
-                      : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+                    pagination.currentPage === i + 1
+                      ? 'bg-blue-800 rounded-md text-white'
+                      : ''
                   "
-                  class="flex"
-                >
-                  <div *ngFor="let page of totalPage; let i = index; let l = last">
-                    <app-button
-                      color="secondary"
-                      [ngClass]="
-                        pagination.currentPage === i + 1
-                          ? 'bg-blue-800 rounded-md text-white'
-                          : ''
-                      "
-                      size="small"
-                      class="flex mx-0.5"
-                      (onButtonClick)="onClickChangePage(i + 1, incomeCategory)"
-                      ><span
-                        [ngClass]="pagination.currentPage === i + 1 ? 'text-white' : ''"
-                        >{{ i + 1 }}</span
-                      ></app-button
-                    >
-                  </div>
-                </div>
-                <app-button
-                  color="secondary"
                   size="small"
-                  class="ml-0.5"
-                  [disableTerm]="!pagination.hasNext"
-                  (onButtonClick)="onClickChangePage(pagination.currentPage + 1, incomeCategory)"
-                  >></app-button
+                  class="flex mx-0.5"
+                  (onButtonClick)="
+                    onClickChangePageIncome(i + 1, incomeCategory)
+                  "
+                  ><span
+                    [ngClass]="
+                      pagination.currentPage === i + 1 ? 'text-white' : ''
+                    "
+                    >{{ i + 1 }}</span
+                  ></app-button
                 >
               </div>
             </div>
-            <!-- END OF PAGINATION -->
+            <app-button
+              color="secondary"
+              size="small"
+              class="ml-0.5"
+              [disableTerm]="!pagination.hasNext"
+              (onButtonClick)="
+                onClickChangePageIncome(
+                  pagination.currentPage + 1,
+                  incomeCategory
+                )
+              "
+              >></app-button
+            >
           </div>
+          <!-- END OF INCOME PAGINATION -->
+        </div>
 
-          <div class="h-[106%] border border-neutral-700 "></div>
+        <div class="h-full border border-neutral-500"></div>
 
-          <!-- DETAIL OUTCOME -->
-          <div class="relative h-full w-[49%]">
-            <span class="text-xs font-bold">Outcome</span>
-            <!-- head table income -->
-            <div
-              class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-red-950 font-nunito font-semibold"
-            >
-              <div class="flex items-center col-start-1 col-end-3">
-                {{ outcomeCategory === "All Category" ? "No" : "Date" }}
-              </div>
-              <div class="flex items-center col-start-3 col-end-5">Tipe</div>
-              <div class="flex items-center col-start-5 col-end-8">Nominal</div>
-              <div class="flex items-center col-start-8 col-end-11">Ket.</div>
+        <!-- DETAIL OUTCOME -->
+        <div class="relative h-full w-[49%]">
+          <span class="text-xs font-bold">Outcome</span>
+          <!-- head table income -->
+          <div
+            class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-red-950 font-nunito font-semibold"
+          >
+            <div class="flex items-center col-start-1 col-end-3">
+              {{ outcomeCategory === "All Category" ? "No" : "Date" }}
             </div>
-            <!-- IF NO DATA (OUTCOME NOMINAL 0) -->
-            <div
-              *ngIf="outcomeNominal === 0"
-              class="flex justify-center border border-x-red-950"
-            >
-              <img
-                src="../../../assets/img/nodata.jpg"
-                alt=""
-                class="h-[180px]"
-              />
+            <div class="flex items-center col-start-3 col-end-5">Tipe</div>
+            <div class="flex items-center col-start-5 col-end-8 ml-2">
+              Nominal
             </div>
-            <!-- body table JIKA outcomeCategory bukan 'All Category' -->
-            <div *ngIf="outcomeCategory !== 'All Category'">
+            <div class="flex items-center col-start-8 col-end-11">Ket.</div>
+          </div>
+          <!-- IF NO DATA (OUTCOME NOMINAL 0) -->
+          <div
+            *ngIf="outcomeNominal === 0"
+            class="flex justify-center border border-red-950"
+          >
+            <img
+              src="../../../assets/img/nodata.jpg"
+              alt=""
+              class="h-[180px]"
+            />
+          </div>
+          <!-- body table JIKA outcomeCategory bukan 'All Category' -->
+          <div
+            *ngIf="outcomeCategory !== 'All Category'"
+            class="h-fit overflow-auto modifscrollbar border border-red-950"
+            [ngClass]="outcomeNominal === 0 ? 'border-0' : ''"
+          >
+            <div
+              *ngIf="outcomeListDetail$ | async as outList"
+              class="border-t-0"
+            >
               <div
-                *ngIf="outcomeListDetail$ | async as outList"
-                class="border border-red-950 border-t-0"
+                *ngFor="let outcData of outList.data; let i = index"
+                class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900"
+                [ngClass]="i % 2 !== 0 ? 'bg-red-700 bg-opacity-10' : ''"
               >
+                <div class="flex items-center col-start-1 col-end-3">
+                  {{ showSimpleDate(outcData.dateOutcome) }}
+                </div>
+                <div class="flex items-center col-start-3 col-end-5">
+                  {{ outcomeCategory }}
+                </div>
                 <div
-                  *ngFor="let outcData of outList.data; let i = index"
-                  class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
-                  [ngClass]="i % 2 !== 0 ? 'bg-red-700 bg-opacity-10' : ''"
+                  class="flex items-center col-start-5 col-end-8 font-nunito font-semibold ml-2"
                 >
-                  <div class="flex items-center col-start-1 col-end-3">
-                    {{ showSimpleDate(outcData.dateOutcome) }}
-                  </div>
-                  <div class="flex items-center col-start-3 col-end-7">
-                    {{ outcomeCategory }}
-                  </div>
-                  <div class="flex items-center col-start-7 col-end-9">
-                    <span *ngIf="outcomeCategory === 'Deposit'">{{
-                      outcData.outcomeDeposit
-                    }}</span>
-                    <span *ngIf="outcomeCategory === 'Pembangunan'">{{
-                      outcData.outcomeBuilding
-                    }}</span>
-                    <span *ngIf="outcomeCategory === 'Diakonia'">{{
-                      outcData.outcomeDiakonia
-                    }}</span>
-                    <span *ngIf="outcomeCategory === 'Pelayanan'">{{
-                      outcData.outcomeGuest
-                    }}</span>
-                    <span *ngIf="outcomeCategory === 'Operasional'">{{
-                      outcData.outcomeOperational
-                    }}</span>
-                    <span *ngIf="outcomeCategory === 'Acara'">{{
-                      outcData.outcomeEvent
-                    }}</span>
-                    <span *ngIf="outcomeCategory === 'Lainnya'">{{
-                      outcData.outcomeOther
-                    }}</span>
-                  </div>
-                  <div class="flex items-center col-start-9 col-end-12">
-                    {{ outcData.description }}
-                  </div>
+                  <span *ngIf="outcomeCategory === 'Deposit'">{{
+                    +outcData.outcomeDeposit! | formatNum
+                  }}</span>
+                  <span *ngIf="outcomeCategory === 'Pembangunan'">{{
+                    +outcData.outcomeBuilding! | formatNum
+                  }}</span>
+                  <span *ngIf="outcomeCategory === 'Diakonia'">{{
+                    +outcData.outcomeDiakonia! | formatNum
+                  }}</span>
+                  <span *ngIf="outcomeCategory === 'Pelayanan'">{{
+                    +outcData.outcomeGuest! | formatNum
+                  }}</span>
+                  <span *ngIf="outcomeCategory === 'Operasional'">{{
+                    +outcData.outcomeOperational! | formatNum
+                  }}</span>
+                  <span *ngIf="outcomeCategory === 'Acara'">{{
+                    +outcData.outcomeEvent! | formatNum
+                  }}</span>
+                  <span *ngIf="outcomeCategory === 'Lainnya'">{{
+                    +outcData.outcomeOther! | formatNum
+                  }}</span>
+                </div>
+                <div class="flex items-center col-start-8 col-end-11">
+                  {{ outcData.description }}
                 </div>
               </div>
             </div>
-            <!-- body table JIKA outcomeCategory = 'All Category' -->
-            <div *ngIf="outcomeCategory === 'All Category'">
+          </div>
+          <!-- body table JIKA outcomeCategory = 'All Category' -->
+          <div *ngIf="outcomeCategory === 'All Category'">
+            <div
+              *ngFor="
+                let outOpt of outcomeOptions;
+                let i = index;
+                let f = first;
+                let l = last
+              "
+              class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800 border-y-0"
+              [ngClass]="
+                i === 6
+                  ? 'border border-b-red-700'
+                  : l
+                  ? 'border border-t-red-800 border-x-0 border-t'
+                  : i % 2 !== 0
+                  ? 'bg-red-700 bg-opacity-15'
+                  : ''
+              "
+            >
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+              >
+                {{ i }}
+              </div>
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-3 col-end-5 mt-[-40px]"
+              >
+                {{ outOpt }}
+              </div>
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-5 col-end-8 mt-[-40px] ml-2 font-nunito font-semibold"
+              >
+                {{ countOutcomePerCat(outOpt) | formatNum }}
+              </div>
+              <div
+                *ngIf="!f"
+                class="flex items-center col-start-8 col-end-11 mt-[-40px]"
+              >
+                No Desc
+              </div>
+            </div>
+          </div>
+          <!-- OUTCOME PAGINATION -->
+          <div
+            *ngIf="outcomeListDetail$ | async as pagination"
+            class="absolute bottom-0 right-0 flex text-sm"
+            [ngClass]="outcomeCategory === 'All Category' ? 'hidden' : ''"
+          >
+            <app-button
+              color="secondary"
+              size="small"
+              class="mr-0.5"
+              [disableTerm]="!pagination.hasPrev"
+              (onButtonClick)="
+                onClickChangePageOutcome(
+                  pagination.currentPage - 1,
+                  incomeCategory
+                )
+              "
+            >
+              <
+            </app-button>
+            <div
+              #paginationScroll
+              [ngClass]="
+                pagination.lastPage < 2
+                  ? 'w[25px]'
+                  : pagination.lastPage === 2
+                  ? 'w-[57px]'
+                  : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+              "
+              class="flex"
+            >
               <div
                 *ngFor="
-                  let outOpt of outcomeOptions;
+                  let page of totalPageOutcome;
                   let i = index;
-                  let f = first;
                   let l = last
                 "
-                class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800 border-y-0"
-                [ngClass]="
-                  i === 6
-                    ? 'border border-b-red-700'
-                    : l
-                    ? 'border border-t-red-800 border-x-0 border-t'
-                    : i % 2 !== 0
-                    ? 'bg-red-700 bg-opacity-15'
-                    : ''
-                "
               >
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+                <app-button
+                  color="secondary"
+                  [ngClass]="
+                    pagination.currentPage === i + 1
+                      ? 'bg-blue-800 rounded-md text-white'
+                      : ''
+                  "
+                  size="small"
+                  class="flex mx-0.5"
+                  (onButtonClick)="
+                    onClickChangePageOutcome(i + 1, incomeCategory)
+                  "
+                  ><span
+                    [ngClass]="
+                      pagination.currentPage === i + 1 ? 'text-white' : ''
+                    "
+                    >{{ i + 1 }}</span
+                  ></app-button
                 >
-                  {{ i }}
-                </div>
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-3 col-end-7 mt-[-40px]"
-                >
-                  {{ outOpt }}
-                </div>
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-7 col-end-9 mt-[-40px]"
-                >
-                  {{ countOutcomePerCat(outOpt) }}
-                </div>
-                <div
-                  *ngIf="!f"
-                  class="flex items-center col-start-9 col-end-12 mt-[-40px]"
-                >
-                  No Desc
-                </div>
               </div>
             </div>
+            <app-button
+              color="secondary"
+              size="small"
+              class="ml-0.5"
+              [disableTerm]="!pagination.hasNext"
+              (onButtonClick)="
+                onClickChangePageOutcome(
+                  pagination.currentPage + 1,
+                  incomeCategory
+                )
+              "
+              >></app-button
+            >
           </div>
+          <!-- END OF OUTCOME PAGINATION -->
         </div>
+      </div>
     </div>
 
     <!-- INPUT -->
