@@ -149,3 +149,12 @@ input[type="number"] {
 .calcHeight {
   height: calc(100% - 98px);
 }
+
+.hidescrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidescrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

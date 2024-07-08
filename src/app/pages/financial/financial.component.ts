@@ -16,6 +16,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { UserRequest } from 'src/app/core/dto/user-request.dto';
 
 @Component({
   selector: 'app-financial',
@@ -83,7 +84,9 @@ import {
         'center',
         style({
           // justifyContent: 'center',
-          transform: 'translateX(calc(100% - 177px))',
+          position:'absolute',
+          left: '0',
+          // transform: 'translateX(calc(100% - 177px))',
           width: '177px',
         })
       ),
@@ -91,7 +94,8 @@ import {
         'end',
         style({
           // transform: 'translateX(100%)',
-          transform: 'translateX(calc(100% + 75px))',
+          position: 'absolute',
+          transform: 'translateX(calc(100% - 90px))',
           width: '177px',
         })
       ),
@@ -111,8 +115,9 @@ export class FinancialComponent implements OnInit {
   incomeNominal = 0;
   outcomeNominal = 0;
   incomeMonth: string = '2024';
-  incomeCategory: string = 'All Category';
+  incomeCategory: string = 'Perpuluhan';
   outcomeCategory: string = 'All Category';
+  totalPage: number[] = [];
   incomeInputOptions: string[] = [
     'Persembahan',
     'Perpuluhan',
@@ -193,6 +198,12 @@ export class FinancialComponent implements OnInit {
     outcomeOther: new FormControl<string>(''),
     description: new FormControl<string>(''),
   });
+
+  userReq: UserRequest = {
+    size: 10,
+    page: 1,
+    searchTerm: '',
+  };
 
   constructor(
     private incomeSvc: IncomeService,
@@ -288,10 +299,11 @@ export class FinancialComponent implements OnInit {
 
   retrieveIncomeListDetail(str: string) {
     return this.incomeSvc
-      .getIncomeListDetail(str)
+      .getIncomeListDetail(this.userReq, str)
       .pipe(
         map((inc) => {
           this.incomeListDetail$ = of(inc);
+          this.totalPage = Array.from({ length: inc.lastPage }, (_, i) => i);
         })
       )
       .pipe(take(1))
@@ -379,5 +391,20 @@ export class FinancialComponent implements OnInit {
       }
     }
     return cleanedObj;
+  }
+
+  onClickChangePage(page: number, str: string) {
+    this.userReq.page = page;
+    this.incomeSvc
+      .getIncomeListDetail(this.userReq, str)
+      .pipe(
+        map((e) => {
+          this.incomeListDetail$ = of(e);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
+    // this.userReq.page = page;
+    // this.getWebMobileList();
   }
 }

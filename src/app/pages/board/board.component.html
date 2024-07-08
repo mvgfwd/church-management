@@ -57,7 +57,8 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="boardList$ | async as boardList"
-      class="h-[55vh] overflow-auto modifscrollbar"
+      class="h-[80%] overflow-auto modifscrollbar border border-cm-blue-500"
+      [ngClass]="isAddMode ? 'border-0':''"
     >
       <form
         *ngIf="!isAddMode"
@@ -68,14 +69,14 @@
           *ngFor="let board of boardList.data; let i = index; let l = last"
           [ngClass]="
             l && i % 2 !== 0
-              ? 'bg-cm-blue-500 bg-opacity-10 border border-t-0 border-b-cm-blue-500'
+              ? 'bg-cm-blue-500 bg-opacity-10 border'
               : l
               ? 'border border-t-0 border-b-cm-blue-500'
               : i % 2 === 0
               ? ''
               : 'bg-cm-blue-500 bg-opacity-10'
           "
-          class="grid grid-cols-12 text-xs text-neutral-800 py-1 border-x border-x-cm-blue-500"
+          class="grid grid-cols-12 text-xs text-neutral-800 py-1 "
         >
           <div class="col-start-1 col-end-3 flex items-center mx-1 text-sm">
             <span *ngIf="idOnEdit !== board.id" class="ml-2 py-1">{{

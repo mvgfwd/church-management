@@ -51,7 +51,8 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="congregationList | async as congreData"
-      class="h-[55vh] overflow-auto modifscrollbar"
+      class="h-[80%] overflow-auto modifscrollbar border border-cm-blue-500"
+      [ngClass]="isAddMode ? 'border-0':''"
     >
       <form
         *ngIf="!isAddMode"
@@ -66,14 +67,14 @@
           "
           [ngClass]="
             l && i % 2 !== 0
-              ? 'bg-cm-blue-500 bg-opacity-10 border border-t-0 border-b-cm-blue-500'
+              ? 'bg-cm-blue-500 bg-opacity-10 border'
               : l
               ? 'border border-t-0 border-b-cm-blue-500'
               : i % 2 === 0
               ? ''
               : 'bg-cm-blue-500 bg-opacity-10'
           "
-          class="grid grid-cols-12 text-sm text-neutral-800 border-x border-cm-blue-500 py-1"
+          class="grid grid-cols-12 text-sm text-neutral-800"
         >
           <div class="col-start-1 col-end-4 flex items-center mx-1">
             <span *ngIf="idOnEdit !== congregation.id" class="ml-2 py-1">{{

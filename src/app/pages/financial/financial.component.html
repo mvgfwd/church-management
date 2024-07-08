@@ -30,7 +30,7 @@
         </select>
       </div>
       <span class="font-nunito text-[30px] font-bold text-cm-green-900">{{
-        incomeNominal
+        incomeNominal | currencyFormat
       }}</span>
     </div>
     <!-- OUTCOME -->
@@ -61,7 +61,7 @@
         </select>
       </div>
       <span class="font-nunito text-[30px] font-bold text-red-900">{{
-        outcomeNominal
+        outcomeNominal | currencyFormat
       }}</span>
     </div>
     <!-- SUMMARY -->
@@ -80,8 +80,7 @@
       <span class="mt-4 mb-1 ml-4 font-semibold text-neutral-900"
         >Financial Detail</span
       >
-      <div class=" ">
-        <div class="flex mx-4 mb-4 justify-between">
+        <div class="flex mx-4 mb-4 justify-between h-full">
           <!-- DETAIL INCOME -->
           <div class="relative h-full w-[49%]">
             <span class="text-xs font-bold">Income</span>
@@ -93,29 +92,29 @@
                 {{ incomeCategory === "All Category" ? "No" : "Date" }}
               </div>
               <div class="flex items-center col-start-3 col-end-5">Tipe</div>
-              <div class="flex items-center col-start-5 col-end-8">Nominal</div>
-              <div class="flex items-center col-start-8 col-end-11 ml-2">
+              <div class="flex items-center col-start-5 col-end-7 ml-5">Nominal</div>
+              <div class="flex items-center col-start-7 col-end-11 ml-6">
                 Ket.
               </div>
             </div>
             <!-- body table JIKA incomeCategory bukan 'All Category' -->
-            <div *ngIf="incomeCategory !== 'All Category'">
+            <div *ngIf="incomeCategory !== 'All Category'" class="h-[65%] overflow-auto modifscrollbar border border-cm-green-700">
               <div
                 *ngIf="incomeListDetail$ | async as incList"
-                class="border border-cm-green-700 border-t-0"
+                class="border-t-0"
               >
                 <div
                   *ngFor="let incData of incList.data; let i = index"
-                  class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900"
+                  class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900"
                   [ngClass]="i % 2 !== 0 ? 'bg-cm-green-700 bg-opacity-10' : ''"
                 >
                   <div class="flex items-center col-start-1 col-end-3 text-xs">
                     {{ showSimpleDate(incData.dateIncome) }}
                   </div>
-                  <div class="flex items-center col-start-3 col-end-6">
+                  <div class="flex items-center col-start-3 col-end-5">
                     {{ incomeCategory }}
                   </div>
-                  <div class="flex items-center col-start-6 col-end-8 pt-0.5">
+                  <div class="flex items-center col-start-5 col-end-7 pt-0.5 ml-5 font-nunito font-bold">
                     <span *ngIf="incomeCategory === 'Persembahan'">{{
                       incData.incomeGive
                     }}</span>
@@ -135,7 +134,7 @@
                       incData.incomeOther
                     }}</span>
                   </div>
-                  <div class="flex items-center col-start-8 col-end-12 ml-2">
+                  <div class="flex items-center col-start-7 col-end-11 ml-6 whitespace-nowrap overflow-auto hidescrollbar mr-1">
                     {{ incData.description }}
                   </div>
                 </div>
@@ -185,7 +184,64 @@
                 </div>
               </div>
             </div>
+            <!-- INCOME PAGINATION -->
+            <div class="absolute bottom-0 right-0">
+              <div
+                *ngIf="incomeListDetail$ | async as pagination"
+                class="flex text-sm"
+              >
+                <app-button
+                  color="secondary"
+                  size="small"
+                  class="mr-0.5"
+                  [disableTerm]="!pagination.hasPrev"
+                  (onButtonClick)="onClickChangePage(pagination.currentPage - 1, incomeCategory)"
+                >
+                  <
+                </app-button>
+                <div
+                  #paginationScroll
+                  [ngClass]="
+                    pagination.lastPage < 2
+                      ? 'w[25px]'
+                      : pagination.lastPage === 2
+                      ? 'w-[57px]'
+                      : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+                  "
+                  class="flex"
+                >
+                  <div *ngFor="let page of totalPage; let i = index; let l = last">
+                    <app-button
+                      color="secondary"
+                      [ngClass]="
+                        pagination.currentPage === i + 1
+                          ? 'bg-blue-800 rounded-md text-white'
+                          : ''
+                      "
+                      size="small"
+                      class="flex mx-0.5"
+                      (onButtonClick)="onClickChangePage(i + 1, incomeCategory)"
+                      ><span
+                        [ngClass]="pagination.currentPage === i + 1 ? 'text-white' : ''"
+                        >{{ i + 1 }}</span
+                      ></app-button
+                    >
+                  </div>
+                </div>
+                <app-button
+                  color="secondary"
+                  size="small"
+                  class="ml-0.5"
+                  [disableTerm]="!pagination.hasNext"
+                  (onButtonClick)="onClickChangePage(pagination.currentPage + 1, incomeCategory)"
+                  >></app-button
+                >
+              </div>
+            </div>
+            <!-- END OF PAGINATION -->
           </div>
+
+          <div class="h-[106%] border border-neutral-700 "></div>
 
           <!-- DETAIL OUTCOME -->
           <div class="relative h-full w-[49%]">
@@ -306,7 +362,6 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
 
     <!-- INPUT -->
@@ -388,7 +443,7 @@
         <!-- IS ADD INCOME ACTIVE -->
         <div
           *ngIf="isAddIncomeActive"
-          class="h-[230px] pt-1 px-1 border border-neutral-900"
+          class="h-[222px] pt-1 px-1 border border-neutral-900"
         >
           <div class="mt-1 mb-2 flex justify-between" [formGroup]="incomeForm">
             <input
@@ -404,7 +459,7 @@
               name=""
               id=""
               placeholder="Description"
-              class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
+              class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2 w-[58%]"
             />
           </div>
           <div class="h-[66%] overflow-auto modifscrollbar mb-2">
@@ -422,7 +477,7 @@
                 type="number"
                 [name]="incCat"
                 [id]="incCat"
-                class="border rounded-md border-neutral-500 text-xs text-neutral-800 px-1.5 py-1 w-[58%]"
+                class="border rounded-md border-neutral-500 text-xs text-neutral-800 px-1.5 py-1 w-[57%]"
                 [ngClass]="
                   i % 2 === 0
                     ? 'bg-transparent text-black placeholder:text-neutral-700'
@@ -445,7 +500,7 @@
         <!-- IS ADD OUTCOME ACTIVE -->
         <div
           *ngIf="isAddOutcomeActive"
-          class="w-full h-[230px] pt-1 px-1 border border-neutral-900"
+          class="w-full h-[222px] pt-1 px-1 border border-neutral-900"
         >
           <div class="mt-1 mb-2 flex justify-between" [formGroup]="outcomeForm">
             <input
@@ -461,7 +516,7 @@
               name=""
               id=""
               placeholder="Description"
-              class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2"
+              class="text-xs border border-neutral-500 rounded-md px-2 h-6 flex-grow ml-2 w-[57%]"
             />
           </div>
           <div class="h-[65%] overflow-auto modifscrollbar mb-2">

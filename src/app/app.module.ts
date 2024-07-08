@@ -19,6 +19,7 @@ import { NewsDetailComponent } from './pages/news/news-detail/news-detail.compon
 import { IncomeService } from './pages/financial/income.service';
 import { OutcomeService } from './pages/financial/outcome.service';
 import { ToastService } from './services/toast.service';
+import { CurrencyFormatPipe } from './core/pipe/currency-format.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ToastService } from './services/toast.service';
     CongregationComponent,
     DashboardComponent,
     NewsDetailComponent,
+    CurrencyFormatPipe
   ],
   imports: [
     BrowserModule,
