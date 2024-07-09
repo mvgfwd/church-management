@@ -47,7 +47,8 @@
     background-color: transparent;
   }
   to {
-    transform: translateX(5px);
+    transform: translateX(4px);
+    scale: 1.15;
   }
 }
 

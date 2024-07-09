@@ -122,7 +122,9 @@ export class IncomeService {
         this.PaginationIncomeList.totalItemsPerPage
     );
 
-    this.PaginationIncomeList.currentPage === this.PaginationIncomeList.lastPage
+    this.PaginationIncomeList.currentPage ===
+      this.PaginationIncomeList.lastPage ||
+    this.PaginationIncomeList.lastPage === 0
       ? (this.PaginationIncomeList.hasNext = false)
       : (this.PaginationIncomeList.hasNext = true);
 

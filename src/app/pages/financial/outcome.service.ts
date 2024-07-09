@@ -49,7 +49,8 @@ export class OutcomeService {
     );
 
     this.PaginationOutcomeList.currentPage ===
-    this.PaginationOutcomeList.lastPage
+      this.PaginationOutcomeList.lastPage ||
+    this.PaginationOutcomeList.lastPage === 0
       ? (this.PaginationOutcomeList.hasNext = false)
       : (this.PaginationOutcomeList.hasNext = true);
 

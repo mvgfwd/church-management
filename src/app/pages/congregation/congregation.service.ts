@@ -133,7 +133,8 @@ export class CongregationService {
     );
 
     this.PaginationCongregationList.currentPage ===
-    this.PaginationCongregationList.lastPage
+      this.PaginationCongregationList.lastPage ||
+    this.PaginationCongregationList.lastPage === 0
       ? (this.PaginationCongregationList.hasNext = false)
       : (this.PaginationCongregationList.hasNext = true);
 
@@ -151,12 +152,13 @@ export class CongregationService {
     userReq.page! > 1
       ? (this.PaginationCongregationList.hasPrev = true)
       : (this.PaginationCongregationList.hasPrev = false);
-    userReq.page! === this.PaginationCongregationList.lastPage
-      ? (this.PaginationCongregationList.hasNext = false)
-      : (this.PaginationCongregationList.hasNext = true);
     this.PaginationCongregationList.lastPage = Math.ceil(
       this.PaginationCongregationList.data.length / userReq.size!
     );
+    userReq.page! === this.PaginationCongregationList.lastPage ||
+    this.PaginationCongregationList.lastPage === 0
+      ? (this.PaginationCongregationList.hasNext = false)
+      : (this.PaginationCongregationList.hasNext = true);
     // DUMMY PERDATAAN
     const start = (curPage - 1) * userReq.size!;
     const end = start + userReq.size!;

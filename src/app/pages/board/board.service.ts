@@ -151,7 +151,9 @@ export class BoardService {
         this.PaginationBoardList.totalItemsPerPage
     );
 
-    this.PaginationBoardList.currentPage === this.PaginationBoardList.lastPage
+    this.PaginationBoardList.currentPage ===
+      this.PaginationBoardList.lastPage ||
+    this.PaginationBoardList.lastPage === 0
       ? (this.PaginationBoardList.hasNext = false)
       : (this.PaginationBoardList.hasNext = true);
 

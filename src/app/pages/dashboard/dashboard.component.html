@@ -68,21 +68,45 @@
     <div class="w-[65%] h-full flex flex-col justify-between">
       <!-- BERITA -->
       <div
-        class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col justify-between"
+        class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col"
       >
         <!-- JUDUL BERITA DAN VIEW MORE -->
-        <div class="flex flex-row justify-between">
+        <div class="flex flex-row justify-between mb-4">
           <span class="font-nunito font-extrabold">Berita</span>
           <span
             [routerLink]="'../news'"
-            class="font-nunito text-xs flex items-center hover:text-cm-blue-500 hover:scale-105 duration-100 cursor-pointer"
+            class="font-nunito text-xs flex items-center text-neutral-500 hover:text-cm-blue-500 hover:scale-105 duration-100 cursor-pointer"
             >more news
             <i-feather
-              name="arrow-right"
-              style="height: 14px; width: 14px"
+              name="chevron-right"
+              style="height: 16px; width: 16px"
               class="ml-1 mt-0.5"
             ></i-feather
           ></span>
+        </div>
+        <!-- ISI BERITA -->
+        <div *ngIf="newsList$ | async as newsData" class="h-full overflow-auto">
+          <div
+            *ngFor="let news of newsData; let i = index"
+            class="bg-cm-blue-500 pl-4 pr-2 py-2 flex justify-between text-neutral-800 items-center"
+            [ngClass]="i % 2 === 0 ? 'bg-opacity-20' : 'bg-opacity-5'"
+          >
+            <div class="text-sm">
+              <span class="mr-2">{{ news.title }}</span>
+              <span class="text-xs font-nunito font-bold text-neutral-600"
+                >({{ news.publishedDate | date : "shortDate" }})</span
+              >
+            </div>
+            <span
+              [routerLink]="'../news/' + news.id"
+              class="text-xs text-neutral-500 flex cursor-pointer hover:text-cm-blue-500"
+              >selengkapnya
+              <i-feather
+                name="chevron-right"
+                style="height: 16px; width: 16px"
+              ></i-feather
+            ></span>
+          </div>
         </div>
       </div>
 
@@ -90,7 +114,20 @@
       <div
         class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col justify-between"
       >
-        <span class="font-nunito font-extrabold">Anggota Majelis</span>
+        <!-- JUDUL BERITA DAN VIEW MORE -->
+        <div class="flex flex-row justify-between">
+          <span class="font-nunito font-extrabold">Anggota Majelis</span>
+          <span
+            [routerLink]="'../board'"
+            class="font-nunito text-xs flex items-center text-neutral-500 hover:text-cm-blue-500 hover:scale-105 duration-100 cursor-pointer"
+            >more
+            <i-feather
+              name="chevron-right"
+              style="height: 16px; width: 16px"
+              class="ml-1 mt-0.5"
+            ></i-feather
+          ></span>
+        </div>
       </div>
     </div>
 

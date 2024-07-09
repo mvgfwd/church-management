@@ -71,12 +71,12 @@
             l && i % 2 !== 0
               ? 'bg-cm-blue-500 bg-opacity-10 border'
               : l
-              ? 'border border-t-0 border-b-cm-blue-500'
+              ? 'border border-t-0'
               : i % 2 === 0
               ? ''
               : 'bg-cm-blue-500 bg-opacity-10'
           "
-          class="grid grid-cols-12 text-xs text-neutral-800 py-1"
+          class="grid grid-cols-12 text-xs text-neutral-700 py-1"
         >
           <div class="col-start-1 col-end-3 flex items-center mx-1 text-sm">
             <span *ngIf="idOnEdit !== board.id" class="ml-2 py-1">{{

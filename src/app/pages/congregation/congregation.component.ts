@@ -250,15 +250,6 @@ export class CongregationComponent implements OnInit {
   // PAGINATION FUNCTION SUPPORT
   onClickChangePage(page: number) {
     this.userReq.page = page;
-    this.congreService
-      .getCongregationListObs(this.userReq)
-      .pipe(
-        map((e) => {
-          this.congregationList = of(e);
-        })
-      )
-      .subscribe();
-    // this.userReq.page = page;
-    // this.getWebMobileList();
+    this.retrieveCongregationData();
   }
 }
