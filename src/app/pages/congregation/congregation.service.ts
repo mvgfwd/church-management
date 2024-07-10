@@ -172,6 +172,7 @@ export class CongregationService {
       ...data,
       id: this.PaginationCongregationList.data.length + 1,
     });
+    this.PaginationCongregationList.totalItems = this.PaginationCongregationList.data.length;
     return of(result);
   }
 
@@ -183,6 +184,7 @@ export class CongregationService {
     );
     const spliced = this.PaginationCongregationList.data.splice(index, 1);
     const result = { ...this.PaginationCongregationList, spliced };
+    this.PaginationCongregationList.totalItems = this.PaginationCongregationList.data.length;
     return of(result);
   }
 

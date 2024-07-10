@@ -1,5 +1,5 @@
 <div class="relative rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
-  <div class="flex justify-between mb-6">
+  <div class="flex justify-between mb-4">
     <span class="font-bold text-lg">Anggota Majelis</span>
     <app-button
       (click)="idOnEdit = undefined; isAddMode = !isAddMode"
@@ -20,7 +20,7 @@
   </div>
 
   <!-- TABLE -->
-  <div class="relative mt-6 h-[90%]">
+  <div class="relative flex flex-col h-[90%]">
     <!-- TABLE HEAD -->
     <div
       class="grid grid-cols-12 h-9 rounded-t-lg text-xs font-semibold text-white bg-cm-blue-400"
@@ -57,7 +57,7 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="boardList$ | async as boardList"
-      class="lg:h-fit h-[80%] overflow-auto modifscrollbar border border-cm-blue-500"
+      class="h-[82%] overflow-auto modifscrollbar border border-cm-blue-500"
       [ngClass]="isAddMode ? 'border-0' : ''"
     >
       <form
@@ -92,7 +92,7 @@
           </div>
           <div class="col-start-3 col-end-4 flex items-center mx-1 ml-3">
             <span *ngIf="idOnEdit !== board.id" class=""
-              >{{ ageCalculate(board.birthDate) }} Tahun</span
+              >{{ beautiParseSvc.ageCalculate(board.birthDate) }} Tahun</span
             >
           </div>
           <div class="col-start-4 col-end-6 flex items-center mx-1 ml-2">
@@ -135,7 +135,7 @@
           </div>
           <div class="col-start-10 col-end-11 flex items-center mx-1 ml-5">
             <span *ngIf="idOnEdit !== board.id" class="font-semibold">{{
-              beautifyFungsi(board.fungsi)
+              beautiParseSvc.beautifyFungsi(board.fungsi)
             }}</span>
             <select
               *ngIf="idOnEdit == board.id"
@@ -148,13 +148,13 @@
                 [value]="option"
                 class="text-xs"
               >
-                {{ beautifyFungsi(option) }}
+                {{ beautiParseSvc.beautifyFungsi(option) }}
               </option>
             </select>
           </div>
           <div class="col-start-11 col-end-12 flex items-center mx-1 ml-3">
             <span *ngIf="idOnEdit !== board.id" class="">{{
-              beautifyStatus(board.status)
+              beautiParseSvc.beautifyStatus(board.status)
             }}</span>
             <select
               *ngIf="idOnEdit === board.id"
@@ -167,7 +167,7 @@
                 [value]="opt"
                 class="text-xs"
               >
-                {{ beautifyStatus(opt) }}
+                {{ beautiParseSvc.beautifyStatus(opt) }}
               </option>
             </select>
           </div>
@@ -260,7 +260,7 @@
               [value]="option"
               class="text-xs"
             >
-              {{ beautifyFungsi(option) }}
+              {{ beautiParseSvc.beautifyFungsi(option) }}
             </option>
           </select>
         </div>
@@ -275,7 +275,7 @@
               [value]="opt"
               class="text-xs"
             >
-              {{ beautifyStatus(opt) }}
+              {{ beautiParseSvc.beautifyStatus(opt) }}
             </option>
           </select>
         </div>

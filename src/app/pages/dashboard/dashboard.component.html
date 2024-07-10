@@ -1,23 +1,23 @@
 <div class="calcHeight flex flex-col">
   <!-- BARIS 1 -->
-  <div class="flex justify-between">
+  <div class="flex justify-between h-[25%]">
     <!-- JUMLAH JEMAAT -->
     <div
-      class="border h-[120px] w-[24%] bg-white shadow-lg rounded-xl p-4 pr-6 flex flex-col justify-between"
+      class="border h-full w-[24%] bg-white shadow-lg rounded-xl p-4 pr-6 flex flex-col justify-between"
     >
       <div class="flex justify-between items-center">
         <span class="text-lg font-semibold">Jumlah Jemaat</span>
         <span class="text-xs font-light">2024</span>
       </div>
       <div class="flex items-end justify-between">
-        <span class="text-lg font-nunito font-extrabold">12.555</span>
+        <span class="text-lg font-nunito font-extrabold" *ngIf="congreTotal | async as total">{{total}}</span>
         <span class="text-4xl">👥</span>
       </div>
     </div>
 
     <!-- UANG MASUK -->
     <div
-      class="border h-[120px] w-[24%] bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between"
+      class="border h-full w-[24%] bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between"
     >
       <div class="flex justify-between items-center">
         <span class="text-lg font-semibold">Uang Masuk</span>
@@ -33,7 +33,7 @@
 
     <!-- UANG KELUAR -->
     <div
-      class="border h-[120px] w-[24%] bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between"
+      class="border h-full w-[24%] bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between"
     >
       <div class="flex justify-between items-center">
         <span class="text-lg font-semibold">Uang Keluar</span>
@@ -49,7 +49,7 @@
 
     <!-- SALDO -->
     <div
-      class="border h-[120px] w-[24%] bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between"
+      class="border h-full w-[24%] bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between"
     >
       <div class="flex justify-between items-center">
         <span class="text-lg font-semibold">Saldo</span>
@@ -63,15 +63,15 @@
   </div>
 
   <!-- BARIS 2 -->
-  <div class="w-full flex flex-grow mt-4 justify-between">
+  <div class="w-full h-[75%] flex flex-grow mt-3 justify-between">
     <!-- BERITA & ANGGOTA MAJELIS -->
-    <div class="w-[65%] h-full flex flex-col justify-between">
+    <div class="w-[65%] flex flex-col justify-between">
       <!-- BERITA -->
       <div
         class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col"
       >
         <!-- JUDUL BERITA DAN VIEW MORE -->
-        <div class="flex flex-row justify-between mb-4">
+        <div class="flex flex-row justify-between mb-3">
           <span class="font-nunito font-extrabold">Berita</span>
           <span
             [routerLink]="'../news'"
@@ -85,14 +85,14 @@
           ></span>
         </div>
         <!-- ISI BERITA -->
-        <div *ngIf="newsList$ | async as newsData" class="h-full overflow-auto">
+        <div *ngIf="newsList$ | async as newsData" class="h-full overflow-auto modifscrollbar">
           <div
             *ngFor="let news of newsData; let i = index"
             class="bg-cm-blue-500 pl-4 pr-2 py-2 flex justify-between text-neutral-800 items-center"
             [ngClass]="i % 2 === 0 ? 'bg-opacity-20' : 'bg-opacity-5'"
           >
             <div class="text-sm">
-              <span class="mr-2">{{ news.title }}</span>
+              <span class="mr-3">{{ news.title }}</span>
               <span class="text-xs font-nunito font-bold text-neutral-600"
                 >({{ news.publishedDate | date : "shortDate" }})</span
               >
@@ -115,7 +115,7 @@
         class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col justify-between"
       >
         <!-- JUDUL BERITA DAN VIEW MORE -->
-        <div class="flex flex-row justify-between">
+        <div class="flex flex-row justify-between mb-3">
           <span class="font-nunito font-extrabold">Anggota Majelis</span>
           <span
             [routerLink]="'../board'"
@@ -127,6 +127,23 @@
               class="ml-1 mt-0.5"
             ></i-feather
           ></span>
+        </div>
+        <!-- ISI MAJELIS/BOARD -->
+        <div *ngIf="boardList$ | async as boardData" class="h-full overflow-auto modifscrollbar">
+          <div
+            *ngFor="let board of boardData; let i = index"
+            class="bg-cm-blue-500 pl-4 pr-2 py-2 text-neutral-800 items-center grid grid-cols-12"
+            [ngClass]="i % 2 === 0 ? 'bg-opacity-20' : 'bg-opacity-5'"
+          >
+            <span class="text-xs mx-1 col-start-1 col-end-5 flex">{{board.name}}</span>
+            <span
+              [routerLink]="'../news/' + board.id"
+              class="text-xs mx-1 col-start-5 col-end-8 text-neutral-600 flex"
+              >{{beautiParseSvc.ageCalculate(board.birthDate) + " tahun"}}
+            </span>
+            <span class="text-xs mx-1 col-start-8 col-end-11 flex font-nunito font-semibold">{{beautiParseSvc.beautifyFungsi(board.fungsi)}}</span>
+            <span class="text-xs mx-1 col-start-11 col-end-13 flex">{{beautiParseSvc.beautifyStatus(board.status)}}</span>
+          </div>
         </div>
       </div>
     </div>

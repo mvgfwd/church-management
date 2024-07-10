@@ -21,6 +21,7 @@ import { OutcomeService } from './pages/financial/outcome.service';
 import { ToastService } from './services/toast.service';
 import { CurrencyFormatPipe } from './core/pipe/currency-format.pipe';
 import { NumberFormatPipe } from './core/pipe/number-no-rp.pipe';
+import { BeautifyParseService } from './services/beautify-parse.service';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { NumberFormatPipe } from './core/pipe/number-no-rp.pipe';
     NewsService,
     IncomeService,
     OutcomeService,
+    BeautifyParseService
   ],
   bootstrap: [AppComponent],
 })

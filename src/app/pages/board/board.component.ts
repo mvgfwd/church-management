@@ -16,6 +16,7 @@ import {
 } from '@angular/animations';
 import { ToastService } from 'src/app/services/toast.service';
 import { UserRequest } from 'src/app/core/dto/user-request.dto';
+import { BeautifyParseService } from 'src/app/services/beautify-parse.service';
 
 @Component({
   selector: 'app-board',
@@ -171,7 +172,8 @@ export class BoardComponent {
 
   constructor(
     private boardService: BoardService,
-    private toastSvc: ToastService
+    private toastSvc: ToastService,
+    public beautiParseSvc: BeautifyParseService
   ) {
     this.retrieveBoardData();
   }
@@ -287,67 +289,6 @@ export class BoardComponent {
       id: board.id,
       age: board.age,
     });
-  }
-
-  ageCalculate(birthDate: string): number {
-    const convertAge = new Date(birthDate);
-    const timeDiff = Math.abs(Date.now() - convertAge.getTime());
-    const result = Math.floor(timeDiff / (1000 * 3600 * 24) / 365);
-    return result;
-  }
-
-  beautifyFungsi(str: string): string {
-    let result: string = '';
-    switch (str) {
-      case 'PENDETA':
-        result = 'Pendeta';
-        break;
-      case 'CALON_PENDETA':
-        result = 'C.Pdt';
-        break;
-      case 'SINTUA':
-        result = 'Sintua';
-        break;
-      case 'CALON_SINTUA':
-        result = 'C.St';
-        break;
-      case 'BIBELVROUW':
-        result = 'Bibelvrouw';
-        break;
-      case 'GURU_HURIA':
-        result = 'Guru Huria';
-        break;
-      case 'DIAGONES':
-        result = 'Diagones';
-        break;
-      case 'STAFF':
-        result = 'Staff';
-        break;
-      case 'CALON_DIAGONES':
-        result = 'C.Diagones';
-        break;
-      default:
-        result = '###';
-    }
-    return result;
-  }
-
-  beautifyStatus(stat: string): string {
-    let result = '';
-    switch (stat) {
-      case 'PENDIDIKAN':
-        result = 'Pendidikan';
-        break;
-      case 'ACTIVE':
-        result = 'Active';
-        break;
-      case 'PENSIUN':
-        result = 'Pensiun';
-        break;
-      default:
-        result = '###';
-    }
-    return result;
   }
 
   onClickChangePage(page: number) {

@@ -1,5 +1,5 @@
 <div class="relative rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
-  <div class="flex justify-between mb-6">
+  <div class="flex justify-between mb-4">
     <span class="font-bold text-lg">Anggota Jemaat</span>
     <app-button
       (click)="idOnEdit = undefined; isAddMode = !isAddMode"
@@ -20,7 +20,7 @@
   </div>
 
   <!-- TABLE -->
-  <div class="relative mt-6 h-[90%]">
+  <div class="relative flex flex-col h-[90%]">
     <!-- TABLE HEAD -->
     <div
       class="grid grid-cols-12 h-9 rounded-t-lg text-xs font-semibold text-white bg-cm-blue-400"
@@ -51,7 +51,7 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="congregationList | async as congreData"
-      class="lg:h-fit h-[80%] overflow-auto modifscrollbar border border-cm-blue-500"
+      class="h-[82%] overflow-auto modifscrollbar border border-cm-blue-500"
       [ngClass]="isAddMode ? 'border-0' : ''"
     >
       <form
