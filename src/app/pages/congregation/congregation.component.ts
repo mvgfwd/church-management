@@ -170,14 +170,11 @@ export class CongregationComponent implements OnInit {
   onClickDelete(id: number) {
     this.congreService
       .deleteCongregationById(id)
-      .pipe(
-        map((e) => {
-          this.retrieveCongregationData();
-        })
-      )
+      .pipe(map((e) => {}))
       .pipe(
         tap<void>({
           next: () => {
+            this.retrieveCongregationData();
             this.toastSvc.deleteSuccessNotif('Jemaat');
           },
           error: (e) => {
@@ -251,5 +248,23 @@ export class CongregationComponent implements OnInit {
   onClickChangePage(page: number) {
     this.userReq.page = page;
     this.retrieveCongregationData();
+  }
+
+  onClickFilter(name: string) {
+    if (name === '') {
+      this.userReq.page = 1;
+      this.retrieveCongregationData();
+      return;
+    }
+    this.congreService
+      .searchCongregationObs(name)
+      .pipe(
+        map((e) => {
+          this.congregationList = of(e);
+          this.totalPage = Array.from({ length: e.lastPage }, (_, i) => i);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 }

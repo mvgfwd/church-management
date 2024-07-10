@@ -269,7 +269,10 @@ export class BoardComponent {
       .pipe(map((e) => {}))
       .pipe(
         tap<void>({
-          next: () => this.toastSvc.deleteSuccessNotif('Majelis'),
+          next: () => {
+            this.toastSvc.deleteSuccessNotif('Majelis');
+            this.retrieveBoardData();
+          },
           error: (e) => this.toastSvc.deleteFailNotif('majelis'),
         })
       )
@@ -302,7 +305,23 @@ export class BoardComponent {
       )
       .pipe(take(1))
       .subscribe();
-    // this.userReq.page = page;
-    // this.getWebMobileList();
+  }
+
+  async onClickFilter(str: string) {
+    if (str === '') {
+      this.userReq.page = 1;
+      this.retrieveBoardData();
+      return;
+    }
+    this.boardService
+      .searchBoardObs(str)
+      .pipe(
+        map((e) => {
+          this.boardList$ = of(e);
+          this.totalPage = Array.from({ length: e.lastPage }, (_, i) => i);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 }

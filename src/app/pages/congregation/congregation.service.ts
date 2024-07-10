@@ -7,11 +7,6 @@ import { HttpService } from 'src/app/services/http.service';
 
 @Injectable()
 export class CongregationService {
-  // DUMMY DATA FUNCTION
-  totalItems(): number {
-    return this.PaginationCongregationList.data.length;
-  }
-
   // DUMMY DATA
   PaginationCongregationList: PaginationResultDTO<CongregationDTO> = {
     currentPage: 1,
@@ -36,7 +31,7 @@ export class CongregationService {
       },
       {
         id: 2,
-        name: 'ir. Ricky Marnaek Sibarani',
+        name: 'Riko Manalu',
         age: 23,
         birthDate: '1977-05-28',
         address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
@@ -68,7 +63,7 @@ export class CongregationService {
       },
       {
         id: 6,
-        name: 'ir. Ricky Marnaek Sibarani',
+        name: 'Agape Sianturi',
         age: 23,
         birthDate: '1977-05-28',
         address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
@@ -84,7 +79,7 @@ export class CongregationService {
       },
       {
         id: 8,
-        name: 'ir. Ricky Marnaek Sibarani',
+        name: 'ir. Rocky Marnaek Sibarani',
         age: 23,
         birthDate: '1977-05-28',
         address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
@@ -116,7 +111,7 @@ export class CongregationService {
       },
       {
         id: 12,
-        name: 'ir. Ricky Marnaek Sibarani',
+        name: 'Lamhot Sihotang',
         age: 23,
         birthDate: '1977-11-28',
         address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
@@ -172,7 +167,8 @@ export class CongregationService {
       ...data,
       id: this.PaginationCongregationList.data.length + 1,
     });
-    this.PaginationCongregationList.totalItems = this.PaginationCongregationList.data.length;
+    this.PaginationCongregationList.totalItems =
+      this.PaginationCongregationList.data.length;
     return of(result);
   }
 
@@ -184,7 +180,8 @@ export class CongregationService {
     );
     const spliced = this.PaginationCongregationList.data.splice(index, 1);
     const result = { ...this.PaginationCongregationList, spliced };
-    this.PaginationCongregationList.totalItems = this.PaginationCongregationList.data.length;
+    this.PaginationCongregationList.totalItems =
+      this.PaginationCongregationList.data.length;
     return of(result);
   }
 
@@ -197,5 +194,37 @@ export class CongregationService {
     const updatedData = (this.PaginationCongregationList.data[index] = data);
     const result = { ...this.PaginationCongregationList, updatedData };
     return of(result);
+  }
+
+  searchCongregationObs(
+    name: string
+  ): Observable<PaginationResultDTO<CongregationDTO>> {
+    let nameArr: string[] = [];
+    this.PaginationCongregationList.data.map((item) =>
+      nameArr.push(item.name.toLowerCase())
+    );
+    const likelyName = this.findMostLikelyMatches(name.toLowerCase(), nameArr);
+    let congregationRes: CongregationDTO[] = [];
+    likelyName.map((str) => {
+      const filteredCongregation = this.PaginationCongregationList.data.filter(
+        (item) => item.name.toLowerCase() === str
+      );
+      congregationRes = filteredCongregation;
+    });
+    const res = { ...this.PaginationCongregationList, data: congregationRes };
+    res.lastPage = Math.ceil(res.data.length / res.totalItemsPerPage);
+    res.lastPage === 1 ? (res.hasNext = false) : (res.hasNext = true);
+    res.currentPage = 1;
+    res.hasPrev = false;
+    console.log(res);
+    return of(res);
+  }
+
+  findMostLikelyMatches(query: string, data: string[]): string[] {
+    if (!query) return [];
+    const matches = data.filter((str) =>
+      str.toLowerCase().includes(query.toLowerCase())
+    );
+    return matches;
   }
 }

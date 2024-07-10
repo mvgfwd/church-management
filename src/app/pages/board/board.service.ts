@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { filter, last, Observable, of } from 'rxjs';
 import { BoardDTO, CongregationDTO } from 'src/app/core/dto/congregation.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 import { UserRequest } from 'src/app/core/dto/user-request.dto';
@@ -7,8 +7,6 @@ import { HttpService } from 'src/app/services/http.service';
 
 @Injectable()
 export class BoardService {
-  // DUMMY DATA FUNCTION
-
   // DUMMY DATA
   PaginationBoardList: PaginationResultDTO<BoardDTO> = {
     currentPage: 1,
@@ -35,7 +33,7 @@ export class BoardService {
       },
       {
         id: 2,
-        name: 'ir. Ricky Marnaek Sibarani',
+        name: 'ir. Ricky Gerung',
         age: 23,
         birthDate: '1987-10-25',
         address: 'Jl. 881 Camilla Manor, Corkeryberg, GA 05925-1871',
@@ -105,7 +103,7 @@ export class BoardService {
       },
       {
         id: 9,
-        name: 'ir. Ricky Marnaek Sibarani',
+        name: 'ir. Juan Sibarani',
         age: 23,
         birthDate: '1977-10-25',
         address: 'Jl Kembang Abadi 7 Bl A-14/14, Dki Jakarta',
@@ -170,7 +168,8 @@ export class BoardService {
     userReq.page! > 1
       ? (this.PaginationBoardList.hasPrev = true)
       : (this.PaginationBoardList.hasPrev = false);
-    userReq.page! === this.PaginationBoardList.lastPage
+    userReq.page! === this.PaginationBoardList.lastPage ||
+    this.PaginationBoardList.lastPage === 0
       ? (this.PaginationBoardList.hasNext = false)
       : (this.PaginationBoardList.hasNext = true);
     this.PaginationBoardList.lastPage = Math.ceil(
@@ -198,6 +197,10 @@ export class BoardService {
     const index = this.PaginationBoardList.data.findIndex((e) => e.id === id);
     const spliced = this.PaginationBoardList.data.splice(index, 1);
     const result = { ...this.PaginationBoardList, spliced };
+    this.PaginationBoardList.lastPage = Math.ceil(
+      this.PaginationBoardList.data.length /
+        this.PaginationBoardList.totalItemsPerPage
+    );
     return of(result);
   }
 
@@ -208,5 +211,34 @@ export class BoardService {
     const updatedData = (this.PaginationBoardList.data[index] = data);
     const result = { ...this.PaginationBoardList, updatedData };
     return of(result);
+  }
+
+  searchBoardObs(name: string): Observable<PaginationResultDTO<BoardDTO>> {
+    let nameArr: string[] = [];
+    this.PaginationBoardList.data.map((item) =>
+      nameArr.push(item.name.toLowerCase())
+    );
+    const likelyName = this.findMostLikelyMatches(name.toLowerCase(), nameArr);
+    let boardRes: BoardDTO[] = [];
+    likelyName.map((str) => {
+      const filteredBoard = this.PaginationBoardList.data.filter(
+        (item) => item.name.toLowerCase() === str
+      );
+      boardRes = filteredBoard;
+    });
+    const res = { ...this.PaginationBoardList, data: boardRes };
+    res.lastPage = Math.ceil(res.data.length / res.totalItemsPerPage);
+    res.lastPage === 1 ? (res.hasNext = false) : (res.hasNext = true);
+    res.currentPage = 1;
+    res.hasPrev = false;
+    return of(res);
+  }
+
+  findMostLikelyMatches(query: string, data: string[]): string[] {
+    if (!query) return [];
+    const matches = data.filter((str) =>
+      str.toLowerCase().includes(query.toLowerCase())
+    );
+    return matches;
   }
 }

@@ -254,7 +254,8 @@ export class FinancialComponent implements OnInit {
       .pipe(
         tap<void>({
           next: () => {
-            this.incomeForm.reset();
+            this.incomeForm.controls.dateIncome.reset();
+            this.incomeForm.controls.description?.reset();
             this.toastSvc.addSuccessNotif('Income data');
           },
           error: (e) => {
@@ -291,7 +292,8 @@ export class FinancialComponent implements OnInit {
       .pipe(
         tap<void>({
           next: () => {
-            this.outcomeForm.reset();
+            this.outcomeForm.controls.dateOutcome.reset();
+            this.outcomeForm.controls.description?.reset();
             this.toastSvc.addSuccessNotif('Outcome data');
           },
           error: (e) => {

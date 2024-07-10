@@ -7,6 +7,8 @@ import { BoardService } from '../board/board.service';
 import { BoardDTO } from 'src/app/core/dto/congregation.dto';
 import { BeautifyParseService } from 'src/app/services/beautify-parse.service';
 import { CongregationService } from '../congregation/congregation.service';
+import { IncomeService } from '../financial/income.service';
+import { OutcomeService } from '../financial/outcome.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +18,9 @@ import { CongregationService } from '../congregation/congregation.service';
 export class DashboardComponent {
   newsList$: Observable<NewsDTO[]> | undefined;
   boardList$: Observable<BoardDTO[]> | undefined;
-  congreTotal: Observable<number> = of(0);
+  congreTotal: number = 0;
+  incomeNominal$: Observable<number> = of(0);
+  outcomeNominal$: Observable<number> = of(0);
   userReq: UserRequest = {
     size: 5,
     page: 1,
@@ -24,10 +28,13 @@ export class DashboardComponent {
   };
 
   constructor(
-    private newsSvc: NewsService, 
-    private boardSvc: BoardService, 
+    private newsSvc: NewsService,
+    private boardSvc: BoardService,
     public beautiParseSvc: BeautifyParseService,
-    private congreSvc: CongregationService ) {
+    private congreSvc: CongregationService,
+    private incomeSvc: IncomeService,
+    private outcomeSvc: OutcomeService
+  ) {
     this.newsSvc
       .getNewsListObs(this.userReq)
       .pipe(
@@ -38,16 +45,28 @@ export class DashboardComponent {
       .pipe(take(1))
       .subscribe();
 
-      this.boardSvc.getBoardListObs(this.userReq)
-      .pipe(map( e => {
-        this.boardList$ = of(e.data);
-      }))
+    this.boardSvc
+      .getBoardListObs(this.userReq)
+      .pipe(
+        map((e) => {
+          this.boardList$ = of(e.data);
+        })
+      )
       .pipe(take(1))
       .subscribe();
 
-      this.congreSvc.getCongregationListObs({size: 1})
-      .pipe(map( e => this.congreTotal = of(e.totalItems)))
+    this.congreSvc
+      .getCongregationListObs({ size: 1 })
+      .pipe(map((e) => (this.congreTotal = e.totalItems)))
       .pipe(take(1))
       .subscribe();
+
+    this.incomeNominal$ = of(
+      this.incomeSvc.countIncomeByCategory('All Category')
+    );
+
+    this.outcomeNominal$ = of(
+      this.outcomeSvc.countOutcomeByCategory('All Category')
+    );
   }
 }

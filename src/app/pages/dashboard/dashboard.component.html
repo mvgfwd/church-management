@@ -10,7 +10,9 @@
         <span class="text-xs font-light">2024</span>
       </div>
       <div class="flex items-end justify-between">
-        <span class="text-lg font-nunito font-extrabold" *ngIf="congreTotal | async as total">{{total}}</span>
+        <span class="text-lg font-nunito font-extrabold">{{
+          congreTotal
+        }}</span>
         <span class="text-4xl">👥</span>
       </div>
     </div>
@@ -24,8 +26,10 @@
         <span class="text-xs font-light">Jan 2024</span>
       </div>
       <div class="flex items-end justify-between">
-        <span class="text-lg font-nunito font-extrabold text-cm-green-500"
-          >Rp200.000.000,-</span
+        <span
+          *ngIf="incomeNominal$ | async as incomeNom"
+          class="text-lg font-nunito font-extrabold text-cm-green-700"
+          >{{ incomeNom | currencyFormat }}</span
         >
         <span class="text-4xl">💵</span>
       </div>
@@ -40,8 +44,10 @@
         <span class="text-xs font-light">Jan 2024</span>
       </div>
       <div class="flex items-end justify-between">
-        <span class="text-lg font-nunito font-extrabold text-red-600"
-          >Rp120.000.000,-</span
+        <span
+          *ngIf="outcomeNominal$ | async as outcomeNom"
+          class="text-lg font-nunito font-extrabold text-red-800"
+          >{{ outcomeNom | currencyFormat }}</span
         >
         <span class="text-4xl">💸</span>
       </div>
@@ -55,8 +61,15 @@
         <span class="text-lg font-semibold">Saldo</span>
         <span class="text-xs font-light">Jan 2024</span>
       </div>
-      <div class="flex items-end justify-between">
-        <span class="text-lg font-nunito font-extrabold">Rp80.000.000,-</span>
+      <div
+        *ngIf="outcomeNominal$ | async as outcNom"
+        class="flex items-end justify-between"
+      >
+        <span
+          *ngIf="incomeNominal$ | async as incNom"
+          class="text-lg font-nunito font-extrabold"
+          >{{ incNom - outcNom | currencyFormat }}</span
+        >
         <span class="text-4xl">💎</span>
       </div>
     </div>
@@ -66,11 +79,11 @@
   <div class="w-full h-[75%] flex flex-grow mt-3 justify-between">
     <!-- BERITA & ANGGOTA MAJELIS -->
     <div class="w-[65%] flex flex-col justify-between">
-      <!-- BERITA -->
+      <!-- SECTION BERITA -->
       <div
         class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col"
       >
-        <!-- JUDUL BERITA DAN VIEW MORE -->
+        <!-- JUDUL SECTION BERITA DAN VIEW MORE -->
         <div class="flex flex-row justify-between mb-3">
           <span class="font-nunito font-extrabold">Berita</span>
           <span
@@ -85,7 +98,10 @@
           ></span>
         </div>
         <!-- ISI BERITA -->
-        <div *ngIf="newsList$ | async as newsData" class="h-full overflow-auto modifscrollbar">
+        <div
+          *ngIf="newsList$ | async as newsData"
+          class="h-full overflow-auto modifscrollbar"
+        >
           <div
             *ngFor="let news of newsData; let i = index"
             class="bg-cm-blue-500 pl-4 pr-2 py-2 flex justify-between text-neutral-800 items-center"
@@ -110,11 +126,11 @@
         </div>
       </div>
 
-      <!-- BARIS 3 - ANGGOTA MAJELIS -->
+      <!-- SECTION BARIS 3 - ANGGOTA MAJELIS -->
       <div
         class="flex w-full border h-[49%] bg-white shadow-lg rounded-xl p-4 pr-6 flex-col justify-between"
       >
-        <!-- JUDUL BERITA DAN VIEW MORE -->
+        <!-- JUDUL SECTION MAJELIS DAN VIEW MORE -->
         <div class="flex flex-row justify-between mb-3">
           <span class="font-nunito font-extrabold">Anggota Majelis</span>
           <span
@@ -129,20 +145,30 @@
           ></span>
         </div>
         <!-- ISI MAJELIS/BOARD -->
-        <div *ngIf="boardList$ | async as boardData" class="h-full overflow-auto modifscrollbar">
+        <div
+          *ngIf="boardList$ | async as boardData"
+          class="h-full overflow-auto modifscrollbar"
+        >
           <div
             *ngFor="let board of boardData; let i = index"
             class="bg-cm-blue-500 pl-4 pr-2 py-2 text-neutral-800 items-center grid grid-cols-12"
             [ngClass]="i % 2 === 0 ? 'bg-opacity-20' : 'bg-opacity-5'"
           >
-            <span class="text-xs mx-1 col-start-1 col-end-5 flex">{{board.name}}</span>
             <span
-              [routerLink]="'../news/' + board.id"
+              class="text-xs mx-1 col-start-1 col-end-5 flex font-semibold text-neutral-700"
+              >{{ board.name }}</span
+            >
+            <span
               class="text-xs mx-1 col-start-5 col-end-8 text-neutral-600 flex"
-              >{{beautiParseSvc.ageCalculate(board.birthDate) + " tahun"}}
+              >{{ beautiParseSvc.ageCalculate(board.birthDate) + " tahun" }}
             </span>
-            <span class="text-xs mx-1 col-start-8 col-end-11 flex font-nunito font-semibold">{{beautiParseSvc.beautifyFungsi(board.fungsi)}}</span>
-            <span class="text-xs mx-1 col-start-11 col-end-13 flex">{{beautiParseSvc.beautifyStatus(board.status)}}</span>
+            <span
+              class="text-xs mx-1 col-start-8 col-end-11 flex font-nunito font-semibold"
+              >{{ beautiParseSvc.beautifyFungsi(board.fungsi) }}</span
+            >
+            <span class="text-xs mx-1 col-start-11 col-end-13 flex">{{
+              beautiParseSvc.beautifyStatus(board.status)
+            }}</span>
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@ import {
   Trash2,
   Package,
   ChevronRight,
+  Search,
 } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
@@ -34,6 +35,7 @@ const icons = {
   Trash2,
   Package,
   ChevronRight,
+  Search,
 };
 
 @NgModule({

@@ -1,22 +1,39 @@
 <div class="relative rounded-xl bg-white shadow-xl px-6 py-8 calcHeight">
   <div class="flex justify-between mb-4">
     <span class="font-bold text-lg">Anggota Jemaat</span>
-    <app-button
-      (click)="idOnEdit = undefined; isAddMode = !isAddMode"
-      color="tertiary"
-      ><i-feather
-        name="plus"
-        style="height: 14px; width: 14px"
-        class="mt-1 mr-1"
-        [ngClass]="
-          isAddMode === true
-            ? 'duration-300 rotate-45'
-            : 'duration-300 rotate-0'
-        "
-      ></i-feather>
-      <span *ngIf="!isAddMode">Jemaat</span>
-      <span *ngIf="isAddMode">Batal</span>
-    </app-button>
+    <div class="flex">
+      <div class="relative">
+        <input
+          type="text"
+          #searchInput
+          class="h-8 mr-1 pr-8 pl-2 w-36 rounded-lg border border-cm-green-600 focus:outline focus:outline-cm-green-400 text-sm text-cm-blue-800 placeholder:text-sda-neutral-500"
+          placeholder="Search name..."
+          (keydown.enter)="onClickFilter(searchInput.value)"
+        />
+        <i-feather
+          (click)="onClickFilter(searchInput.value)"
+          name="search"
+          class="absolute cursor-pointer hover:bg-cm-green-600 top-1 right-2 rounded-md text-white bg-cm-green-500 p-1"
+          style="height: 24px; width: 24px"
+        ></i-feather>
+      </div>
+      <app-button
+        (click)="idOnEdit = undefined; isAddMode = !isAddMode"
+        color="tertiary"
+        ><i-feather
+          name="plus"
+          style="height: 14px; width: 14px"
+          class="mt-1 mr-1"
+          [ngClass]="
+            isAddMode === true
+              ? 'duration-300 rotate-45'
+              : 'duration-300 rotate-0'
+          "
+        ></i-feather>
+        <span *ngIf="!isAddMode">Jemaat</span>
+        <span *ngIf="isAddMode">Batal</span>
+      </app-button>
+    </div>
   </div>
 
   <!-- TABLE -->
@@ -51,7 +68,7 @@
     <div
       [@slideInDown]="!isAddMode"
       *ngIf="congregationList | async as congreData"
-      class="h-[82%] overflow-auto modifscrollbar border border-cm-blue-500"
+      class="h-[82%] overflow-auto modifscrollbar"
       [ngClass]="isAddMode ? 'border-0' : ''"
     >
       <form
@@ -65,16 +82,16 @@
             let i = index;
             let l = last
           "
+          class="grid grid-cols-12 text-sm text-neutral-700 py-1 border border-x-cm-blue-500"
           [ngClass]="
             l && i % 2 !== 0
-              ? 'bg-cm-blue-500 bg-opacity-10 border'
+              ? 'bg-cm-blue-500 bg-opacity-10 border border-b-cm-bue-500 border-b-cm-blue-500'
               : l
               ? 'border border-t-0 border-b-cm-blue-500'
               : i % 2 === 0
               ? ''
-              : 'bg-cm-blue-500 bg-opacity-10'
+              : 'bg-cm-blue-500 bg-opacity-10 border-t-0 border-b-0'
           "
-          class="grid grid-cols-12 text-sm text-neutral-700 py-1"
         >
           <div class="col-start-1 col-end-4 flex items-center mx-1">
             <span *ngIf="idOnEdit !== congregation.id" class="ml-2 py-1">{{
