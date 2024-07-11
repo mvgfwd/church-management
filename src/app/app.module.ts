@@ -22,6 +22,7 @@ import { ToastService } from './services/toast.service';
 import { CurrencyFormatPipe } from './core/pipe/currency-format.pipe';
 import { NumberFormatPipe } from './core/pipe/number-no-rp.pipe';
 import { BeautifyParseService } from './services/beautify-parse.service';
+import { SharedService } from './services/shared-service.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { BeautifyParseService } from './services/beautify-parse.service';
     NewsService,
     IncomeService,
     OutcomeService,
-    BeautifyParseService
+    BeautifyParseService,
+    SharedService
   ],
   bootstrap: [AppComponent],
 })

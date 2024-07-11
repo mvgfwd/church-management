@@ -9,6 +9,7 @@ import { BeautifyParseService } from 'src/app/services/beautify-parse.service';
 import { CongregationService } from '../congregation/congregation.service';
 import { IncomeService } from '../financial/income.service';
 import { OutcomeService } from '../financial/outcome.service';
+import { SharedService } from 'src/app/services/shared-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +34,8 @@ export class DashboardComponent {
     public beautiParseSvc: BeautifyParseService,
     private congreSvc: CongregationService,
     private incomeSvc: IncomeService,
-    private outcomeSvc: OutcomeService
+    private outcomeSvc: OutcomeService,
+    private sharedSvc: SharedService
   ) {
     this.newsSvc
       .getNewsListObs(this.userReq)
@@ -68,5 +70,9 @@ export class DashboardComponent {
     this.outcomeNominal$ = of(
       this.outcomeSvc.countOutcomeByCategory('All Category')
     );
+  }
+
+  sendNavMenuStr(str: string){
+    this.sharedSvc.changeNavMenuActive(str);
   }
 }

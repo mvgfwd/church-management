@@ -69,20 +69,24 @@
       class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white"
     >
       <span class="font-semibold">Summary</span>
+      <div class="flex justify-around mt-5">
+        <app-button (onButtonClick)="isIncomeDetailShow = true">Income</app-button>
+        <app-button (onButtonClick)="isIncomeDetailShow = false">Outcome</app-button>
+      </div>
     </div>
   </div>
 
   <!-- DETAIL -->
   <div class="flex h-[68%] justify-between">
     <div
-      class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl w-[70%]"
+      class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl w-[60%] h-[100%]"
     >
       <span class="mt-4 mb-1 ml-4 font-semibold text-neutral-900"
         >Financial Detail</span
       >
-      <div class="flex mx-4 mb-4 justify-between h-full">
+      <div class="flex mx-4 mb-4 justify-between h-[100%] border-b">
         <!-- DETAIL INCOME -->
-        <div class="relative h-full w-[49%]">
+        <div *ngIf="isIncomeDetailShow" class="relative h-[100%] w-full">
           <span class="text-xs font-bold">Income</span>
           <!-- head table income -->
           <div
@@ -102,7 +106,7 @@
           <!-- body table JIKA incomeCategory bukan 'All Category' -->
           <div
             *ngIf="incomeCategory !== 'All Category'"
-            class="h-fit overflow-auto modifscrollbar border border-cm-green-700"
+            class="h-[70%] overflow-auto modifscrollbar border border-cm-green-700"
           >
             <div
               *ngIf="incomeListDetail$ | async as incList"
@@ -110,17 +114,17 @@
             >
               <div
                 *ngFor="let incData of incList.data; let i = index"
-                class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900"
+                class="grid grid-cols-10 text-sm pl-1.5 h-7 text-neutral-800"
                 [ngClass]="i % 2 !== 0 ? 'bg-cm-green-700 bg-opacity-10' : ''"
               >
-                <div class="flex items-center col-start-1 col-end-3 text-xs">
+                <div class="flex items-center col-start-1 col-end-3 text-xs font-nunito font-semibold">
                   {{ showSimpleDate(incData.dateIncome) }}
                 </div>
                 <div class="flex items-center col-start-3 col-end-5">
                   {{ incomeCategory }}
                 </div>
                 <div
-                  class="flex items-center col-start-5 col-end-7 pt-0.5 ml-5 font-nunito font-bold"
+                  class="flex items-center col-start-5 col-end-7 pt-0.5 ml-5 font-nunito font-bold text-neutral-700"
                 >
                   <span *ngIf="incomeCategory === 'Persembahan'">{{
                     +incData.incomeGive! | formatNum
@@ -270,7 +274,7 @@
         </div>
 
         <!-- DETAIL OUTCOME -->
-        <div class="relative h-full w-[49%]">
+        <div *ngIf="!isIncomeDetailShow" class="relative h-[100%] w-full">
           <span class="text-xs font-bold">Outcome</span>
           <!-- head table income -->
           <div
@@ -299,7 +303,7 @@
           <!-- body table JIKA outcomeCategory bukan 'All Category' -->
           <div
             *ngIf="outcomeCategory !== 'All Category'"
-            class="h-fit overflow-auto modifscrollbar border border-red-950"
+            class="h-[70%] overflow-auto modifscrollbar border border-red-950"
             [ngClass]="outcomeNominal === 0 ? 'border-0' : ''"
           >
             <div
@@ -308,7 +312,7 @@
             >
               <div
                 *ngFor="let outcData of outList.data; let i = index"
-                class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900"
+                class="grid grid-cols-10 text-sm pl-1.5 h-7 text-neutral-900"
                 [ngClass]="i % 2 !== 0 ? 'bg-red-700 bg-opacity-10' : ''"
               >
                 <div class="flex items-center col-start-1 col-end-3">
@@ -474,7 +478,7 @@
 
     <!-- INPUT -->
     <div
-      class="p-4 border border-brown-50 bg-white rounded-xl shadow-xl w-[29%] h-fit"
+      class="p-4 border border-brown-50 bg-white rounded-xl shadow-xl w-[39%] h-fit"
     >
       <div
         class="flex"

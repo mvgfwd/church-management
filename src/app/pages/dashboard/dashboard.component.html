@@ -88,6 +88,7 @@
           <span class="font-nunito font-extrabold">Berita</span>
           <span
             [routerLink]="'../news'"
+            (click)="sendNavMenuStr('Berita')"
             class="font-nunito text-xs flex items-center text-neutral-500 hover:text-cm-blue-500 hover:scale-105 duration-100 cursor-pointer"
             >more news
             <i-feather
@@ -115,6 +116,7 @@
             </div>
             <span
               [routerLink]="'../news/' + news.id"
+              (click)="sendNavMenuStr('Berita')"
               class="text-xs text-neutral-500 flex cursor-pointer hover:text-cm-blue-500"
               >selengkapnya
               <i-feather
@@ -134,6 +136,7 @@
         <div class="flex flex-row justify-between mb-3">
           <span class="font-nunito font-extrabold">Anggota Majelis</span>
           <span
+            (click)="sendNavMenuStr('Anggota Majelis')"
             [routerLink]="'../board'"
             class="font-nunito text-xs flex items-center text-neutral-500 hover:text-cm-blue-500 hover:scale-105 duration-100 cursor-pointer"
             >more

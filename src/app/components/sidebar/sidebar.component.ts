@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SidebarMenu } from './sidebar.interface';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subject, map, take, takeUntil } from 'rxjs';
+import { SharedService } from 'src/app/services/shared-service.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,7 @@ export class SidebarComponent implements OnInit {
   activeMenu: string = '';
   unsubscribe$: Subject<void> = new Subject();
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private sharedSvc:SharedService) {
     this.menu = [
       { path: 'dashboard', icon: 'clipboard', name: 'Dashboard' },
       {
@@ -38,16 +39,42 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // // IF MENU HAS CHILD AND BROWSER REFRESHED THE CHILD WILL BE SHOWN.
-    // this.router.events
-    // .pipe(map( (e:any) => {
-    //   if(e.routerEvent?.url.substring(0,6) === "/board"){
-    //     this.activeMenu = 'Anggota Majelis'
-    //     this.unSubs();
-    //   }
-    // }))
-    // .pipe(takeUntil(this.unsubscribe$))
-    // .subscribe();
+    this.sharedSvc.currentNavMenuValue.subscribe(val => this.activeMenu = val);
+    this.activeMenu = this.parseUrlToMenuName(this.extractUrlAfterBase());
+  }
+
+  parseUrlToMenuName(str: string): string{
+    let res = ''
+    switch(str){
+      case 'dashboard':
+        res = 'Dashboard';
+        break;
+      case 'financial':
+        res = 'Keuangan';
+        break;
+      case 'board':
+        res = 'Anggota Majelis'
+        break;
+      case 'congregation':
+        res = 'Anggota Jemaat';
+        break;
+      case 'news':
+        res = 'Berita';
+    }
+    return res;
+  }
+
+  extractUrlAfterBase(): string {
+    const fullUrl = window.location.href;
+    const protocol = window.location.protocol;
+    const host = window.location.host;
+    const baseUrl = `${protocol}//${host}/`;
+    const index = fullUrl.indexOf(baseUrl);
+
+    if (index !== -1) {
+      return fullUrl.substring(index + baseUrl.length);
+    }
+    return '';
   }
 
   navMenuClicked(str: string) {

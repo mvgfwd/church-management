@@ -115,7 +115,7 @@ export class FinancialComponent implements OnInit {
   incomeNominal = 0;
   outcomeNominal = 0;
   incomeMonth: string = '2024';
-  incomeCategory: string = 'All Category';
+  incomeCategory: string = 'Persembahan';
   outcomeCategory: string = 'All Category';
   totalPageIncome: number[] = [];
   totalPageOutcome: number[] = [];
@@ -206,6 +206,8 @@ export class FinancialComponent implements OnInit {
     searchTerm: '',
   };
 
+  isIncomeDetailShow = true; // if false show outcome detail
+
   constructor(
     private incomeSvc: IncomeService,
     private outcomeSvc: OutcomeService,
@@ -254,8 +256,7 @@ export class FinancialComponent implements OnInit {
       .pipe(
         tap<void>({
           next: () => {
-            this.incomeForm.controls.dateIncome.reset();
-            this.incomeForm.controls.description?.reset();
+            this.incomeForm.reset();
             this.toastSvc.addSuccessNotif('Income data');
           },
           error: (e) => {
@@ -292,8 +293,7 @@ export class FinancialComponent implements OnInit {
       .pipe(
         tap<void>({
           next: () => {
-            this.outcomeForm.controls.dateOutcome.reset();
-            this.outcomeForm.controls.description?.reset();
+            this.outcomeForm.reset();
             this.toastSvc.addSuccessNotif('Outcome data');
           },
           error: (e) => {
@@ -418,7 +418,8 @@ export class FinancialComponent implements OnInit {
   cleanObject(obj: any): any {
     const cleanedObj: any = {};
     for (const key in obj) {
-      if (obj[key] !== '') {
+      if (obj[key] !== '' && obj[key] !== null) {
+        console.log(obj, obj[key])
         cleanedObj[key] = String(obj[key]);
       }
     }

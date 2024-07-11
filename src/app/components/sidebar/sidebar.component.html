@@ -13,7 +13,7 @@
   <div class="h-[77%] overflow-auto px-1">
     <div *ngFor="let menu of menu">
       <div
-        class="flex sidebar items-center hover:bg-cm-blue-50 py-2.5 pl-4 my-0.5 cursor-pointer rounded-xl text-neutral-500"
+        class="flex sidebar items-center py-2.5 pl-4 my-0.5 cursor-pointer rounded-xl text-neutral-500"
         [routerLinkActive]="
           menu.childrenComponents
             ? 'nav-menu-btn-active-havechild'
@@ -21,6 +21,7 @@
         "
         [routerLink]="menu.path"
         (click)="navMenuClicked(menu.name)"
+        [ngClass]="activeMenu !== menu.name && !menu.childrenComponents ? 'nav-menu-deactive' : activeMenu !== menu.name && menu.childrenComponents ? 'nav-menu-havechild-deactive' : ''"
       >
         <i-feather
           [name]="menu.icon"
