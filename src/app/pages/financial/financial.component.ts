@@ -115,7 +115,7 @@ export class FinancialComponent implements OnInit {
   incomeNominal = 0;
   outcomeNominal = 0;
   incomeMonth: string = '2024';
-  incomeCategory: string = 'Persembahan';
+  incomeCategory: string = 'Perpuluhan';
   outcomeCategory: string = 'All Category';
   totalPageIncome: number[] = [];
   totalPageOutcome: number[] = [];
@@ -419,7 +419,7 @@ export class FinancialComponent implements OnInit {
     const cleanedObj: any = {};
     for (const key in obj) {
       if (obj[key] !== '' && obj[key] !== null) {
-        console.log(obj, obj[key])
+        console.log(obj, obj[key]);
         cleanedObj[key] = String(obj[key]);
       }
     }

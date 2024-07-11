@@ -5,26 +5,14 @@
     <div
       class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white flex flex-col justify-between"
     >
-      <div class="flex flex-col">
-        <div class="flex justify-between">
-          <span class="font-semibold">Income by</span>
-          <select
-            [(ngModel)]="incomeMonth"
-            id=""
-            class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2"
-          >
-            <option *ngFor="let opt of dateOptions" [value]="opt">
-              {{ opt }}
-            </option>
-          </select>
-        </div>
+      <div class="flex justify-between">
+        <span class="font-semibold">Income by</span>
         <select
-          (change)="countIncNom(); retrieveIncomeListDetail(incomeCategory)"
-          [(ngModel)]="incomeCategory"
+          [(ngModel)]="incomeMonth"
           id=""
-          class="bg-white w-fit text-xs text-neutral-700"
+          class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2"
         >
-          <option *ngFor="let opt of incomeOptions" [value]="opt">
+          <option *ngFor="let opt of dateOptions" [value]="opt">
             {{ opt }}
           </option>
         </select>
@@ -37,25 +25,13 @@
     <div
       class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white flex flex-col justify-between"
     >
-      <div class="flex flex-col">
-        <div class="flex justify-between">
-          <span class="font-semibold">Outcome by</span>
-          <select
-            id=""
-            class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2"
-          >
-            <option *ngFor="let opt of dateOptions" [value]="opt">
-              {{ opt }}
-            </option>
-          </select>
-        </div>
+      <div class="flex justify-between">
+        <span class="font-semibold">Outcome by</span>
         <select
-          (change)="countOutNom(); retrieveOutcomeListDetail(outcomeCategory)"
-          [(ngModel)]="outcomeCategory"
           id=""
-          class="bg-white w-fit text-xs text-neutral-700"
+          class="bg-white w-fit text-xs text-neutral-700 border border-neutral-400 focus:outline-blue-500 rounded-md mt-2"
         >
-          <option *ngFor="let opt of outcomeOptions" [value]="opt">
+          <option *ngFor="let opt of dateOptions" [value]="opt">
             {{ opt }}
           </option>
         </select>
@@ -69,28 +45,68 @@
       class="h-full w-[32%] p-4 border border-cm-brown-50 rounded-xl shadow-lg bg-white"
     >
       <span class="font-semibold">Summary</span>
-      <div class="flex justify-around mt-5">
-        <app-button (onButtonClick)="isIncomeDetailShow = true">Income</app-button>
-        <app-button (onButtonClick)="isIncomeDetailShow = false">Outcome</app-button>
-      </div>
     </div>
   </div>
 
   <!-- DETAIL -->
   <div class="flex h-[68%] justify-between">
     <div
-      class="flex flex-col border border-brown-50 bg-white rounded-xl shadow-xl w-[60%] h-[100%]"
+      class="relative flex flex-col bg-white rounded-xl shadow-xl w-[60%] h-[100%]"
     >
-      <span class="mt-4 mb-1 ml-4 font-semibold text-neutral-900"
-        >Financial Detail</span
+      <div
+        class="absolute flex justify-between w-full px-4 top-4 font-semibold text-neutral-900 flex-grow-0"
       >
-      <div class="flex mx-4 mb-4 justify-between h-[100%] border-b">
+        <span>Financial Detail</span>
+        <div class="flex">
+          <select
+            *ngIf="isIncomeDetailShow"
+            (change)="countIncNom(); retrieveIncomeListDetail(incomeCategory)"
+            [(ngModel)]="incomeCategory"
+            id=""
+            class="bg-white w-fit text-xs text-neutral-700 mr-3 border border-neutral-500 rounded-md focus:outline-none"
+          >
+            <option *ngFor="let opt of incomeOptions" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>
+          <select
+            *ngIf="!isIncomeDetailShow"
+            (change)="countOutNom(); retrieveOutcomeListDetail(outcomeCategory)"
+            [(ngModel)]="outcomeCategory"
+            id=""
+            class="bg-white w-fit text-xs text-neutral-700 mr-3 border border-neutral-500 rounded-md focus:outline-none"
+          >
+            <option *ngFor="let opt of outcomeOptions" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>
+          <app-button
+            (onButtonClick)="isIncomeDetailShow = true"
+            class="mr-1"
+            size="small"
+            color="secondary"
+            [disableTerm]="isIncomeDetailShow"
+            >Income</app-button
+          >
+          <app-button
+            color="error"
+            size="small"
+            (onButtonClick)="isIncomeDetailShow = false"
+            [disableTerm]="!isIncomeDetailShow"
+            >Outcome</app-button
+          >
+        </div>
+      </div>
+      <div class="flex mx-4 mb-4 pt-10 justify-between h-[100%]">
         <!-- DETAIL INCOME -->
-        <div *ngIf="isIncomeDetailShow" class="relative h-[100%] w-full">
+        <div
+          *ngIf="isIncomeDetailShow"
+          class="relative h-full max-h-full w-full"
+        >
           <span class="text-xs font-bold">Income</span>
           <!-- head table income -->
           <div
-            class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-cm-green-700 font-nunito font-semibold"
+            class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-neutral-900 font-nunito font-semibold"
           >
             <div class="flex items-center col-start-1 col-end-3">
               {{ incomeCategory === "All Category" ? "No" : "Date" }}
@@ -115,9 +131,15 @@
               <div
                 *ngFor="let incData of incList.data; let i = index"
                 class="grid grid-cols-10 text-sm pl-1.5 h-7 text-neutral-800"
-                [ngClass]="i % 2 !== 0 ? 'bg-cm-green-700 bg-opacity-10' : ''"
+                [ngClass]="
+                  i % 2 !== 0
+                    ? 'bg-neutral-800 bg-opacity-15'
+                    : 'bg-neutral-800 bg-opacity-5'
+                "
               >
-                <div class="flex items-center col-start-1 col-end-3 text-xs font-nunito font-semibold">
+                <div
+                  class="flex items-center col-start-1 col-end-3 text-xs font-nunito font-semibold"
+                >
                   {{ showSimpleDate(incData.dateIncome) }}
                 </div>
                 <div class="flex items-center col-start-3 col-end-5">
@@ -162,36 +184,38 @@
                 let f = first;
                 let l = last
               "
-              class="grid grid-cols-11 text-xs pl-1.5 h-5 text-neutral-900 border border-x-cm-green-700 border-y-0"
+              class="grid grid-cols-10 text-sm pl-1.5 h-7 text-neutral-900 border border-x-neutral-700"
               [ngClass]="
                 i % 2 !== 0
-                  ? 'bg-cm-green-700 bg-opacity-10'
-                  : l
-                  ? 'border-t-cm-green-700 border-x-0 border-t'
+                  ? 'bg-neutral-800 bg-opacity-15 border-y-0'
+                  : i % 2 === 0 && l
+                  ? 'bg-white border border-x-0 border-b-0 border-t-neutral-800'
+                  : i % 2 === 0
+                  ? 'bg-neutral-800 bg-opacity-5 border-y-0'
                   : ''
               "
             >
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+                class="flex items-center jus col-start-1 col-end-3 mt-[-55px]"
               >
                 {{ i }}
               </div>
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-3 col-end-6 mt-[-40px]"
+                class="flex items-center col-start-3 col-end-5 mt-[-55px]"
               >
                 {{ incOpt }}
               </div>
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-6 col-end-8 mt-[-40px] font-nunito font-semibold"
+                class="flex items-center col-start-5 col-end-7 mt-[-55px] font-nunito font-bold text-neutral-700 ml-5"
               >
                 {{ countIncomePerCat(incOpt) | formatNum }}
               </div>
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-8 ml-2 col-end-12 mt-[-40px]"
+                class="flex items-center col-start-7 col-end-11 mt-[-55px] ml-6"
               >
                 No Desc
               </div>
@@ -278,16 +302,16 @@
           <span class="text-xs font-bold">Outcome</span>
           <!-- head table income -->
           <div
-            class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-red-950 font-nunito font-semibold"
+            class="grid grid-cols-10 text-xs pl-1.5 h-7 rounded-t-md text-neutral-50 bg-neutral-900 font-nunito font-semibold"
           >
             <div class="flex items-center col-start-1 col-end-3">
               {{ outcomeCategory === "All Category" ? "No" : "Date" }}
             </div>
             <div class="flex items-center col-start-3 col-end-5">Tipe</div>
-            <div class="flex items-center col-start-5 col-end-8 ml-2">
+            <div class="flex items-center col-start-5 col-end-7 ml-2">
               Nominal
             </div>
-            <div class="flex items-center col-start-8 col-end-11">Ket.</div>
+            <div class="flex items-center col-start-7 col-end-11">Ket.</div>
           </div>
           <!-- IF NO DATA (OUTCOME NOMINAL 0) -->
           <div
@@ -313,7 +337,11 @@
               <div
                 *ngFor="let outcData of outList.data; let i = index"
                 class="grid grid-cols-10 text-sm pl-1.5 h-7 text-neutral-900"
-                [ngClass]="i % 2 !== 0 ? 'bg-red-700 bg-opacity-10' : ''"
+                [ngClass]="
+                  i % 2 !== 0
+                    ? 'bg-neutral-900 bg-opacity-15'
+                    : 'bg-neutral-900 bg-opacity-5'
+                "
               >
                 <div class="flex items-center col-start-1 col-end-3">
                   {{ showSimpleDate(outcData.dateOutcome) }}
@@ -322,7 +350,7 @@
                   {{ outcomeCategory }}
                 </div>
                 <div
-                  class="flex items-center col-start-5 col-end-8 font-nunito font-semibold ml-2"
+                  class="flex items-center col-start-5 col-end-7 font-nunito font-bold text-neutral-700 ml-2"
                 >
                   <span *ngIf="outcomeCategory === 'Deposit'">{{
                     +outcData.outcomeDeposit! | formatNum
@@ -346,7 +374,7 @@
                     +outcData.outcomeOther! | formatNum
                   }}</span>
                 </div>
-                <div class="flex items-center col-start-8 col-end-11">
+                <div class="flex items-center col-start-7 col-end-11">
                   {{ outcData.description }}
                 </div>
               </div>
@@ -361,38 +389,40 @@
                 let f = first;
                 let l = last
               "
-              class="grid grid-cols-10 text-xs pl-1.5 h-5 text-neutral-900 border border-x-red-800 border-y-0"
+              class="grid grid-cols-10 text-sm pl-1.5 h-7 text-neutral-900 border border-x-neutral-800 border-y-0"
               [ngClass]="
                 i === 6
-                  ? 'border border-b-red-700'
+                  ? 'border border-b-neutral-800 bg-neutral-900 bg-opacity-5'
                   : l
-                  ? 'border border-t-red-800 border-x-0 border-t'
+                  ? 'border border-t-neutral-800 border-x-0 border-t'
                   : i % 2 !== 0
-                  ? 'bg-red-700 bg-opacity-15'
+                  ? 'bg-neutral-900 bg-opacity-15'
+                  : i % 2 === 0
+                  ? 'bg-neutral-900 bg-opacity-5'
                   : ''
               "
             >
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-1 col-end-3 mt-[-40px]"
+                class="flex items-center col-start-1 col-end-3 mt-[-55px]"
               >
                 {{ i }}
               </div>
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-3 col-end-5 mt-[-40px]"
+                class="flex items-center col-start-3 col-end-5 mt-[-55px]"
               >
                 {{ outOpt }}
               </div>
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-5 col-end-8 mt-[-40px] ml-2 font-nunito font-semibold"
+                class="flex items-center col-start-5 col-end-7 mt-[-55px] ml-2 font-nunito font-bold text-neutral-700"
               >
                 {{ countOutcomePerCat(outOpt) | formatNum }}
               </div>
               <div
                 *ngIf="!f"
-                class="flex items-center col-start-8 col-end-11 mt-[-40px]"
+                class="flex items-center col-start-7 col-end-11 mt-[-55px]"
               >
                 No Desc
               </div>
