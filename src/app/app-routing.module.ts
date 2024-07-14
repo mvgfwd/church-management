@@ -6,6 +6,7 @@ import { NewsComponent } from './pages/news/news.component';
 import { CongregationComponent } from './pages/congregation/congregation.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
+import { ActivityComponent } from './pages/activity/activity.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,12 @@ const routes: Routes = [
         component: NewsDetailComponent,
       },
     ],
+  },
+  {
+    path: 'activity',
+    title: 'Jadwal Kegiatan',
+    data: { title: 'Jadwal Kegiatan' },
+    component: ActivityComponent,
   },
 ];
 

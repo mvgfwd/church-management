@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { CongregationDTO } from 'src/app/core/dto/congregation.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
 import { UserRequest } from 'src/app/core/dto/user-request.dto';
-import { HttpService } from 'src/app/services/http.service';
+import { HttpService } from 'src/app/core/services/http.service';
 
 @Injectable()
 export class CongregationService {

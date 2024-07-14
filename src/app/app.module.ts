@@ -18,11 +18,13 @@ import { NewsService } from './pages/news/news.service';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 import { IncomeService } from './pages/financial/income.service';
 import { OutcomeService } from './pages/financial/outcome.service';
-import { ToastService } from './services/toast.service';
+import { ToastService } from './core/services/toast.service';
 import { CurrencyFormatPipe } from './core/pipe/currency-format.pipe';
 import { NumberFormatPipe } from './core/pipe/number-no-rp.pipe';
-import { BeautifyParseService } from './services/beautify-parse.service';
-import { SharedService } from './services/shared-service.service';
+import { BeautifyParseService } from './core/services/beautify-parse.service';
+import { SharedService } from './core/services/shared-service.service';
+import { ActivityComponent } from './pages/activity/activity.component';
+import { ActivityService } from './pages/activity/activity.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { SharedService } from './services/shared-service.service';
     CongregationComponent,
     DashboardComponent,
     NewsDetailComponent,
+    ActivityComponent,
     CurrencyFormatPipe,
     NumberFormatPipe,
   ],
@@ -54,7 +57,8 @@ import { SharedService } from './services/shared-service.service';
     IncomeService,
     OutcomeService,
     BeautifyParseService,
-    SharedService
+    SharedService,
+    ActivityService,
   ],
   bootstrap: [AppComponent],
 })

@@ -5,11 +5,11 @@ import { NewsDTO } from 'src/app/core/dto/news.dto';
 import { UserRequest } from 'src/app/core/dto/user-request.dto';
 import { BoardService } from '../board/board.service';
 import { BoardDTO } from 'src/app/core/dto/congregation.dto';
-import { BeautifyParseService } from 'src/app/services/beautify-parse.service';
+import { BeautifyParseService } from 'src/app/core/services/beautify-parse.service';
 import { CongregationService } from '../congregation/congregation.service';
 import { IncomeService } from '../financial/income.service';
 import { OutcomeService } from '../financial/outcome.service';
-import { SharedService } from 'src/app/services/shared-service.service';
+import { SharedService } from 'src/app/core/services/shared-service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -72,7 +72,7 @@ export class DashboardComponent {
     );
   }
 
-  sendNavMenuStr(str: string){
+  sendNavMenuStr(str: string) {
     this.sharedSvc.changeNavMenuActive(str);
   }
 }

@@ -14,9 +14,9 @@ import {
   transition,
   keyframes,
 } from '@angular/animations';
-import { ToastService } from 'src/app/services/toast.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 import { UserRequest } from 'src/app/core/dto/user-request.dto';
-import { BeautifyParseService } from 'src/app/services/beautify-parse.service';
+import { BeautifyParseService } from 'src/app/core/services/beautify-parse.service';
 
 @Component({
   selector: 'app-board',

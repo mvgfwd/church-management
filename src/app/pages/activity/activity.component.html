@@ -1,0 +1,210 @@
+<div class="relative calcHeight rounded-xl bg-white shadow-xl px-6 py-8">
+  <span class="absolute font-bold text-lg">Kegiatan</span>
+  <div class="flex pt-12 justify-between w-[100%] h-full">
+    <!--ONGOING ACTIVITY -->
+    <div
+      class="relative flex flex-col w-[59.5%] py-2 px-2.5 rounded-md border border-neutral-700 shadow-md"
+    >
+      <!-- <div class="relative" *ngIf="activityUpcomingList | async as upcList"> -->
+      <span class="font-nunito text-sm font-bold mb-2">Upcoming Activity</span>
+      <div
+        *ngIf="activityUpcomingList | async as upcList"
+        class="overflow-auto modifscrollbar mb-8"
+      >
+        <div
+          *ngFor="let data of upcList.data"
+          class="bg-neutral-50 flex flex-col w-[100%] mb-3 border border-cm-blue-500 shadow-md rounded-md"
+        >
+          <!-- HEAD -->
+          <div
+            (click)="onClickToggleShowDescriptionById(data.id!)"
+            class="flex justify-between py-2.5 cursor-pointer px-1"
+            [ngClass]="
+              arrayOfIdDescOpened.includes(data.id!)
+                ? 'border border-x-0 border-t-0 border-b-neutral-400'
+                : ''
+            "
+          >
+            <div class="flex items-center">
+              <i-feather
+                name="chevron-right"
+                style="height: 18px; width: 18px"
+                [ngClass]="
+                  arrayOfIdDescOpened.includes(data.id!)
+                    ? 'rotate-90 duration-300'
+                    : 'rotate-0 duration-200'
+                "
+                class="text-neutral-700 mr-2"
+              ></i-feather>
+              <span class="font-nunito font-bold text-neutral-700 uppercase">{{
+                data.activityTitle
+              }}</span>
+            </div>
+            <div>
+              <span class="text-neutral-700 text-xs mr-1">Due:</span>
+              <span class="text-neutral-700 text-sm font-nunito font-bold">{{
+                data.activityDate | date : "mediumDate"
+              }}</span>
+              <span class="text-neutral-800 text-sm font-nunito font-bold"
+                >{{ " (" + data.activityTime.hours }}:{{
+                  data.activityTime.minutes < 10
+                    ? "00)"
+                    : data.activityTime.minutes + ")"
+                }}</span
+              >
+            </div>
+          </div>
+          <!-- DESCRIPTION -->
+          <div
+            [@slideInDown]="arrayOfIdDescOpened.includes(data.id!)"
+            class="h-fit bg-white px-1 rounded-b-md"
+          >
+            <!-- DESCRIPTION HEAD -->
+            <div class="flex justify-between mb-2 mt-1 pt-2 px-2">
+              <div class="flex flex-col">
+                <span
+                  class="text-sm font-nunito font-semibold text-neutral-500 mb-[-2px]"
+                  >Location</span
+                >
+                <span
+                  class="text-semibold font-nunito font-semibold text-neutral-700"
+                  >{{ data.location }}</span
+                >
+              </div>
+              <div class="flex flex-col text-right">
+                <span
+                  class="text-sm font-nunito font-semibold text-neutral-500 mb-[-2px]"
+                  >Duration</span
+                >
+                <span class="text-sm font-nunito"
+                  >{{ data.timeHour.hours + " Jam" }}
+                  {{ data.timeHour.minutes + " Menit" }}</span
+                >
+              </div>
+            </div>
+            <!-- DESCRIPTION DETAIL -->
+            <div class="flex flex-col mb-4 px-2">
+              <span
+                class="text-sm font-nunito font-semibold text-neutral-500 mb-[-2px]"
+                >Description</span
+              >
+              <span class="text-neutral-800">
+                {{ data.description }}
+              </span>
+            </div>
+            <!-- DESCRIPTION PIC -->
+            <div class="text-right flex flex-col px-2 pb-2">
+              <span
+                class="text-sm font-nunito font-semibold text-neutral-500 mb-[-2px]"
+                >Penanggung Jawab</span
+              >
+              <span
+                class="font-nunito text-md font-semibold text-neutral-700"
+                >{{ data.pic }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PAGINATION -->
+      <div class="absolute bottom-2 left-2">
+        <div class="flex absolute left-0 bottom-0 text-sm pr-2">
+          <app-button color="secondary" size="small" class="mr-0.5">
+            <
+          </app-button>
+          <div #paginationScroll class="flex">
+            <div *ngFor="let page of [1, 2, 3, 4]; let i = index; let l = last">
+              <app-button color="secondary" size="small" class="flex mx-0.5"
+                ><span>{{ i + 1 }}</span></app-button
+              >
+            </div>
+          </div>
+          <app-button color="secondary" size="small" class="ml-0.5"
+            >></app-button
+          >
+        </div>
+      </div>
+      <!-- END OF PAGINATION -->
+      <!-- </div> -->
+    </div>
+    <!-- HISTORY ACTIVITY -->
+    <div class="flex flex-col p-1.5 rounded-md w-[39.5%]">
+      <span class="font-nunito text-sm font-bold mb-2">Activity History</span>
+      <div *ngIf="activityHistoryList | async as historyList">
+        <!-- HISTORY ENTITY -->
+        <div
+          *ngFor="let history of historyList.data"
+          class="border rounded-md border-neutral-500 mb-2 shadow-sm"
+        >
+          <!-- HISTORY HEAD -->
+          <div
+            class="flex justify-between items-center py-1 px-2 cursor-pointer"
+            [ngClass]="
+              arrayOfHistoryIdOpened.includes(history.id!)
+                ? 'border border-b-neutral-400 rounded-t-md'
+                : 'pb-0'
+            "
+            (click)="
+              onClickToggleHistoryShownById(history.id!);
+              onClickToggleHistoryDescById(history.id!, true)
+            "
+          >
+            <div class="flex items-center">
+              <i-feather
+                name="chevron-right"
+                style="height: 18px; width: 18px"
+                [ngClass]="
+                  arrayOfHistoryIdOpened.includes(history.id!)
+                    ? 'rotate-90 duration-300'
+                    : 'rotate-0 duration-200'
+                "
+                class="text-neutral-700 mr-2"
+              ></i-feather>
+              <span class="text-neutral-800">{{ history.activityTitle }}</span>
+            </div>
+            <span class="text-xs font-nunito font-bold text-neutral-700">{{
+              history.activityDate | date : "shortDate"
+            }}</span>
+          </div>
+          <!-- HISTORY BODY -->
+          <div
+            [@slideInDown]="arrayOfHistoryIdOpened.includes(history.id!)"
+            class="items-center px-2 mb-1"
+          >
+            <div class="text-sm text-neutral-700 mt-1">
+              <span class="text-xs font-bold text-neutral-950 font-nunito"
+                >Penanggung Jawab:
+              </span>
+              <span class="font-nunito">{{ history.pic }}</span>
+            </div>
+            <div class="text-sm text-neutral-700">
+              <span class="text-xs font-bold text-neutral-950 font-nunito"
+                >Location:
+              </span>
+              <span class="font-nunito">{{ history.location }}</span>
+            </div>
+            <div class="text-sm text-neutral-700">
+              <span class="text-xs font-bold text-neutral-950 font-nunito"
+                >Desc: </span
+              >{{
+                arrayOfHistoryIdOpened.includes(history.id!) &&
+                arrHistoryDescShow.includes(history.id!)
+                  ? history.description
+                  : history.description.slice(0, 18) + "..."
+              }}
+              <span
+                (click)="onClickToggleHistoryDescById(history.id!)"
+                class="text-xs hover:text-cm-blue-500 cursor-pointer hover:underline text-neutral-500"
+                >{{
+                  arrHistoryDescShow.includes(history.id!)
+                    ? "show less"
+                    : "show more"
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

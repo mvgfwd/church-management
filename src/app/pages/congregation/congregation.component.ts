@@ -14,7 +14,7 @@ import {
   transition,
   keyframes,
 } from '@angular/animations';
-import { ToastService } from 'src/app/services/toast.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 import { UserRequest } from 'src/app/core/dto/user-request.dto';
 
 @Component({
