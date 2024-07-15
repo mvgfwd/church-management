@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map, Observable, of, take } from 'rxjs';
 import { ActivityDTO } from 'src/app/core/dto/activity.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
@@ -11,6 +11,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { UserRequest } from 'src/app/core/dto/user-request.dto';
 
 @Component({
   selector: 'app-activity',
@@ -76,7 +77,7 @@ import {
     ]),
   ],
 })
-export class ActivityComponent {
+export class ActivityComponent implements OnInit {
   activityUpcomingList:
     | Observable<PaginationResultDTO<ActivityDTO>>
     | undefined;
@@ -84,27 +85,41 @@ export class ActivityComponent {
   arrayOfIdDescOpened: number[] = [];
   arrayOfHistoryIdOpened: number[] = [];
   arrHistoryDescShow: number[] = [];
+  totalPageOfUpcomingActivity: number[] = [];
+
+  userReq: UserRequest = {
+    size: 10,
+    page: 1,
+    searchTerm: '',
+  };
 
   constructor(private activitySvc: ActivityService) {
     this.activitySvc
-      .getActivityList()
+      .getUpcomingActivityList(this.userReq)
       .pipe(
         map((e) => {
-          const currDate = new Date();
-          const historyListData = e.data.filter(
-            (activity) => activity.activityDate <= currDate
+          this.activityUpcomingList = of(e);
+          this.totalPageOfUpcomingActivity = Array.from(
+            { length: e.lastPage },
+            (_, i) => i
           );
-          const upcomingListData = e.data.filter(
-            (activity) => activity.activityDate >= currDate
-          );
-          this.activityHistoryList = of({ ...e, data: historyListData });
-          this.activityUpcomingList = of({ ...e, data: upcomingListData });
-          console.log(upcomingListData);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
+
+    this.activitySvc
+      .getHistoryActivityList(this.userReq)
+      .pipe(
+        map((e) => {
+          this.activityHistoryList = of(e);
         })
       )
       .pipe(take(1))
       .subscribe();
   }
+
+  ngOnInit() {}
 
   onClickToggleShowDescriptionById(id: number) {
     if (this.arrayOfIdDescOpened.includes(id)) {
@@ -140,5 +155,20 @@ export class ActivityComponent {
       return;
     }
     this.arrHistoryDescShow.push(id);
+  }
+
+  onClickChangePage(page: number) {
+    this.activitySvc
+      .getUpcomingActivityList({ size: 10, page: page })
+      .pipe(
+        map((e) => {
+          this.activityUpcomingList = of(e);
+          this.totalPageOfUpcomingActivity = Array.from(
+            { length: e.lastPage },
+            (_, i) => i
+          );
+        })
+      )
+      .subscribe();
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ActivityDTO } from 'src/app/core/dto/activity.dto';
 import { PaginationResultDTO } from 'src/app/core/dto/pagination-result.dto';
+import { UserRequest } from 'src/app/core/dto/user-request.dto';
 
 @Injectable()
 export class ActivityService {
@@ -72,10 +73,109 @@ export class ActivityService {
         location: 'Perumahan HKBP Setempat',
         pic: 'Pdt. Timbul Damanik (HKBP Ruas Sebelah)',
       },
+      {
+        id: 6,
+        activityTitle: 'Ibadah Mingguan Remaja',
+        description:
+          'Kebaktian remaja akan diadakan di gedung B ruang pertemuan Gereja dan akan dipimpin oleh sintua Marnaek Sibarani',
+        timeHour: { hours: 1, minutes: 30 },
+        activityDate: new Date('2024-10-31'),
+        activityTime: { hours: 19, minutes: 0 },
+        location: 'Gedung B - Rapat dan Pertemuan',
+        pic: 'Marnaek Sibarani',
+      },
+      {
+        id: 7,
+        activityTitle: 'Lari Sore Bersama Ephorus',
+        description:
+          'Peringatan hari sintua sedunia, HKBP mengadakan program sehat dengan seluruh jemaat diundang untuk dapat berpartisipasi pada acara lari sore yang akan diikuti seluruh sintua dan Ephorus HKBP.',
+        timeHour: { hours: 1, minutes: 0 },
+        activityDate: new Date('2024-11-22'),
+        activityTime: { hours: 16, minutes: 0 },
+        location: 'Perumahan HKBP Setempat',
+        pic: 'Giat J. Sagala',
+      },
+      {
+        id: 8,
+        activityTitle: 'Makan-Makan Pesta Jubileum',
+        description:
+          'Pesta peringatan 200 tahun berdirinya gereja tulang Nommensen ini membawa sukacita tersendiri untuk organisasi sehingga majelis gereja mengundang seluruh jemaat untuk makan-makan saksang di area taman gereja.',
+        timeHour: { hours: 12, minutes: 20 },
+        activityDate: new Date('2024-11-30'),
+        activityTime: { hours: 7, minutes: 0 },
+        location: 'Perumahan HKBP Setempat',
+        pic: 'Pdt. Timbul Damanik (HKBP Ruas Sebelah)',
+      },
     ];
+
+    this.PaginationActivityList.totalItems =
+      this.PaginationActivityList.data.length;
+
+    this.PaginationActivityList.lastPage = Math.ceil(
+      this.PaginationActivityList.data.length /
+        this.PaginationActivityList.totalItemsPerPage
+    );
+
+    this.PaginationActivityList.currentPage ===
+      this.PaginationActivityList.lastPage ||
+    this.PaginationActivityList.lastPage === 0
+      ? (this.PaginationActivityList.hasNext = false)
+      : (this.PaginationActivityList.hasNext = true);
+
+    this.PaginationActivityList.currentPage === 1
+      ? (this.PaginationActivityList.hasPrev = false)
+      : (this.PaginationActivityList.hasPrev = true);
   }
 
-  getActivityList(): Observable<PaginationResultDTO<ActivityDTO>> {
-    return of(this.PaginationActivityList);
+  getUpcomingActivityList(
+    userReq: UserRequest
+  ): Observable<PaginationResultDTO<ActivityDTO>> {
+    // PERDATAAN
+    const currDate = new Date();
+    const upcomingListData = this.PaginationActivityList.data.filter(
+      (activity) => activity.activityDate >= currDate
+    );
+    const start = (userReq.page! - 1) * userReq.size!;
+    const end = start + userReq.size!;
+    let data = upcomingListData.slice(start, end);
+    data = data.slice(0, userReq.size);
+    // DUMMY PER-PAGE-AN
+    userReq.page! > 1
+      ? (this.PaginationActivityList.hasPrev = true)
+      : (this.PaginationActivityList.hasPrev = false);
+    this.PaginationActivityList.lastPage = Math.ceil(
+      upcomingListData.length / userReq.size!
+    );
+    userReq.page! === this.PaginationActivityList.lastPage ||
+    this.PaginationActivityList.lastPage === 0
+      ? (this.PaginationActivityList.hasNext = false)
+      : (this.PaginationActivityList.hasNext = true);
+    this.PaginationActivityList.totalItemsPerPage = userReq.size!;
+    this.PaginationActivityList.totalItems = upcomingListData.length;
+    this.PaginationActivityList.currentPage = userReq.page!;
+    return of({ ...this.PaginationActivityList, data: data });
+  }
+
+  getHistoryActivityList(
+    userReq: UserRequest
+  ): Observable<PaginationResultDTO<ActivityDTO>> {
+    // DUMMY PER-PAGE-AN
+    userReq.page! > 1
+      ? (this.PaginationActivityList.hasPrev = true)
+      : (this.PaginationActivityList.hasPrev = false);
+    this.PaginationActivityList.lastPage = Math.ceil(
+      this.PaginationActivityList.data.length / userReq.size!
+    );
+    userReq.page! === this.PaginationActivityList.lastPage ||
+    this.PaginationActivityList.lastPage === 0
+      ? (this.PaginationActivityList.hasNext = false)
+      : (this.PaginationActivityList.hasNext = true);
+    const currDate = new Date();
+    const historyListData = this.PaginationActivityList.data.filter(
+      (activity) => activity.activityDate <= currDate
+    );
+    this.PaginationActivityList.totalItemsPerPage = userReq.size!;
+    this.PaginationActivityList.totalItems = historyListData.length;
+    return of({ ...this.PaginationActivityList, data: historyListData });
   }
 }

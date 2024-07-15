@@ -1,4 +1,4 @@
-<div class="relative calcHeight rounded-xl bg-white shadow-xl px-6 py-8">
+<div class="relative calcHeight rounded-xl bg-white shadow-xl p-6">
   <span class="absolute font-bold text-lg">Kegiatan</span>
   <div class="flex pt-12 justify-between w-[100%] h-full">
     <!--ONGOING ACTIVITY -->
@@ -108,18 +108,62 @@
       </div>
       <!-- PAGINATION -->
       <div class="absolute bottom-2 left-2">
-        <div class="flex absolute left-0 bottom-0 text-sm pr-2">
-          <app-button color="secondary" size="small" class="mr-0.5">
+        <div
+          *ngIf="activityUpcomingList | async as pagination"
+          class="flex absolute left-0 bottom-0 text-sm pr-2"
+        >
+          <app-button
+            (onButtonClick)="onClickChangePage(pagination.currentPage - 1)"
+            color="secondary"
+            size="small"
+            [disableTerm]="!pagination.hasPrev"
+            class="mr-0.5"
+          >
             <
           </app-button>
-          <div #paginationScroll class="flex">
-            <div *ngFor="let page of [1, 2, 3, 4]; let i = index; let l = last">
-              <app-button color="secondary" size="small" class="flex mx-0.5"
-                ><span>{{ i + 1 }}</span></app-button
+          <div
+            #paginationScroll
+            [ngClass]="
+              pagination.lastPage < 2
+                ? 'w[25px]'
+                : pagination.lastPage === 2
+                ? 'w-[57px]'
+                : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+            "
+            class="flex"
+          >
+            <div
+              *ngFor="
+                let page of totalPageOfUpcomingActivity;
+                let i = index;
+                let l = last
+              "
+            >
+              <app-button
+                (onButtonClick)="onClickChangePage(i + 1)"
+                color="secondary"
+                [ngClass]="
+                  pagination.currentPage === i + 1
+                    ? 'bg-blue-800 rounded-md text-white'
+                    : ''
+                "
+                size="small"
+                class="flex mx-0.5"
+                ><span
+                  [ngClass]="
+                    pagination.currentPage === i + 1 ? 'text-white' : ''
+                  "
+                  >{{ i + 1 }}</span
+                ></app-button
               >
             </div>
           </div>
-          <app-button color="secondary" size="small" class="ml-0.5"
+          <app-button
+            color="secondary"
+            size="small"
+            class="ml-0.5"
+            [disableTerm]="!pagination.hasNext"
+            (onButtonClick)="onClickChangePage(pagination.currentPage + 1)"
             >></app-button
           >
         </div>
