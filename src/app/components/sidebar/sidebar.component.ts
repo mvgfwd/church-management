@@ -71,6 +71,8 @@ export class SidebarComponent implements OnInit {
       case 'activity':
         res = 'Jadwal Kegiatan';
         break;
+      case 'asset':
+        res = 'Aset'
     }
     return res;
   }

@@ -117,6 +117,31 @@ export class CongregationService {
         address: 'Jl. Damai no.301 RT01/RW01 Tangerang Sektor V',
         phoneNumber: '081209876543',
       },
+      {
+        id: 13,
+        name: "Parlindungan Simanjuntak",
+        age: 45,
+        birthDate: "1978-04-15",
+        address: "Jl. Sejahtera no.45 RT02/RW01 Jakarta Barat",
+        phoneNumber: "081345678901"
+      },
+      {
+        id: 14,
+        name: "Mangaradja Harahap",
+        age: 36,
+        birthDate: "1987-09-05",
+        address: "Jl. Cendana no.18 RT03/RW02 Medan",
+        phoneNumber: "081398765432"
+      },
+      {
+        id: 15,
+        name: "Hotman Situmorang",
+        age: 29,
+        birthDate: "1994-06-20",
+        address: "Jl. Pahlawan no.12 RT04/RW01 Surabaya",
+        phoneNumber: "081567890123"
+      },
+    
     ];
 
     this.PaginationCongregationList.totalItems =

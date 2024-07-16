@@ -7,6 +7,7 @@ import { CongregationComponent } from './pages/congregation/congregation.compone
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 import { ActivityComponent } from './pages/activity/activity.component';
+import { AssetComponent } from './pages/aset/asset.component';
 
 const routes: Routes = [
   {
@@ -68,6 +69,12 @@ const routes: Routes = [
     title: 'Jadwal Kegiatan',
     data: { title: 'Jadwal Kegiatan' },
     component: ActivityComponent,
+  },
+  {
+    path: 'asset',
+    title: 'Aset',
+    data: { title: 'Aset' },
+    component: AssetComponent,
   },
 ];
 

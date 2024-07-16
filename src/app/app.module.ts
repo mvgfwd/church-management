@@ -25,6 +25,8 @@ import { BeautifyParseService } from './core/services/beautify-parse.service';
 import { SharedService } from './core/services/shared-service.service';
 import { ActivityComponent } from './pages/activity/activity.component';
 import { ActivityService } from './pages/activity/activity.service';
+import { AssetComponent } from './pages/aset/asset.component';
+import { AssetService } from './pages/aset/asset.service';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { ActivityService } from './pages/activity/activity.service';
     DashboardComponent,
     NewsDetailComponent,
     ActivityComponent,
+    AssetComponent,
     CurrencyFormatPipe,
     NumberFormatPipe,
   ],
@@ -59,6 +62,7 @@ import { ActivityService } from './pages/activity/activity.service';
     BeautifyParseService,
     SharedService,
     ActivityService,
+    AssetService
   ],
   bootstrap: [AppComponent],
 })
