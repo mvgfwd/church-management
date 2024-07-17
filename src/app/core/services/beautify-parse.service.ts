@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AssetStatus } from '../dto/asset.dto';
 
 @Injectable()
 export class BeautifyParseService {
@@ -54,6 +55,42 @@ export class BeautifyParseService {
         result = '###';
     }
     return result;
+  }
+
+  beautifyAsetStatus(str: AssetStatus): string {
+    let res = '';
+    switch (str) {
+      case 'AVAILABLE':
+        res = 'Available';
+        break;
+      case 'UNAVAILABLE':
+        res = 'Unavailable';
+        break;
+      case 'MAINTENANCE':
+        res = 'Maintenance';
+        break;
+      default:
+        res = '###';
+    }
+    return res;
+  }
+
+  parseAsetStatus(str: string): AssetStatus {
+    let res: AssetStatus = AssetStatus.AVAILABLE;
+    switch (str) {
+      case 'Available':
+        res = AssetStatus.AVAILABLE;
+        break;
+      case 'Unavailable':
+        res = AssetStatus.UNAVAILABLE;
+        break;
+      case 'Maintenance':
+        res = AssetStatus.MAINTENANCE;
+        break;
+      default:
+        res = AssetStatus.AVAILABLE;
+    }
+    return res;
   }
 
   ageCalculate(birthDate: string): number {

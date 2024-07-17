@@ -1,74 +1,223 @@
 <div class="relative rounded-xl bg-white shadow-xl p-6 calcHeight">
-    <div class="flex mb-4">
-        <span class="font-bold text-lg">Aset</span>
+  <div class="flex mb-4">
+    <span class="font-bold text-lg">Aset</span>
+  </div>
+  <!-- TABLE -->
+  <div class="relative flex flex-col h-[90%]">
+    <!-- TABLE HEAD -->
+    <div
+      class="grid grid-cols-12 h-9 rounded-t-lg text-xs font-bold text-white bg-cm-blue-500"
+    >
+      <div
+        class="col-start-0 col-end-2 mr-[44px] flex items-center justify-center"
+      >
+        <span class="ml-2">No</span>
+      </div>
+      <div class="col-start-2 col-end-4 ml-[-44px] px-2 flex items-center">
+        <span class="">Asset Name</span>
+      </div>
+      <div class="col-start-4 col-end-6 px-2 flex items-center">
+        <span class="">Brand</span>
+      </div>
+      <div class="col-start-6 col-end-10 px-2 flex items-center">
+        <span class="">Description</span>
+      </div>
+      <div class="col-start-10 col-end-11 mr-8 px-2 flex items-center">
+        <span class="">QTY</span>
+      </div>
+      <div class="col-start-11 col-end-12 ml-[-32px] px-2 flex items-center">
+        <span class="">Status</span>
+      </div>
+      <div
+        class="col-start-12 col-end-13 px-2 flex items-center justify-center"
+      >
+        <span class="">Action</span>
+      </div>
     </div>
-    <!-- TABLE -->
-    <div class="relative flex flex-col h-[90%]">
-        <!-- TABLE HEAD -->
+    <!-- TABLE BODY -->
+    <div
+      *ngIf="assetList$ | async as asetList"
+      class="border border-cm-blue-500"
+    >
+      <form [formGroup]="formEditAset">
         <div
-            class="grid grid-cols-12 h-9 rounded-t-lg text-xs font-bold text-white bg-cm-blue-500"
+          *ngFor="let aset of asetList.data; let i = index"
+          class="grid grid-cols-12 text-sm text-neutral-800"
+          [ngClass]="i % 2 !== 0 ? 'bg-cm-blue-500 bg-opacity-10' : ''"
         >
-            <div class="col-start-0 col-end-2 mr-[44px] flex items-center">
-                <span class="ml-2">No</span>
-            </div>
-            <div class="col-start-2 col-end-4 ml-[-44px] px-2 flex items-center">
-                <span class="">Asset Name</span>
-            </div>
-            <div class="col-start-4 col-end-6 px-2 flex items-center">
-                <span class="">Brand</span>
-            </div>
-            <div class="col-start-6 col-end-10 px-2 flex items-center">
-                <span class="">Description</span>
-            </div>
-            <div class="col-start-10 col-end-11 mr-8 px-2 flex items-center">
-                <span class="">QTY</span>
-            </div>
-            <div class="col-start-11 col-end-12 ml-[-32px] px-2 flex items-center">
-                <span class="">Status</span>
-            </div>
-            <div class="col-start-12 col-end-13 px-2 flex items-center justify-center">
-                <span class="">Action</span>
-            </div>
-        </div>
-        <!-- TABLE BODY -->
-        <div *ngIf="assetList$ | async as asetList" class="border border-cm-blue-500">
-            <div
-            *ngFor="let aset of asetList.data; let i = index;"
-            class="grid grid-cols-12 text-sm text-neutral-800"
-            [ngClass]="i % 2 !== 0 ? 'bg-cm-blue-500 bg-opacity-10' : '' "
+          <div
+            class="col-start-0 col-end-2 mr-[44px] flex items-center py-1.5 border border-y-0 border-cm-blue-50 justify-center"
+          >
+            <span class="ml-2">{{
+              asetList.currentPage === 1
+                ? i + 1
+                : (asetList.currentPage - 1) * userReq.size! + i + 1
+            }}</span>
+          </div>
+          <div
+            class="col-start-2 col-end-4 ml-[-44px] flex items-center border border-y-0 border-cm-blue-50 font-semibold text-neutral-700"
+          >
+            <span *ngIf="idOnEdit !== aset.id" class="px-2">{{
+              aset.assetName
+            }}</span>
+            <input
+              *ngIf="idOnEdit === aset.id"
+              formControlName="assetName"
+              type="text"
+              class="h-[28px] font-normal border-neutral-400 placeholder:text-neutral-500 px-2 ml-2 mr-4 focus:outline-cm-blue-200 text-sm w-full rounded-lg border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="Aset"
+            />
+          </div>
+          <div
+            class="col-start-4 col-end-6 flex items-center border border-y-0 border-cm-blue-50 font-nunito"
+          >
+            <span *ngIf="idOnEdit !== aset.id" class="px-2">{{
+              aset.brand
+            }}</span>
+            <input
+              *ngIf="idOnEdit === aset.id"
+              formControlName="brand"
+              type="text"
+              class="h-[28px] border-neutral-400 placeholder:text-neutral-500 px-2 ml-2 mr-4 focus:outline-cm-blue-200 text-sm w-full rounded-lg border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="Brand"
+            />
+          </div>
+          <div
+            class="col-start-6 col-end-10 flex items-center border border-y-0 border-cm-blue-50 text-xs"
+          >
+            <span *ngIf="idOnEdit !== aset.id" class="px-2">{{
+              aset.description
+            }}</span>
+            <input
+              *ngIf="idOnEdit === aset.id"
+              formControlName="description"
+              type="text"
+              class="h-[28px] border-neutral-400 placeholder:text-neutral-500 px-2 ml-2 mr-4 focus:outline-cm-blue-200 text-xs w-full rounded-lg border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="Description"
+            />
+          </div>
+          <div
+            class="col-start-10 col-end-11 mr-8 flex items-center border border-y-0 border-cm-blue-50 font-nunito justify-center"
+          >
+            <span *ngIf="idOnEdit !== aset.id" class="px-2">{{
+              aset.quantity
+            }}</span>
+            <input
+              *ngIf="idOnEdit === aset.id"
+              formControlName="quantity"
+              type="number"
+              class="h-[28px] border-neutral-400 placeholder:text-neutral-500 px-2 ml-2 mr-4 focus:outline-cm-blue-200 text-sm w-full rounded-lg border border-sda-neutral-400 placeholder:text-sm"
+              placeholder="0"
+            />
+          </div>
+          <div
+            class="col-start-11 col-end-12 ml-[-32px] flex items-center border border-y-0 border-cm-blue-50 text-xs font-semibold text-neutral-700"
+          >
+            <span *ngIf="idOnEdit !== aset.id" class="px-2">{{
+              aset.status[0] + aset.status.slice(1).toLowerCase()
+            }}</span>
+            <select
+              *ngIf="idOnEdit === aset.id"
+              formControlName="status"
+              id="status"
+              class="h-[28px] border-neutral-400 placeholder:text-neutral-500 px-1 ml-2 mr-4 focus:outline-cm-blue-200 text-xs w-full rounded-lg border border-sda-neutral-400 placeholder:text-sm"
             >
-                <div class="col-start-0 col-end-2 mr-[44px] flex items-center py-1.5 border border-y-0 border-cm-blue-50">
-                    <span class="ml-2">{{i + 1}}</span>
-                </div>
-                <div class="col-start-2 col-end-4 ml-[-44px] px-2 flex items-center border border-y-0 border-cm-blue-50 font-semibold text-neutral-700">
-                    <span class="">{{aset.assetName}}</span>
-                </div>
-                <div class="col-start-4 col-end-6 px-2 flex items-center border border-y-0 border-cm-blue-50 font-nunito">
-                    <span class="">{{aset.brand}}</span>
-                </div>
-                <div class="col-start-6 col-end-10 px-2 flex items-center border border-y-0 border-cm-blue-50 text-xs">
-                    <span class="">{{aset.description}}</span>
-                </div>
-                <div class="col-start-10 col-end-11 mr-8 px-2 flex items-center border border-y-0 border-cm-blue-50 font-nunito justify-center">
-                    <span class="">{{aset.quantity}}</span>
-                </div>
-                <div class="col-start-11 col-end-12 ml-[-32px] px-2 flex items-center border border-y-0 border-cm-blue-50 text-xs font-semibold text-neutral-700">
-                    <span class="">{{aset.status[0] + aset.status.slice(1).toLowerCase()}}</span>
-                </div>
-                <div class="col-start-12 col-end-13 px-2 flex items-center justify-around">
-                    <i-feather 
-                        name="edit2"
-                        style="height: 16px; width: 16px;" 
-                        class="text-neutral-600 hover:text-cm-blue-500 hover:scale-110 duration-100 cursor-pointer"
-                    ></i-feather>
-                    <i-feather 
-                        name="trash2"
-                        style="height: 16px; width: 16px;" 
-                        class="text-neutral-600 hover:text-red-500 hover:scale-110 duration-100 cursor-pointer"
-                    ></i-feather>
-                </div>
-            </div>
+              <option
+                *ngFor="let opt of optionsStatus"
+                [value]="opt"
+                class="text-xs"
+              >
+                {{ beutifyParseSvc.beautifyAsetStatus(opt) }}
+              </option>
+            </select>
+          </div>
+          <div
+            class="col-start-12 col-end-13 px-2 flex items-center justify-around"
+          >
+            <i-feather
+              (click)="onClickEditById(aset)"
+              *ngIf="idOnEdit !== aset.id"
+              name="edit2"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-cm-blue-500 hover:scale-110 duration-100 cursor-pointer"
+            ></i-feather>
+            <i-feather
+              (click)="idOnEdit = null"
+              *ngIf="idOnEdit === aset.id"
+              name="x"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-yellow-500 hover:scale-110 duration-100 cursor-pointer"
+            ></i-feather>
+            <i-feather
+              (click)="onSubmitUpdateAset()"
+              *ngIf="idOnEdit === aset.id"
+              name="check"
+              style="height: 17px; width: 17px"
+              class="text-neutral-600 hover:text-cm-green-500 hover:scale-110 duration-100 cursor-pointer"
+            ></i-feather>
+            <i-feather
+              name="trash2"
+              *ngIf="idOnEdit !== aset.id"
+              style="height: 16px; width: 16px"
+              class="text-neutral-600 hover:text-red-500 hover:scale-110 duration-100 cursor-pointer"
+            ></i-feather>
+          </div>
         </div>
-    <!-- END OF TABLE BODY -->
+      </form>
     </div>
+    <!-- END OF TABLE BODY -->
+  </div>
+  <!-- PAGINATION -->
+  <div
+    *ngIf="assetList$ | async as pagination"
+    class="flex absolute right-4 bottom-4 text-sm pr-2 my-2"
+  >
+    <app-button
+      color="secondary"
+      size="small"
+      class="mr-0.5"
+      [disableTerm]="!pagination.hasPrev"
+      (onButtonClick)="onClickChangePage(pagination.currentPage - 1)"
+    >
+      <
+    </app-button>
+    <div
+      #paginationScroll
+      [ngClass]="
+        pagination.lastPage < 2
+          ? 'w[25px]'
+          : pagination.lastPage === 2
+          ? 'w-[57px]'
+          : 'w-[76px] overflow-scroll hidescrollbar overflow-y-hidden'
+      "
+      class="flex"
+    >
+      <div *ngFor="let page of totalPage; let i = index; let l = last">
+        <app-button
+          color="secondary"
+          [ngClass]="
+            pagination.currentPage === i + 1
+              ? 'bg-cm-blue-500 rounded-md text-white'
+              : ''
+          "
+          size="small"
+          class="flex mx-0.5"
+          (onButtonClick)="onClickChangePage(i + 1)"
+          ><span
+            [ngClass]="pagination.currentPage === i + 1 ? 'text-white' : ''"
+            >{{ i + 1 }}</span
+          ></app-button
+        >
+      </div>
+    </div>
+    <app-button
+      color="secondary"
+      size="small"
+      class="ml-0.5"
+      [disableTerm]="!pagination.hasNext"
+      (onButtonClick)="onClickChangePage(pagination.currentPage + 1)"
+      >></app-button
+    >
+  </div>
+  <!-- END OF PAGINATION -->
 </div>

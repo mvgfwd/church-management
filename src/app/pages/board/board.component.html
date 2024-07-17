@@ -318,10 +318,10 @@
   </div>
 
   <!-- PAGINATION -->
-  <div *ngIf="!isAddMode" class="absolute bottom-4 right-6">
+  <div *ngIf="!isAddMode" class="absolute bottom-4 right-4">
     <div
       *ngIf="boardList$ | async as pagination"
-      class="flex absolute right-1 bottom-1 text-sm pr-2 my-2"
+      class="flex absolute right-0 bottom-0 text-sm pr-2 my-2"
     >
       <app-button
         color="secondary"
@@ -348,7 +348,7 @@
             color="secondary"
             [ngClass]="
               pagination.currentPage === i + 1
-                ? 'bg-blue-800 rounded-md text-white'
+                ? 'bg-cm-blue-500 rounded-md text-white'
                 : ''
             "
             size="small"
