@@ -180,6 +180,15 @@
     <!-- JADWAL -->
     <div class="bg-white shadow-lg rounded-xl p-4 pr-6 w-[34%]">
       <span class="font-nunito font-extrabold">Jadwal</span>
+      <div *ngIf="activityList$ | async as activity" class="flex flex-col">
+        <div *ngFor="let data of activity">
+          <!-- DAY of JADWAL -->
+          <div class="flex">
+            <span>{{ data.activityDate | date : "EEEE" }} -</span>
+            <span class="ml-1">{{ data.activityDate | date }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

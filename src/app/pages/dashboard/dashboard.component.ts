@@ -10,6 +10,8 @@ import { CongregationService } from '../congregation/congregation.service';
 import { IncomeService } from '../financial/income.service';
 import { OutcomeService } from '../financial/outcome.service';
 import { SharedService } from 'src/app/core/services/shared-service.service';
+import { ActivityService } from '../activity/activity.service';
+import { ActivityDTO } from 'src/app/core/dto/activity.dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +21,7 @@ import { SharedService } from 'src/app/core/services/shared-service.service';
 export class DashboardComponent {
   newsList$: Observable<NewsDTO[]> | undefined;
   boardList$: Observable<BoardDTO[]> | undefined;
+  activityList$: Observable<ActivityDTO[]> | undefined;
   congreTotal: number = 0;
   incomeNominal$: Observable<number> = of(0);
   outcomeNominal$: Observable<number> = of(0);
@@ -35,7 +38,8 @@ export class DashboardComponent {
     private congreSvc: CongregationService,
     private incomeSvc: IncomeService,
     private outcomeSvc: OutcomeService,
-    private sharedSvc: SharedService
+    private sharedSvc: SharedService,
+    private activitySvc: ActivityService
   ) {
     this.newsSvc
       .getNewsListObs(this.userReq)
@@ -63,12 +67,32 @@ export class DashboardComponent {
       .pipe(take(1))
       .subscribe();
 
+    this.activitySvc
+      .getUpcomingActivityList({ size: 5, page: 1 })
+      .pipe(
+        map((e) => {
+          console.log(e);
+          this.activityList$ = of(e.data);
+        })
+      )
+      .pipe(take(1))
+      .subscribe();
+
     this.incomeNominal$ = of(
       this.incomeSvc.countIncomeByCategory('All Category')
     );
 
     this.outcomeNominal$ = of(
       this.outcomeSvc.countOutcomeByCategory('All Category')
+    );
+  }
+
+  isStillToday(date: Date) {
+    const now = new Date();
+    return (
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate()
     );
   }
 
