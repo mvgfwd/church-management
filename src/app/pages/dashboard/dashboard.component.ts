@@ -13,6 +13,10 @@ import { SharedService } from 'src/app/core/services/shared-service.service';
 import { ActivityService } from '../activity/activity.service';
 import { ActivityDTO } from 'src/app/core/dto/activity.dto';
 
+export interface KegiatanDashboardDTO {
+  tanggal: string,
+  kegiatan: ActivityDTO[]
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -22,9 +26,11 @@ export class DashboardComponent {
   newsList$: Observable<NewsDTO[]> | undefined;
   boardList$: Observable<BoardDTO[]> | undefined;
   activityList$: Observable<ActivityDTO[]> | undefined;
+  aktifitasDashboard$: Observable<KegiatanDashboardDTO[]> | undefined;
   congreTotal: number = 0;
   incomeNominal$: Observable<number> = of(0);
   outcomeNominal$: Observable<number> = of(0);
+  today = new Date().toISOString().split('T')[0];
   userReq: UserRequest = {
     size: 5,
     page: 1,
@@ -71,8 +77,19 @@ export class DashboardComponent {
       .getUpcomingActivityList({ size: 5, page: 1 })
       .pipe(
         map((e) => {
-          console.log(e);
           this.activityList$ = of(e.data);
+          const grouped = e.data.reduce<{[key: string]: ActivityDTO[]}>((acc, item) => {
+            if(!acc[item.activityDate.toISOString().split('T')[0]]){
+              acc[item.activityDate.toISOString().split('T')[0]] = [];
+            }
+            acc[item.activityDate.toISOString().split('T')[0]] = acc[item.activityDate.toISOString().split('T')[0]].concat(item);
+            return acc;
+          }, {})
+          const groupedArr: KegiatanDashboardDTO[] = Object.keys(grouped).map(el => ({
+            tanggal: el,
+            kegiatan: grouped[el]
+          }))
+          this.aktifitasDashboard$ = of(groupedArr);
         })
       )
       .pipe(take(1))

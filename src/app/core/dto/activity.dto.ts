@@ -4,9 +4,9 @@ export interface ActivityDTO {
   id?: number;
   activityTitle: string;
   description: string;
-  timeHour: Time;
+  timeHour: Time; //DURASI
   activityDate: Date;
-  activityTime: Time;
+  activityTime: Time; //JAM BERAPA
   location: string;
   pic: string;
 }

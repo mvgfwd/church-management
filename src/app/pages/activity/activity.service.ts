@@ -53,7 +53,7 @@ export class ActivityService {
       },
       {
         id: 3,
-        activityTitle: 'Ibadah Mingguan Remaja',
+        activityTitle: 'Ibadah Mingguan Sintua',
         description:
           'Kebaktian remaja akan diadakan di gedung B ruang pertemuan Gereja dan akan dipimpin oleh sintua Marnaek Sibarani',
         timeHour: { hours: 1, minutes: 30 },
@@ -64,7 +64,7 @@ export class ActivityService {
       },
       {
         id: 4,
-        activityTitle: 'Lari Sore Bersama Ephorus',
+        activityTitle: 'Lari Sore Bersama Praeses',
         description:
           'Peringatan hari sintua sedunia, HKBP mengadakan program sehat dengan seluruh jemaat diundang untuk dapat berpartisipasi pada acara lari sore yang akan diikuti seluruh sintua dan Ephorus HKBP.',
         timeHour: { hours: 1, minutes: 0 },
@@ -75,11 +75,11 @@ export class ActivityService {
       },
       {
         id: 5,
-        activityTitle: 'Makan-Makan Pesta Jubileum',
+        activityTitle: 'Makan-Makan Pesta Paskah',
         description:
           'Pesta peringatan 200 tahun berdirinya gereja tulang Nommensen ini membawa sukacita tersendiri untuk organisasi sehingga majelis gereja mengundang seluruh jemaat untuk makan-makan saksang di area taman gereja.',
         timeHour: { hours: 12, minutes: 20 },
-        activityDate: new Date('2024-11-23'),
+        activityDate: new Date('2024-07-25'),
         activityTime: { hours: 7, minutes: 0 },
         location: 'Perumahan HKBP Setempat',
         pic: 'Pdt. Timbul Damanik (HKBP Ruas Sebelah)',
@@ -143,6 +143,7 @@ export class ActivityService {
   ): Observable<PaginationResultDTO<ActivityDTO>> {
     // PERDATAAN
     const currDate = new Date();
+    currDate.setHours(0,0,0,0);
     const upcomingListData = this.PaginationActivityList.data.filter(
       (activity) => activity.activityDate >= currDate
     );
